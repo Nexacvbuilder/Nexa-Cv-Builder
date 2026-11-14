@@ -1239,6 +1239,7 @@ window.showPage=function(id){
  if($(id)) $(id).classList.add("active");
  document.querySelectorAll(".bottom-nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
  window.scrollTo({top:0,behavior:"smooth"});
+ if(id==="payment"&&typeof window.loadMyOrders==="function")window.loadMyOrders();
 };
 window.switchAccountMode=function(mode){
  const login=mode!=="register";
@@ -1928,6 +1929,8 @@ function randomToken(){
  return [...a].map(x=>x.toString(16).padStart(2,"0")).join("");
 }
 window.submitOrder=async function(){
+ const {data:{user},error:userError}=await supabase.auth.getUser();
+ if(userError||!user){alert("Please login first.");return;}
  const name=$("customerName").value.trim(),phone=$("customerPhone").value.trim();
  const service=$("orderService").value,method=$("paymentMethod").value;
  const transaction=$("transactionId").value.trim();
@@ -1936,7 +1939,7 @@ window.submitOrder=async function(){
  const orderCode="NEXA-"+Math.random().toString(36).slice(2,9).toUpperCase();
  const accessToken=randomToken();
  const payload={
-  order_code:orderCode,access_token:accessToken,
+  user_id:user.id,order_code:orderCode,access_token:accessToken,
   customer_name:name,customer_phone:phone,tool_name:service,
   amount:PRICES[service]||0,payment_method:quoteOnly?"Quotation Request":method,
   payment_number:"03469799347",transaction_id:transaction||"QUOTE-REQUEST",
