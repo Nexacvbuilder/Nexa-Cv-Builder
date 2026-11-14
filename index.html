@@ -905,7 +905,7 @@ input,select,textarea,button{font-family:Arial,"Segoe UI",sans-serif!important}
 
 <main class="container">
 
-<section id="home" class="page active">
+<section id="home" class="page">
   <div class="hero">
     <div class="hero-eyebrow"><span class="hero-live-dot"></span> NEXA CV BUILDER <span class="hero-eyebrow-line"></span> PROFESSIONAL RESUMES</div>
     <h1>BUILD YOUR FUTURE.<br><span>CREATE YOUR CV.</span></h1>
@@ -964,7 +964,7 @@ input,select,textarea,button{font-family:Arial,"Segoe UI",sans-serif!important}
   </div>
 </section>
 
-<section id="account" class="page">
+<section id="account" class="page active">
   <h1>My Account</h1>
   <p class="muted">Create your NEXA account or sign in to continue.</p>
   <div id="accountAuthPanel" class="panel account-auth-panel">
@@ -1929,7 +1929,26 @@ async function initializeAdminAccess(){
 }
 updateAmount();
 initializeAdminAccess();
-supabase.auth.getUser().then(({data})=>renderAccountUser(data?.user||null)).catch(()=>renderAccountUser(null));
+(async function setCustomerLandingPage(){
+ try{
+  const {data:{session}}=await supabase.auth.getSession();
+  if(adminEntryRequested)return;
+  if(session?.user){
+   renderAccountUser(session.user);
+   window.showPage("home");
+  }else{
+   window.switchAccountMode("register");
+   renderAccountUser(null);
+   window.showPage("account");
+  }
+ }catch(e){
+  if(!adminEntryRequested){
+   window.switchAccountMode("register");
+   renderAccountUser(null);
+   window.showPage("account");
+  }
+ }
+})();
 </script>
 
 <!-- NEXA premium rotating CV notifications -->
