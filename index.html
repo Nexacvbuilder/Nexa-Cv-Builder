@@ -1394,8 +1394,9 @@ function renderAccountUser(user){
   if(typeof window.showPage==="function")window.showPage("account");
   return;
  }
- // Keep the signed-in session, but do not display personal profile details.
+ // Keep the signed-in session, hide the profile card, and show the Home page.
  authPanel.style.display="none";
+ if(typeof window.showPage==="function")window.showPage("home");
 }
 window.toggleAccountPassword=function(id,button){
  const field=document.getElementById(id);if(!field)return;
