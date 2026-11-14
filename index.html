@@ -1281,11 +1281,6 @@ body{color:#f7faff!important}
     <div id="accountAuthStatus" class="status" aria-live="polite"></div>
     <p class="muted account-note">Your account details are protected. Never share your password with anyone.</p>
   </div>
-  <div id="accountProfilePanel" class="panel" style="display:none">
-    <div class="account-profile-head"><div class="account-avatar" id="accountAvatar">N</div><div><h2 id="accountProfileName">Welcome</h2><p class="muted" id="accountProfileEmail"></p></div></div>
-    <div class="account-profile-details"><div><span>Gender</span><b id="accountProfileGender">—</b></div><div><span>Account</span><b>Active</b></div></div>
-    <button type="button" class="btn red" onclick="logoutAccount()">Logout</button>
-  </div>
 </section>
 
 <section id="admin" class="page">
@@ -1391,21 +1386,16 @@ window.switchAccountMode=function(mode){
  showStatus("accountAuthStatus","","info");
 };
 function renderAccountUser(user){
- const authPanel=$("accountAuthPanel"),profile=$("accountProfilePanel");
- if(!authPanel||!profile)return;
+ const authPanel=$("accountAuthPanel");
+ if(!authPanel)return;
  document.body.classList.toggle("nexa-authenticated",!!user);
  if(!user){
-  authPanel.style.display="block";profile.style.display="none";
+  authPanel.style.display="block";
   if(typeof window.showPage==="function")window.showPage("account");
   return;
  }
- const meta=user.user_metadata||{};
- const name=meta.full_name||meta.name||"NEXA Member";
- $("accountProfileName").textContent=name;
- $("accountProfileEmail").textContent=user.email||"";
- $("accountProfileGender").textContent=meta.gender||"Not provided";
- $("accountAvatar").textContent=(name.trim()[0]||"N").toUpperCase();
- authPanel.style.display="none";profile.style.display="block";
+ // Keep the signed-in session, but do not display personal profile details.
+ authPanel.style.display="none";
 }
 window.toggleAccountPassword=function(id,button){
  const field=document.getElementById(id);if(!field)return;
