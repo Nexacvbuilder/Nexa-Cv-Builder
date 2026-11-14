@@ -1156,6 +1156,44 @@ body{color:#f7faff!important}
 @media(max-width:560px){#account.page{padding:12px 0 25px!important;min-height:calc(100vh - 35px)}#account .nexa-auth-card{width:calc(100% - 16px);padding:23px 19px!important;border-radius:23px!important}.nexa-auth-brand{margin-bottom:25px}}
 @media(min-width:900px){#account.page{min-height:calc(100vh - 100px)}#account .nexa-auth-card{width:490px}}
 </style>
+<style id="nexa-auth-pro-polish">
+/* Premium authentication refinement */
+#account.page{position:relative;isolation:isolate;overflow:hidden}
+#account.page:before,#account.page:after{content:"";position:absolute;z-index:-1;pointer-events:none;border-radius:50%;filter:blur(2px)}
+#account.page:before{width:380px;height:380px;top:4%;left:-230px;background:radial-gradient(circle,#5369bd22,transparent 70%)}
+#account.page:after{width:430px;height:430px;right:-260px;bottom:0;background:radial-gradient(circle,#7b8dff18,transparent 70%)}
+#account .nexa-auth-card{position:relative;overflow:hidden;backdrop-filter:blur(18px);background:linear-gradient(155deg,#1c2230f5 0%,#131720f7 48%,#10141cf7 100%)!important;border:1px solid #39445a!important;box-shadow:0 30px 85px #0009,0 0 0 1px #ffffff08,inset 0 1px #ffffff12!important}
+#account .nexa-auth-card:before{content:"";position:absolute;top:0;left:9%;right:9%;height:2px;background:linear-gradient(90deg,transparent,#9eafff,#d6ddff,transparent);opacity:.9}
+.nexa-auth-brand{letter-spacing:2px}
+.nexa-auth-mark{width:40px;height:40px;border:1px solid #dce3ff66;background:linear-gradient(145deg,#dce3ff,#8598f4 60%,#5367c7);box-shadow:0 7px 22px #7187ff55,inset 0 1px #fff}
+.nexa-auth-heading h2{font-size:clamp(32px,7vw,39px)!important;font-weight:850!important;letter-spacing:-1.5px!important}
+.nexa-auth-heading p{font-size:13px!important;letter-spacing:.1px}
+#account .nexa-auth-tabs{padding:4px!important;background:#0b0f17!important;border-color:#30394a!important}
+#account .nexa-auth-tabs .account-tab{font-weight:750!important;transition:background .2s ease,color .2s ease,transform .2s ease}
+#account .nexa-auth-tabs .account-tab.active{background:linear-gradient(135deg,#3a4357,#252d3e)!important;box-shadow:inset 0 1px #ffffff19,0 3px 10px #0005!important}
+#account .nexa-auth-form label{font-size:11px!important;letter-spacing:.45px!important;text-transform:uppercase;color:#b9c3d6!important}
+#account .nexa-auth-form input:not([type=checkbox]),#account .nexa-auth-form select{min-height:54px!important;border-radius:12px!important;border-color:#333e51!important;background:linear-gradient(120deg,#202735,#1a202c)!important;transition:border-color .2s,box-shadow .2s,background .2s}
+#account .nexa-auth-form input:not([type=checkbox]):focus,#account .nexa-auth-form select:focus{border-color:#9aaaff!important;box-shadow:0 0 0 3px #8497ff24,inset 0 1px 3px #0003!important;background:#222a3a!important}
+#account .nexa-auth-form input::placeholder{color:#7e899d!important}
+.nexa-text-btn{font-weight:750!important;text-decoration:none!important}
+.nexa-text-btn:hover{color:#e1e6ff!important;text-decoration:underline!important}
+#account .nexa-remember{font-size:12px!important}
+#account .nexa-primary-submit{min-height:56px!important;letter-spacing:.25px;transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;background:linear-gradient(105deg,#f0f1ff 0%,#c7d0ff 52%,#a9bbff 100%)!important;box-shadow:0 9px 24px #8196ff32,inset 0 1px #fff!important}
+#account .nexa-primary-submit:hover{transform:translateY(-1px);filter:brightness(1.04);box-shadow:0 12px 28px #8196ff45!important}
+#account .nexa-primary-submit:active{transform:translateY(0)}
+.nexa-auth-divider{font-size:9px!important;letter-spacing:1.6px!important;color:#8591a7!important}
+.nexa-google-btn{display:flex!important;align-items:center;justify-content:center;gap:5px;min-height:52px!important;border-color:#3a4558!important;background:linear-gradient(120deg,#202735,#171d28)!important;transition:border-color .2s,background .2s,transform .2s}
+.nexa-google-btn:hover{border-color:#7e91d8!important;background:#252e40!important;transform:translateY(-1px)}
+.nexa-google-g{font-family:Arial,sans-serif;font-weight:900!important}
+#account .account-note{padding-top:14px;border-top:1px solid #ffffff0c;color:#8994a8!important}
+#account #accountAuthStatus{border-radius:10px}
+@media(max-width:560px){
+ #account .nexa-auth-card{width:calc(100% - 12px);padding:25px 20px!important}
+ .nexa-auth-heading h2{font-size:33px!important}
+ #account .nexa-auth-form input:not([type=checkbox]),#account .nexa-auth-form select{min-height:52px!important}
+}
+@media(prefers-reduced-motion:reduce){#account .nexa-auth-card *,#account .nexa-auth-card *:before{transition:none!important;animation:none!important}}
+</style>
 </head>
 <body>
 
