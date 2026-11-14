@@ -848,9 +848,11 @@ label{color:#d9e7f5;font-weight:700;font-size:12px;letter-spacing:.2px}input,sel
     grid-template-columns:repeat(3,minmax(0,1fr))!important;
     box-shadow:0 10px 34px #0005!important;
   }
-  .bottom-nav.admin-visible{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  .bottom-nav.admin-visible{grid-template-columns:repeat(5,minmax(0,1fr))!important}
   .bottom-nav-item{flex-direction:row!important;gap:10px!important;min-height:48px;padding:10px 14px!important;font-size:13px!important}
   .bottom-nav-item .nav-icon{font-size:21px!important}
+  .account-auth-panel{max-width:620px;margin:22px auto}
+  .account-submit{width:100%;margin-top:16px}
   body{padding-bottom:110px!important}
 }
 @media(min-width:761px) and (max-width:899px){
@@ -861,11 +863,31 @@ label{color:#d9e7f5;font-weight:700;font-size:12px;letter-spacing:.2px}input,sel
 }
 @media(max-width:650px){
   .bottom-nav{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .bottom-nav.admin-visible{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .bottom-nav.admin-visible{grid-template-columns:repeat(5,minmax(0,1fr))}
 }
 </style>
 
 
+
+<style id="nexa-account-auth-styles">
+.account-auth-panel,.account-profile-panel{max-width:620px;margin:20px auto}
+.account-tabs{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:22px}
+.account-tab{width:100%;margin:0}
+.account-auth-panel label{display:block;margin:13px 0 6px;font-weight:750;color:var(--text,#17304f)}
+.account-auth-panel input,.account-auth-panel select{width:100%;min-height:46px;padding:11px 13px;border:1px solid #cbd7e5;border-radius:11px;background:#fff;color:#172b45;font:inherit}
+.account-auth-panel h2{margin:5px 0 15px}
+.account-submit{width:100%;margin-top:18px}
+.account-note{font-size:12px;line-height:1.6;margin-top:14px}
+.account-profile-head{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.account-avatar{width:58px;height:58px;display:grid;place-items:center;flex:0 0 58px;border-radius:18px;background:linear-gradient(135deg,#1b65ad,#16a6a0);color:#fff;font-size:24px;font-weight:900}
+.account-profile-head h2{margin:0 0 4px}
+.account-profile-head p{margin:0;overflow-wrap:anywhere}
+.account-profile-details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0 22px}
+.account-profile-details div{padding:13px;border:1px solid #dbe5ef;border-radius:12px;display:flex;flex-direction:column;gap:5px}
+.account-profile-details span{font-size:12px;color:#728198}
+.account-profile-details b{font-size:14px;color:#183452}
+@media(max-width:520px){.account-profile-details{grid-template-columns:1fr}.account-auth-panel{padding:16px}}
+</style>
 
 <style id="nexa-force-readable-fonts">
 /* Force standard readable text fonts on desktop; keep symbols on their natural fallback fonts. */
@@ -942,6 +964,51 @@ input,select,textarea,button{font-family:Arial,"Segoe UI",sans-serif!important}
   </div>
 </section>
 
+<section id="account" class="page">
+  <h1>My Account</h1>
+  <p class="muted">Create your NEXA account or sign in to continue.</p>
+  <div id="accountAuthPanel" class="panel account-auth-panel">
+    <div class="account-tabs">
+      <button type="button" id="accountLoginTab" class="btn account-tab active" onclick="switchAccountMode('login')">Login</button>
+      <button type="button" id="accountRegisterTab" class="btn secondary account-tab" onclick="switchAccountMode('register')">Create Account</button>
+    </div>
+    <div id="accountLoginForm">
+      <h2>Welcome Back</h2>
+      <label for="accountLoginEmail">Email Address</label>
+      <input id="accountLoginEmail" type="email" autocomplete="email" placeholder="name@example.com" required>
+      <label for="accountLoginPassword">Password</label>
+      <input id="accountLoginPassword" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+      <button type="button" class="btn account-submit" onclick="loginAccount()">Login</button>
+    </div>
+    <div id="accountRegisterForm" style="display:none">
+      <h2>Create Your Account</h2>
+      <label for="accountFullName">Full Name</label>
+      <input id="accountFullName" type="text" autocomplete="name" maxlength="80" placeholder="Enter your full name" required>
+      <label for="accountRegisterEmail">Email Address</label>
+      <input id="accountRegisterEmail" type="email" autocomplete="email" placeholder="name@example.com" required>
+      <label for="accountGender">Gender</label>
+      <select id="accountGender" required>
+        <option value="">Select gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Prefer not to say">Prefer not to say</option>
+      </select>
+      <label for="accountRegisterPassword">Create Password</label>
+      <input id="accountRegisterPassword" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required>
+      <label for="accountConfirmPassword">Confirm Password</label>
+      <input id="accountConfirmPassword" type="password" autocomplete="new-password" minlength="8" placeholder="Enter password again" required>
+      <button type="button" class="btn account-submit" onclick="registerAccount()">Create Account</button>
+    </div>
+    <div id="accountAuthStatus" class="status" aria-live="polite"></div>
+    <p class="muted account-note">Your password is used to protect your account. NEXA will not ask you to share it with anyone.</p>
+  </div>
+  <div id="accountProfilePanel" class="panel" style="display:none">
+    <div class="account-profile-head"><div class="account-avatar" id="accountAvatar">N</div><div><h2 id="accountProfileName">Welcome</h2><p class="muted" id="accountProfileEmail"></p></div></div>
+    <div class="account-profile-details"><div><span>Gender</span><b id="accountProfileGender">—</b></div><div><span>Account</span><b>Active</b></div></div>
+    <button type="button" class="btn red" onclick="logoutAccount()">Logout</button>
+  </div>
+</section>
+
 <section id="admin" class="page">
   <h1>Admin Panel</h1>
   <div id="adminLogin" class="panel">
@@ -974,6 +1041,7 @@ input,select,textarea,button{font-family:Arial,"Segoe UI",sans-serif!important}
   <button class="bottom-nav-item active" data-page="home" onclick="showPage('home')"><span class="nav-icon">⌂</span><span>Home</span></button>
   <button class="bottom-nav-item" data-page="studio" onclick="showPage('studio')"><span class="nav-icon">✦</span><span>CV Builder</span></button>
   <button class="bottom-nav-item" data-page="payment" onclick="showPage('payment')"><span class="nav-icon">▣</span><span>Orders</span></button>
+  <button class="bottom-nav-item" data-page="account" onclick="showPage('account')"><span class="nav-icon">♙</span><span>Account</span></button>
   <button id="adminNavButton" class="bottom-nav-item" data-page="admin" onclick="showPage('admin')" hidden><span class="nav-icon">♙</span><span>Admin</span></button>
 </nav>
 
@@ -1029,6 +1097,69 @@ window.showPage=function(id){
  document.querySelectorAll(".bottom-nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
  window.scrollTo({top:0,behavior:"smooth"});
 };
+window.switchAccountMode=function(mode){
+ const login=mode!=="register";
+ $("accountLoginForm").style.display=login?"block":"none";
+ $("accountRegisterForm").style.display=login?"none":"block";
+ $("accountLoginTab").classList.toggle("active",login);
+ $("accountRegisterTab").classList.toggle("active",!login);
+ $("accountLoginTab").classList.toggle("secondary",!login);
+ $("accountRegisterTab").classList.toggle("secondary",login);
+ showStatus("accountAuthStatus","","info");
+};
+function renderAccountUser(user){
+ const authPanel=$("accountAuthPanel"),profile=$("accountProfilePanel");
+ if(!authPanel||!profile)return;
+ if(!user){authPanel.style.display="block";profile.style.display="none";return;}
+ const meta=user.user_metadata||{};
+ const name=meta.full_name||meta.name||"NEXA Member";
+ $("accountProfileName").textContent=name;
+ $("accountProfileEmail").textContent=user.email||"";
+ $("accountProfileGender").textContent=meta.gender||"Not provided";
+ $("accountAvatar").textContent=(name.trim()[0]||"N").toUpperCase();
+ authPanel.style.display="none";profile.style.display="block";
+}
+window.registerAccount=async function(){
+ const name=$("accountFullName").value.trim();
+ const email=$("accountRegisterEmail").value.trim().toLowerCase();
+ const gender=$("accountGender").value;
+ const password=$("accountRegisterPassword").value;
+ const confirm=$("accountConfirmPassword").value;
+ if(!name||!email||!gender||!password||!confirm){showStatus("accountAuthStatus","Please complete all fields.","error");return;}
+ if(password.length<8){showStatus("accountAuthStatus","Password must be at least 8 characters.","error");return;}
+ if(password!==confirm){showStatus("accountAuthStatus","Passwords do not match.","error");return;}
+ showStatus("accountAuthStatus","Creating your account...","info");
+ try{
+  const {data,error}=await supabase.auth.signUp({email,password,options:{data:{full_name:name,gender}}});
+  if(error)throw error;
+  if(data.session){
+   renderAccountUser(data.user);
+   showStatus("accountAuthStatus","Account created successfully. You are now logged in.","success");
+   setTimeout(()=>showPage("home"),700);
+  }else{
+   showStatus("accountAuthStatus","Account request received, but email confirmation is still enabled in Supabase. Turn off Confirm email in Supabase Auth settings to allow login without a code.","error");
+  }
+ }catch(e){showStatus("accountAuthStatus",e.message||"Could not create account.","error");}
+};
+window.loginAccount=async function(){
+ const email=$("accountLoginEmail").value.trim().toLowerCase();
+ const password=$("accountLoginPassword").value;
+ if(!email||!password){showStatus("accountAuthStatus","Enter your email and password.","error");return;}
+ showStatus("accountAuthStatus","Signing in...","info");
+ try{
+  const {data,error}=await supabase.auth.signInWithPassword({email,password});
+  if(error)throw error;
+  renderAccountUser(data.user);
+  showStatus("accountAuthStatus","Login successful.","success");
+  setTimeout(()=>showPage("home"),500);
+ }catch(e){showStatus("accountAuthStatus",e.message||"Login failed.","error");}
+};
+window.logoutAccount=async function(){
+ try{const {error}=await supabase.auth.signOut();if(error)throw error;renderAccountUser(null);showStatus("accountAuthStatus","You have been logged out.","success");showPage("home");}
+ catch(e){alert("Logout failed: "+e.message);}
+};
+supabase.auth.onAuthStateChange((_event,session)=>renderAccountUser(session?.user||null));
+
 // WHATSAPP SERVICE REQUESTS — all services except CV and Experience Certificate
 const NEXA_WHATSAPP_NUMBER="923469799347";
 window.contactNexaWhatsApp=function(service,details=""){
@@ -1798,6 +1929,7 @@ async function initializeAdminAccess(){
 }
 updateAmount();
 initializeAdminAccess();
+supabase.auth.getUser().then(({data})=>renderAccountUser(data?.user||null)).catch(()=>renderAccountUser(null));
 </script>
 
 <!-- NEXA premium rotating CV notifications -->
