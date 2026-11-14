@@ -1307,7 +1307,18 @@ window.logoutAccount=async function(){
  try{const {error}=await supabase.auth.signOut();if(error)throw error;renderAccountUser(null);showStatus("accountAuthStatus","You have been logged out.","success");showPage("home");}
  catch(e){alert("Logout failed: "+e.message);}
 };
-supabase.auth.onAuthStateChange((_event,session)=>renderAccountUser(session?.user||null));
+supabase.auth.onAuthStateChange((_event,session)=>{
+ renderAccountUser(session?.user||null);
+ // Re-check the admin allowlist after every sign-in, including sessions created
+ // after the page first loaded. Only users approved by is_app_admin() see Admin.
+ if(session?.user){
+  setTimeout(()=>initializeAdminAccess(),0);
+ }else{
+  setAdminVisibility(false);
+  if($("adminDashboard"))$("adminDashboard").style.display="none";
+  if($("adminLogin"))$("adminLogin").style.display="block";
+ }
+});
 
 // WHATSAPP SERVICE REQUESTS — all services except CV and Experience Certificate
 const NEXA_WHATSAPP_NUMBER="923469799347";
