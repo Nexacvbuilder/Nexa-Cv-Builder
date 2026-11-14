@@ -1,0 +1,2053 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEXA Creative Studio</title>
+<style>
+:root {
+  --bg:#09111f;--panel:#142238;--panel2:#1b2d48;
+  --text:#f3f6ff;--muted:#aab8cc;--blue:#347ff0;
+  --cyan:#31d5cf;--gold:#f3c65c;--border:#2b405f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+header{background:#0c1729;border-bottom:1px solid var(--border);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:5}
+.logo{font-size:21px;font-weight:bold}.logo span{color:var(--cyan)}
+nav{display:flex;gap:6px;flex-wrap:wrap}
+button{cursor:pointer;border:0;border-radius:8px;padding:10px 14px;font-weight:bold}
+nav button{background:transparent;color:var(--muted)}
+nav button:hover{background:var(--panel2);color:white}
+.btn{background:var(--blue);color:white}
+.btn.secondary{background:#31435f}
+.btn.green{background:#168a66}
+.btn.gold{background:#a77a22}
+.btn.red{background:#b43e51}
+.container{width:min(1150px,94%);margin:auto}
+.page{display:none;padding:24px 0 40px}.page.active{display:block}
+.hero{padding:35px 24px;border-radius:16px;background:linear-gradient(130deg,#17365f,#102035,#12434a);border:1px solid var(--border);margin-bottom:20px}
+.hero h1{font-size:clamp(30px,5vw,50px);margin:0 0 10px}
+.hero h1 span{color:var(--cyan)}
+p{line-height:1.5}.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.card,.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px}
+.card h3{margin:8px 0}.card p{color:var(--muted);font-size:14px}
+.icon{font-size:28px}.price{color:var(--gold);font-weight:bold}
+label{display:block;font-size:13px;color:#cbd8eb;margin:10px 0 5px}
+input,select,textarea{width:100%;padding:11px;border-radius:8px;border:1px solid #354c6d;background:#091629;color:white;font:inherit}
+textarea{min-height:85px;resize:vertical}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px}
+.full{grid-column:1/-1}
+.status{padding:10px;margin-top:10px;border-radius:8px;display:none}
+.status.success{display:block;background:#164333;color:#9bf0c9}
+.status.error{display:block;background:#512633;color:#ffb4c0}
+.status.info{display:block;background:#183452;color:#b9dfff}
+.tool-area{display:none;margin-top:15px}
+.preview{background:#dce4ef;color:#263957;padding:14px;border-radius:7px;margin:15px 0;overflow:hidden}
+/* True A4 portrait preview: 210 × 297 mm (794 × 1123 CSS px at 96dpi) */
+.a4-stage{position:relative;width:100%;aspect-ratio:210/297;background:#fff;margin:0 auto;overflow:hidden;box-shadow:0 4px 18px #0003}
+.a4-sheet{position:absolute;left:0;top:0;width:794px;height:1123px;transform-origin:top left;background:#fff;overflow:hidden}
+.a4-sheet>div{width:794px!important;height:1123px!important;min-height:1123px!important;max-height:1123px!important;overflow:hidden!important;box-sizing:border-box!important}
+.a4-sheet>div>aside,.a4-sheet>div>main{min-height:0;box-sizing:border-box}
+@media print{.a4-stage{width:210mm!important;height:297mm!important;aspect-ratio:auto;overflow:hidden}.a4-sheet{transform:none!important;width:210mm!important;height:297mm!important}.a4-sheet>div{width:210mm!important;height:297mm!important;min-height:297mm!important;max-height:297mm!important}}
+.certificate{border:6px double #b38a42;text-align:center;min-height:350px}
+.certificate h2{color:#173b68;font-size:27px}
+.certificate .draft{color:#a33;font-size:12px;font-weight:bold}
+.entry{padding:10px;background:#0b182a;border:1px solid var(--border);border-radius:8px;margin:7px 0}
+.chip{display:inline-block;padding:6px 10px;background:#23405f;border-radius:20px;margin:4px}
+footer{text-align:center;color:var(--muted);padding:20px;border-top:1px solid var(--border)}
+@media(max-width:650px){
+ header{align-items:flex-start;flex-direction:column}
+ nav{width:100%}nav button{padding:8px}
+ .form-grid{grid-template-columns:1fr}.full{grid-column:auto}
+ .hero{padding:23px 16px}
+}
+
+/* Reference-style experience certificate */
+.nexa-certificate{position:relative;width:100%;max-width:900px;aspect-ratio:1.414/1;margin:18px auto;background:#f8f7f1;overflow:hidden;color:#20283a;border:7px solid #263d83;box-shadow:0 5px 18px #0003;}
+.cert-art{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.cert-inner{position:absolute;inset:4.2%;z-index:1;text-align:center;padding:3.5% 8% 2% 8%;}
+.cert-ribbon{position:absolute;left:7%;top:0;width:8%;height:22%;background:#1c376b;clip-path:polygon(0 0,100% 0,100% 100%,50% 78%,0 100%);z-index:0}
+.cert-badge{position:absolute;left:3.2%;top:2%;width:15%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#f8dc70 0 48%,#c99c25 50% 62%,#f5d45e 64% 72%,#9d741b 74%);border:3px solid #d3a936;box-shadow:0 2px 5px #3338;display:flex;align-items:center;justify-content:center;color:#33270d;font-weight:900;font-size:clamp(9px,1.4vw,18px);z-index:2;padding:12px;}
+.cert-ornament{color:#b28a35;font-size:clamp(12px,2vw,25px);letter-spacing:3px;margin:0 auto 1%;}
+.cert-heading{font-family:Georgia,serif;font-weight:900;font-size:clamp(25px,5.2vw,58px);line-height:1;color:#25252a;margin-top:1%;}
+.cert-subheading{font-family:Georgia,serif;font-style:italic;font-weight:bold;color:#b64c52;font-size:clamp(13px,2.3vw,25px);margin-top:-.5%;}
+.cert-present{font-size:clamp(8px,1.3vw,15px);color:#222;margin-top:4%;letter-spacing:.5px;}
+.cert-name{font-family:Georgia,serif;font-size:clamp(17px,3.3vw,36px);font-weight:bold;color:#b97850;margin:1.5% 0 .5%;overflow-wrap:anywhere;}
+.cert-company{font-size:clamp(9px,1.5vw,17px);font-weight:bold;color:#263d62;}
+.cert-copy{font-size:clamp(8px,1.35vw,15px);line-height:1.45;color:#414141;max-width:80%;margin:2% auto 1%;white-space:pre-wrap;overflow-wrap:anywhere;}
+.cert-job,.cert-period,.cert-reference{font-size:clamp(7px,1.15vw,13px);color:#343434;margin-top:.7%;}
+.cert-bottom{position:absolute;left:7%;right:7%;bottom:7%;display:flex;justify-content:space-between;align-items:flex-end;text-align:left;font-size:clamp(7px,1.1vw,12px);color:#333;}
+.cert-bottom>div{min-width:28%;}.cert-bottom small{display:block;border-top:1px solid #777;margin-top:5px;padding-top:3px;font-size:clamp(6px,.8vw,9px);letter-spacing:.5px;}
+.cert-sign{text-align:center;}.cert-draft-mark{position:absolute;bottom:1.5%;left:20%;right:20%;font-size:clamp(5px,.65vw,8px);color:#8b3939;letter-spacing:.5px;}
+.cert-actions{display:flex;gap:8px;flex-wrap:wrap;}
+@media(max-width:600px){.nexa-certificate{border-width:4px}.cert-inner{padding-left:7%;padding-right:7%}.cert-badge{left:2%;top:2%;}.cert-ornament{margin-bottom:0}.cert-present{margin-top:3%}.cert-copy{max-width:90%}.cert-bottom{bottom:8%}}
+
+
+/* Visual CV template gallery */
+.cv-template-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin-top:12px}
+.cv-template-card{display:block;width:100%;font:inherit;background:#0b182a;border:2px solid #354c6d;border-radius:12px;padding:10px;color:#fff;text-align:left;cursor:pointer;transition:.18s;min-width:0}
+.cv-template-card:hover{border-color:#31d5cf;transform:translateY(-2px)}
+.cv-template-card.selected{border-color:#31d5cf;box-shadow:0 0 0 2px #31d5cf33;background:#102b3b}
+.cv-template-card .thumb{height:205px;background:#fff;border-radius:5px;overflow:hidden;display:grid;grid-template-columns:36% 64%;box-shadow:0 3px 9px #0005;margin-bottom:9px;color:#17213d}
+.cv-template-card .thumb-side{padding:12px 7px;background:#2057a0;color:#fff}
+.cv-template-card .thumb-main{padding:15px 9px;background:#fff}
+.cv-template-card .thumb h4{font-size:10px;margin:5px 0 8px;line-height:1.1;overflow-wrap:anywhere}
+.cv-template-card .thumb-line{height:3px;background:#d7deea;border-radius:4px;margin:7px 0}
+.cv-template-card .thumb-line.short{width:58%}.cv-template-card .thumb-line.mid{width:78%}
+.cv-template-card .thumb .mini-title{height:5px;background:currentColor;opacity:.8;margin:9px 0 5px}
+.cv-template-card .thumb.geometric{grid-template-columns:38% 62%}.cv-template-card .thumb.geometric .thumb-side{background:#17234c;clip-path:polygon(0 0,100% 0,100% 90%,50% 100%,0 90%)}
+.cv-template-card .thumb.pink .thumb-side{background:#171d39}.cv-template-card .thumb.pink .thumb-main{background:#f5f6f8}.cv-template-card .thumb.pink .mini-head{background:#e91e55;height:28px;margin:-15px -9px 12px}
+.cv-template-card .thumb.gold .thumb-side{background:#292929;border-right:3px solid #f0b400}.cv-template-card .thumb.gold .mini-head{background:#f0b400;height:24px;margin:-15px -9px 12px}
+.cv-template-card .template-name{font-size:26px;line-height:1.12;font-weight:800;overflow-wrap:anywhere;letter-spacing:-.3px}.cv-template-card .template-style{font-size:11px;color:#aab8cc;margin-top:3px}
+.cv-template-card .choose-mark{font-size:11px;color:#31d5cf;margin-top:7px;font-weight:bold}
+@media(max-width:420px){.cv-template-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.cv-template-card{padding:7px}.cv-template-card .thumb{height:170px}}
+
+
+/* Extra-compact CV line spacing across every template */
+.a4-sheet h1,.a4-sheet h2,.a4-sheet h3,.a4-sheet h4,.a4-sheet p{line-height:1.12!important;margin-top:3px!important;margin-bottom:4px!important}
+.a4-sheet div{line-height:1.18!important;margin-top:2px!important;margin-bottom:2px!important}
+.a4-sheet li{line-height:1.15!important;margin-top:1px!important;margin-bottom:1px!important}
+
+
+/* Website-wide compact spacing (CV A4 document remains unchanged) */
+body:not(.printing) p{line-height:1.28;margin-top:5px;margin-bottom:5px}
+.page{padding-top:16px;padding-bottom:24px}
+.hero{padding:25px 20px;margin-bottom:14px}
+.hero h1{margin-bottom:6px}
+.grid{gap:9px}
+.card,.panel{padding:12px;margin-bottom:8px}
+.card h3{margin:5px 0}
+label{margin:7px 0 4px}
+input,select,textarea{padding:9px}
+textarea{min-height:72px}
+.form-grid{gap:6px 10px}
+.tool-area{margin-top:10px}
+.preview{padding:10px;margin:10px 0}
+.entry{padding:8px;margin:5px 0}
+.chip{padding:4px 8px;margin:2px}
+footer{padding:14px}
+header{padding-top:10px;padding-bottom:10px}
+/* Preserve the exact spacing inside the printable A4 CV and certificate */
+.a4-sheet h1,.a4-sheet h2,.a4-sheet h3,.a4-sheet h4,.a4-sheet p{line-height:1.12!important;margin-top:3px!important;margin-bottom:4px!important}
+.a4-sheet div{line-height:1.18!important;margin-top:2px!important;margin-bottom:2px!important}
+.a4-sheet li{line-height:1.15!important;margin-top:1px!important;margin-bottom:1px!important}
+@media(max-width:650px){.page{padding-top:12px;padding-bottom:18px}.hero{padding:19px 13px}.card,.panel{padding:10px;margin-bottom:7px}}
+
+
+.discount-note{display:inline-block;margin:4px 0 7px;padding:4px 9px;border-radius:20px;background:#e8fff2;color:#087443;font-size:12px;font-weight:800;border:1px solid #a8ebc8}
+.price-old{font-size:12px;color:#8b96a8;text-decoration:line-through;margin-right:6px}
+.price-new{font-size:18px;font-weight:800;color:#0b9b65}
+.discount-banner{margin:12px 0;padding:10px 12px;border:1px dashed #0b9b65;border-radius:10px;background:#eafff3;color:#087443;font-weight:800;text-align:center}
+
+/* Compact two-card layout for Home and Studio on mobile and desktop */
+.grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+.grid>.card{min-width:0;padding:9px!important;margin-bottom:6px!important;overflow-wrap:anywhere}
+.grid>.card .icon{font-size:23px}
+.grid>.card h3{font-size:14px;line-height:1.25;margin:5px 0!important}
+.grid>.card p{font-size:12px;line-height:1.3;margin:4px 0}
+.grid>.card .btn{width:100%;padding:8px 5px;font-size:12px;white-space:normal}
+.grid>.card .price-new{font-size:16px}
+.grid>.card .discount-note{font-size:10px;padding:3px 6px;margin:3px 0 5px}
+@media(max-width:360px){.grid{gap:6px!important}.grid>.card{padding:7px!important}.grid>.card h3{font-size:13px}.grid>.card .btn{font-size:11px}}
+
+
+/* Premium Home service cards - scoped only to the Home page */
+#home>h2{font-size:clamp(21px,3vw,27px);letter-spacing:.2px;margin:18px 0 12px;display:flex;align-items:center;gap:10px}
+#home>h2:after{content:"";height:2px;flex:1;background:linear-gradient(90deg,#31d5cf66,transparent);border-radius:5px}
+#home .grid{gap:11px!important;align-items:stretch}
+#home .grid>.card{position:relative;isolation:isolate;display:flex;flex-direction:column;min-height:220px;padding:13px!important;border:1px solid #365273;border-radius:15px;background:linear-gradient(150deg,#1b304b 0%,#122239 58%,#101d31 100%);box-shadow:0 7px 18px #0003;overflow:hidden;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+#home .grid>.card:before{content:"";position:absolute;z-index:-1;width:115px;height:115px;right:-48px;top:-52px;border-radius:50%;background:radial-gradient(circle,#31d5cf35,transparent 70%)}
+#home .grid>.card:after{content:"";position:absolute;left:13px;right:13px;top:0;height:2px;border-radius:0 0 5px 5px;background:linear-gradient(90deg,#31d5cf,#347ff0,transparent);opacity:.8}
+#home .grid>.card:hover{transform:translateY(-3px);border-color:#42bfc8;box-shadow:0 11px 24px #0005}
+#home .grid>.card .icon{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#254e70,#18334f);border:1px solid #4b7895;font-size:23px;margin:3px 0 8px;box-shadow:inset 0 1px #ffffff18}
+#home .grid>.card h3{font-size:14px;line-height:1.25;color:#f5f8ff;margin:2px 0 5px!important;letter-spacing:.1px}
+#home .grid>.card p{font-size:11.5px;line-height:1.35;color:#aebfd3;margin:0 0 8px;min-height:30px}
+#home .grid>.card .price{margin-top:auto;padding-top:4px;display:flex;align-items:baseline;gap:5px;flex-wrap:wrap}
+#home .grid>.card .price-old{font-size:10px;color:#8191a8}
+#home .grid>.card .price-new{font-size:17px;color:#6fe0b1;font-weight:800;letter-spacing:.2px}
+#home .grid>.card .discount-note{align-self:flex-start;margin:4px 0 8px!important;padding:3px 7px!important;border-radius:20px;background:#123d35;color:#83edc0;border:1px solid #247b60;font-size:9px!important;font-weight:800;letter-spacing:.35px}
+#home .grid>.card .btn{margin-top:2px;width:100%;min-height:34px;border:1px solid #69a7ff55;border-radius:9px;background:linear-gradient(110deg,#347ff0,#2461c4);box-shadow:0 3px 9px #174d9c55;color:#fff;font-size:11px;font-weight:800;letter-spacing:.15px;transition:filter .2s,transform .2s}
+#home .grid>.card .btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+#home .grid>.card:first-child{border-color:#3d7b80;background:linear-gradient(150deg,#1b3d4a 0%,#142b40 62%,#102238 100%)}
+#home .grid>.card:first-child:after{background:linear-gradient(90deg,#50e0bf,#31d5cf,transparent)}
+#home .grid>.card:first-child:before{background:radial-gradient(circle,#50e0bf38,transparent 70%)}
+@media(max-width:360px){#home .grid{gap:7px!important}#home .grid>.card{padding:9px!important;min-height:210px}#home .grid>.card .icon{width:36px;height:36px;font-size:20px}#home .grid>.card p{font-size:10.5px}#home .grid>.card .btn{font-size:10px;padding:7px 3px}}
+@media(prefers-reduced-motion:reduce){#home .grid>.card,#home .grid>.card .btn{transition:none}}
+/* Slightly smaller, near-square Home service cards; preserve the existing visual design */
+#home .grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;max-width:820px}
+#home .grid>.card{min-height:0!important;aspect-ratio:1 / 0.94;padding:10px!important;border-radius:14px}
+#home .grid>.card .icon{width:36px;height:36px;font-size:20px;margin:1px 0 5px}
+#home .grid>.card h3{font-size:13px;margin:1px 0 4px!important}
+#home .grid>.card p{font-size:10.5px;line-height:1.28;min-height:27px;margin-bottom:5px}
+#home .grid>.card .price-new{font-size:15px}
+#home .grid>.card .discount-note{font-size:8px!important;margin:3px 0 5px!important;padding:2px 6px!important}
+#home .grid>.card .btn{min-height:31px;padding:6px 4px;font-size:10px}
+@media(max-width:380px){#home .grid{gap:7px!important}#home .grid>.card{padding:8px!important;aspect-ratio:1 / 1.02}#home .grid>.card .icon{width:32px;height:32px;font-size:18px}#home .grid>.card h3{font-size:12px}#home .grid>.card p{font-size:10px;min-height:25px}#home .grid>.card .btn{font-size:9px;min-height:29px}}
+
+
+
+/* Matching premium service cards inside Studio */
+#studio>h2{font-size:clamp(21px,3vw,27px);letter-spacing:.2px;margin:18px 0 12px;display:flex;align-items:center;gap:10px}
+#studio>h2:after{content:"";height:2px;flex:1;background:linear-gradient(90deg,#31d5cf66,transparent);border-radius:5px}
+#studio .grid{gap:11px!important;align-items:stretch}
+#studio .grid>.card{position:relative;isolation:isolate;display:flex;flex-direction:column;min-height:220px;padding:13px!important;border:1px solid #365273;border-radius:15px;background:linear-gradient(150deg,#1b304b 0%,#122239 58%,#101d31 100%);box-shadow:0 7px 18px #0003;overflow:hidden;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+#studio .grid>.card:before{content:"";position:absolute;z-index:-1;width:115px;height:115px;right:-48px;top:-52px;border-radius:50%;background:radial-gradient(circle,#31d5cf35,transparent 70%)}
+#studio .grid>.card:after{content:"";position:absolute;left:13px;right:13px;top:0;height:2px;border-radius:0 0 5px 5px;background:linear-gradient(90deg,#31d5cf,#347ff0,transparent);opacity:.8}
+#studio .grid>.card:hover{transform:translateY(-3px);border-color:#42bfc8;box-shadow:0 11px 24px #0005}
+#studio .grid>.card .icon{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#254e70,#18334f);border:1px solid #4b7895;font-size:23px;margin:3px 0 8px;box-shadow:inset 0 1px #ffffff18}
+#studio .grid>.card h3{font-size:14px;line-height:1.25;color:#f5f8ff;margin:2px 0 5px!important;letter-spacing:.1px}
+#studio .grid>.card p{font-size:11.5px;line-height:1.35;color:#aebfd3;margin:0 0 8px;min-height:30px}
+#studio .grid>.card .price{margin-top:auto;padding-top:4px;display:flex;align-items:baseline;gap:5px;flex-wrap:wrap}
+#studio .grid>.card .price-old{font-size:10px;color:#8191a8}
+#studio .grid>.card .price-new{font-size:17px;color:#6fe0b1;font-weight:800;letter-spacing:.2px}
+#studio .grid>.card .discount-note{align-self:flex-start;margin:4px 0 8px!important;padding:3px 7px!important;border-radius:20px;background:#123d35;color:#83edc0;border:1px solid #247b60;font-size:9px!important;font-weight:800;letter-spacing:.35px}
+#studio .grid>.card .btn{margin-top:2px;width:100%;min-height:34px;border:1px solid #69a7ff55;border-radius:9px;background:linear-gradient(110deg,#347ff0,#2461c4);box-shadow:0 3px 9px #174d9c55;color:#fff;font-size:11px;font-weight:800;letter-spacing:.15px;transition:filter .2s,transform .2s}
+#studio .grid>.card .btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+#studio .grid>.card:first-child{border-color:#3d7b80;background:linear-gradient(150deg,#1b3d4a 0%,#142b40 62%,#102238 100%)}
+#studio .grid>.card:first-child:after{background:linear-gradient(90deg,#50e0bf,#31d5cf,transparent)}
+#studio .grid>.card:first-child:before{background:radial-gradient(circle,#50e0bf38,transparent 70%)}
+@media(max-width:360px){#studio .grid{gap:7px!important}#studio .grid>.card{padding:9px!important;min-height:210px}#studio .grid>.card .icon{width:36px;height:36px;font-size:20px}#studio .grid>.card p{font-size:10.5px}#studio .grid>.card .btn{font-size:10px;padding:7px 3px}}
+@media(prefers-reduced-motion:reduce){#studio .grid>.card,#studio .grid>.card .btn{transition:none}}
+/* Slightly larger Studio service cards; preserve the original two-column design */
+#studio .grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important;max-width:860px}
+#studio .grid>.card{min-height:0!important;aspect-ratio:1 / 1.08;padding:12px!important;border-radius:15px}
+#studio .grid>.card .icon{width:40px;height:40px;font-size:22px;margin:2px 0 6px}
+#studio .grid>.card h3{font-size:14px;margin:2px 0 5px!important}
+#studio .grid>.card p{font-size:11px;line-height:1.32;min-height:30px;margin-bottom:6px}
+#studio .grid>.card .price-new{font-size:16px}
+#studio .grid>.card .discount-note{font-size:8.5px!important;margin:4px 0 6px!important;padding:3px 7px!important}
+#studio .grid>.card .btn{min-height:34px;padding:7px 5px;font-size:10.5px}
+@media(max-width:380px){#studio .grid{gap:8px!important}#studio .grid>.card{padding:10px!important;aspect-ratio:1 / 1.12}#studio .grid>.card .icon{width:36px;height:36px;font-size:20px}#studio .grid>.card h3{font-size:12.5px}#studio .grid>.card p{font-size:10.5px;min-height:27px}#studio .grid>.card .btn{font-size:9.5px;min-height:31px}}
+
+
+
+
+/* Fixed premium bottom navigation */
+body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:10;min-height:58px;padding:12px 5%;}
+.header-tagline{font-size:10px;letter-spacing:1.5px;color:var(--muted);font-weight:700}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:1000;display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(9,17,31,.96);border-top:1px solid #304766;backdrop-filter:blur(14px);box-shadow:0 -8px 28px rgba(0,0,0,.28)}
+.bottom-nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;padding:6px 3px;border-radius:12px;background:transparent;color:#9eacc2;font-size:11px;font-weight:700;transition:background .2s,color .2s}
+.bottom-nav-item .nav-icon{font-size:20px;line-height:1.1}
+.bottom-nav-item.active{color:#fff;background:linear-gradient(135deg,rgba(52,127,240,.28),rgba(49,213,207,.13));box-shadow:inset 0 0 0 1px rgba(70,160,255,.35)}
+.bottom-nav-item.active .nav-icon{color:var(--cyan)}
+.bottom-nav-item:active{transform:scale(.97)}
+footer{margin-bottom:8px}
+@media(min-width:800px){.bottom-nav{left:50%;right:auto;transform:translateX(-50%);width:min(520px,70vw);border:1px solid #304766;border-bottom:0;border-radius:18px 18px 0 0}}
+@media(max-width:380px){.bottom-nav{padding-left:5px;padding-right:5px}.bottom-nav-item{font-size:10px}}
+
+
+/* Ultra-compact website spacing (printable A4 CV/certificate layouts are preserved) */
+.container{width:min(1150px,96%)}
+.page{padding:7px 0 12px!important}
+.page h1,.page h2,.page h3{margin-top:5px;margin-bottom:5px}
+.page>h1{font-size:clamp(20px,4vw,28px);line-height:1.2}
+.page>h2{margin-top:7px!important;margin-bottom:6px!important}
+body:not(.printing) p{margin-top:3px;margin-bottom:3px;line-height:1.22}
+.hero{padding:13px 12px!important;margin-bottom:7px!important;border-radius:12px}
+.hero h1{margin:0 0 4px!important;line-height:1.12}
+.hero p{margin:3px 0 6px!important}
+.grid{gap:6px!important}
+.card,.panel{padding:7px!important;margin-bottom:5px!important;border-radius:10px}
+.card h3{margin:3px 0!important}
+.card p{margin:2px 0!important;line-height:1.2}
+label{margin:4px 0 2px!important}
+input,select,textarea{padding:7px!important;border-radius:7px}
+textarea{min-height:55px}
+.form-grid{gap:4px 7px!important}
+.tool-area{margin-top:5px!important}
+.preview{padding:6px!important;margin:5px 0!important}
+.entry{padding:5px!important;margin:3px 0!important}
+.chip{padding:3px 6px!important;margin:1px!important}
+button{padding:7px 9px}
+.btn{padding:7px 10px}
+.discount-banner{margin:6px 0!important;padding:7px 8px!important}
+header{padding-top:7px!important;padding-bottom:7px!important}
+footer{padding:8px!important;margin-top:5px!important}
+.bottom-nav{padding-top:5px!important;padding-bottom:calc(5px + env(safe-area-inset-bottom))!important}
+/* Keep the Home card look and square proportions while tightening only internal gaps */
+#home>h2{margin:8px 0 6px!important}
+#home .grid{gap:7px!important}
+#home .grid>.card{padding:8px!important}
+#home .grid>.card .icon{margin:0 0 3px!important}
+#home .grid>.card h3{margin:1px 0 3px!important}
+#home .grid>.card p{margin:0 0 4px!important;min-height:22px}
+#home .grid>.card .discount-note{margin:2px 0 4px!important}
+@media(max-width:650px){.page{padding-top:5px!important;padding-bottom:9px!important}.hero{padding:11px 9px!important}.card,.panel{padding:6px!important;margin-bottom:4px!important}}
+
+
+/* CV A4 preview: spread entered details naturally across the full page */
+.a4-sheet>div{min-height:1123px!important;height:1123px!important}
+.a4-sheet h1{line-height:1.18!important;margin-bottom:9px!important}
+.a4-sheet h3{line-height:1.25!important;margin-top:15px!important;margin-bottom:9px!important;padding-bottom:6px!important}
+.a4-sheet p{line-height:1.48!important;margin-top:7px!important;margin-bottom:10px!important}
+.a4-sheet main{padding-top:30px!important;padding-bottom:30px!important}
+.a4-sheet aside{padding-top:24px!important;padding-bottom:30px!important}
+.a4-sheet main>div{line-height:1.42!important}
+@media print{.a4-sheet>div{height:297mm!important;min-height:297mm!important}}
+
+
+/* Home page service introduction */
+.services-intro{position:relative;overflow:hidden;margin:10px 0 8px;padding:16px;border:1px solid #365273;border-radius:14px;background:linear-gradient(145deg,#192f4b,#12243a 65%,#102d37);box-shadow:0 7px 18px #0003}
+.services-intro:after{content:"";position:absolute;width:170px;height:170px;right:-65px;top:-85px;border-radius:50%;background:radial-gradient(circle,#31d5cf30,transparent 70%);pointer-events:none}
+.services-intro .intro-kicker{font-size:9px;letter-spacing:2px;color:#55d9d0;font-weight:900;margin-bottom:5px}
+.services-intro h2{font-size:clamp(18px,3vw,24px);line-height:1.2;margin:0 0 6px;color:#f4f8ff}
+.services-intro p{max-width:760px;color:#b5c5d8;font-size:12px;line-height:1.5;margin:0 0 10px}
+.intro-points{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 11px}
+.intro-points span{font-size:10px;color:#d9e8f8;padding:5px 8px;border-radius:20px;border:1px solid #365b70;background:#1a3850}
+.services-intro .btn{font-size:11px;padding:8px 12px;background:linear-gradient(110deg,#347ff0,#2461c4);border:1px solid #69a7ff55}
+@media(max-width:380px){.services-intro{padding:12px}.services-intro p{font-size:11px}.intro-points span{font-size:9px;padding:4px 6px}}
+
+
+.composing-services{margin:24px 0 8px}.composing-heading{margin:8px 0 14px}.composing-heading>span{font-size:9px;letter-spacing:2px;font-weight:900;color:var(--cyan)}.composing-heading h2{font-size:clamp(21px,3vw,28px);margin:5px 0}.composing-heading p{font-size:12px;color:var(--muted);margin:0}.composing-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.compose-card{min-width:0;background:linear-gradient(150deg,#1b304b,#122239 60%,#101d31);border:1px solid #365273;border-radius:14px;padding:14px;box-shadow:0 6px 16px #0002}.compose-icon{font-size:25px}.compose-card h3{font-size:14px;margin:7px 0 10px;color:#f4f8ff}.service-chips{display:flex;flex-wrap:wrap;gap:6px}.service-chips button{background:#203b59;color:#dceaff;border:1px solid #3d5d7e;border-radius:18px;padding:6px 9px;font-size:10px;line-height:1.25;font-weight:600}.service-chips button:active{background:#276b82;border-color:var(--cyan)}@media(max-width:520px){.composing-grid{grid-template-columns:1fr}.compose-card{padding:12px}}
+
+
+.self-service{margin:24px 0 18px;padding:16px;border:1px solid #365273;border-radius:15px;background:linear-gradient(145deg,#142943,#0d1d31)}
+.self-grid{margin-top:12px}.self-grid .card{display:flex;flex-direction:column;min-height:180px}.self-grid .card .btn{margin-top:auto;width:100%}
+#quickToolArea{display:none;margin-top:14px}.quick-preview{background:#fff;color:#18243a;padding:18px;border-radius:9px;white-space:pre-wrap;overflow-wrap:anywhere;min-height:80px}.quick-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.poster-canvas{display:block;width:100%;max-width:600px;height:auto;aspect-ratio:4/5;border-radius:10px;background:#fff;margin:12px auto;border:1px solid #526783}
+@media(max-width:520px){.self-service{padding:11px}.self-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.self-grid .card{min-height:190px}.self-grid .card p{font-size:11px}}
+
+
+/* NEXA PREMIUM REDESIGN — clean, professional, responsive */
+:root{
+ --bg:#f2f5fb;--panel:#ffffff;--panel2:#edf3fc;--text:#17243b;--muted:#687991;
+ --blue:#2563eb;--cyan:#0e9eaa;--gold:#bd8b2d;--border:#dce5f1;
+ --nexa-ink:#10213d;--nexa-blue:#245fe5;--nexa-teal:#0e9eaa;
+}
+html{scroll-behavior:smooth}
+body{background:linear-gradient(180deg,#f6f8fc 0%,#edf2f9 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;padding-bottom:88px}
+header{background:rgba(12,29,55,.97);border-bottom:1px solid #29466d;padding:13px max(4%,calc((100% - 1180px)/2));box-shadow:0 8px 26px #0b1b3320;backdrop-filter:blur(16px)}
+.logo{font-size:22px;letter-spacing:.5px;color:#fff}.logo span{color:#69e1df}
+.header-tagline{color:#b9c9df;font-size:9px;letter-spacing:2px}
+.container{width:min(1180px,92%);margin:auto}
+.page{padding:28px 0 46px;animation:nexaPageIn .35s ease both}
+@keyframes nexaPageIn{from{opacity:.55;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.page>h1{font-size:clamp(27px,4vw,38px);letter-spacing:-.8px;color:#142847;margin:4px 0 5px}
+.page>p.muted{font-size:14px;margin:0 0 20px;color:#6b7b92}
+.hero{position:relative;isolation:isolate;overflow:hidden;padding:clamp(30px,6vw,66px) clamp(20px,5vw,54px);border:1px solid #254b7b;border-radius:25px;margin:8px 0 20px;background:radial-gradient(circle at 88% 15%,#25c4c450,transparent 26%),radial-gradient(circle at 75% 100%,#347ff055,transparent 36%),linear-gradient(120deg,#0d2140 0%,#153d70 56%,#0c5964 100%);box-shadow:0 18px 44px #17365d26}
+.hero:after{content:"N";position:absolute;z-index:-1;right:4%;top:-48px;font-size:clamp(170px,28vw,340px);font-weight:900;line-height:1;color:#ffffff0a;transform:rotate(-8deg)}
+.hero h1{font-size:clamp(34px,6vw,62px);line-height:1.02;letter-spacing:-1.8px;margin:0 0 14px;color:#fff;max-width:760px}
+.hero h1 span{color:#6ce2dd}.hero p{font-size:clamp(14px,2vw,17px);color:#d1e0f3;margin:0 0 22px;max-width:560px}
+.btn{background:linear-gradient(115deg,#3478f6,#2456ce);color:#fff;border:1px solid #ffffff20;border-radius:11px;padding:11px 16px;box-shadow:0 5px 14px #1e55bd25;transition:transform .18s,box-shadow .18s,filter .18s}
+.btn:hover{filter:brightness(1.06);box-shadow:0 8px 20px #1e55bd35;transform:translateY(-1px)}
+.btn:active{transform:scale(.98)}.btn.secondary{background:#e7eef8;color:#25405f;border:1px solid #d1deed;box-shadow:none}.btn.green{background:linear-gradient(110deg,#0e9b75,#087a64)}.btn.gold{background:linear-gradient(110deg,#c39437,#9a6d1e)}.btn.red{background:#b43e51}
+.services-intro{position:relative;overflow:hidden;margin:18px 0 10px;padding:clamp(18px,3vw,28px);border:1px solid #dce6f2;border-radius:20px;background:linear-gradient(135deg,#fff,#f4f8ff);box-shadow:0 10px 30px #1b35500b}
+.services-intro:after{background:radial-gradient(circle,#2f7af01b,transparent 70%)}
+.services-intro .intro-kicker{color:#197e93;font-size:10px;letter-spacing:2.2px}
+.services-intro h2{color:#172d4c;font-size:clamp(21px,3vw,29px);letter-spacing:-.5px}
+.services-intro p{color:#65758d;font-size:14px;line-height:1.7}
+.intro-points{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px}.intro-points span{background:#eaf2ff;border:1px solid #d7e5fb;color:#294a78;border-radius:30px;padding:7px 11px;font-size:11px;font-weight:700}
+.grid{gap:16px}
+.card,.panel{background:#fff;border:1px solid #dce5f1;border-radius:17px;padding:18px;margin-bottom:14px;box-shadow:0 8px 24px #18365b0b;color:#17243b}
+.card{position:relative;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s}
+.card:before{content:"";position:absolute;left:0;top:0;right:0;height:3px;background:linear-gradient(90deg,#3478f6,#16a6ad);opacity:.85}
+.card:hover{transform:translateY(-3px);border-color:#b9cfee;box-shadow:0 13px 28px #18365b15}
+.card h3{font-size:16px;color:#172d4c;margin:9px 0 7px;letter-spacing:-.2px}
+.card p{font-size:13px;color:#718098;line-height:1.55;margin:0 0 12px}
+.card .icon{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(140deg,#e8f0ff,#e5f8f7);font-size:26px}
+.price{color:#956a1c}.price-old{color:#a2adbd}.price-new{color:#147c85;font-weight:900}
+.discount-note{color:#11826f!important;background:#e8f8f3;border-radius:20px;display:inline-block;padding:4px 8px;font-size:10px!important;font-weight:800}
+input,select,textarea{background:#f8fafd;color:#182a44;border:1px solid #d5dfec;border-radius:10px;padding:12px;outline:none;transition:border .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:#5790ef;box-shadow:0 0 0 3px #3478f01c}
+label{color:#425571;font-weight:700;font-size:12px}
+.preview{box-shadow:inset 0 0 0 1px #dce5ef}
+.status.success{background:#e5f7ef;color:#126b4b}.status.error{background:#fff0f1;color:#a52e43}.status.info{background:#eaf3ff;color:#23558e}
+.composing-services{margin:30px 0 12px;padding-top:6px}
+.composing-heading{margin:10px 0 17px;padding-bottom:13px;border-bottom:1px solid #dce5f1}
+.composing-heading>span{font-size:10px;letter-spacing:2px;color:#168b96}
+.composing-heading h2{font-size:clamp(23px,3vw,31px);letter-spacing:-.6px;color:#172d4c;margin:6px 0}
+.composing-heading p{font-size:13px;color:#738198;line-height:1.6}
+.composing-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.compose-card{position:relative;min-width:0;background:#fff;border:1px solid #dce5f1;border-radius:18px;padding:19px;box-shadow:0 9px 25px #18365b0b;overflow:hidden}
+.compose-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,#3478f6,#14a6a8)}
+.compose-icon{display:inline-grid;place-items:center;width:46px;height:46px;border-radius:14px;background:#edf4ff;font-size:24px;margin-bottom:5px}
+.compose-card h3{font-size:16px;color:#183253;margin:7px 0 14px}
+.service-chips{gap:8px}
+.service-chips button{background:#f0f5fc;color:#294765;border:1px solid #dbe6f2;border-radius:9px;padding:8px 10px;font-size:11px;line-height:1.3;font-weight:700;transition:all .16s}
+.service-chips button:hover{background:#e4efff;color:#174fa9;border-color:#b7d0f5;transform:translateY(-1px)}
+.self-service{margin:28px 0 22px;padding:clamp(15px,3vw,24px);border:1px solid #dce6f2;border-radius:20px;background:linear-gradient(135deg,#f8fbff,#edf6fa);box-shadow:0 10px 28px #18365b0a}
+.self-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:15px}
+.self-grid .card{min-height:205px;margin:0;padding:17px}.self-grid .card .btn{margin-top:auto;width:100%}
+#quickToolArea,#toolArea{background:#fff;border:1px solid #dce5f1;border-radius:18px;box-shadow:0 10px 28px #18365b0b;color:#17243b}
+.tool-area{padding:20px}
+.bottom-nav{background:rgba(12,29,55,.97);border:1px solid #29466d;border-bottom:0;box-shadow:0 -9px 30px #0c1d3730;backdrop-filter:blur(18px)}
+.bottom-nav-item{color:#b8c8dd;border-radius:11px}.bottom-nav-item.active{color:#fff;background:linear-gradient(130deg,#3478f64a,#11a6a64a);box-shadow:inset 0 0 0 1px #78aef166}.bottom-nav-item.active .nav-icon{color:#75e1df}
+footer{color:#74839a;border-top:1px solid #dce5f1}
+@media(min-width:900px){.grid:not(.self-grid){grid-template-columns:repeat(3,minmax(0,1fr))}.compose-card{padding:22px}}
+@media(max-width:760px){.composing-grid{grid-template-columns:1fr}.self-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{border-radius:20px}}
+@media(max-width:520px){body{padding-bottom:82px}.container{width:92%}header{padding:12px 4%;gap:5px}.logo{font-size:19px}.header-tagline{font-size:8px}.page{padding-top:19px}.hero{padding:27px 18px;border-radius:18px}.hero h1{letter-spacing:-1px}.hero .btn{margin:3px 4px 3px 0;padding:10px 12px;font-size:12px}.card,.panel{padding:14px;border-radius:14px}.grid{gap:11px}.self-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px}.self-grid .card{min-height:195px;padding:12px}.self-grid .card h3{font-size:13px}.self-grid .card p{font-size:11px}.self-grid .card .btn{font-size:11px;padding:9px 7px}.compose-card{padding:15px}.service-chips button{font-size:10px;padding:7px 8px}.tool-area{padding:13px}.bottom-nav{padding:6px 8px calc(6px + env(safe-area-inset-bottom))}}
+@media(max-width:360px){.self-grid{grid-template-columns:1fr!important}.hero h1{font-size:32px}}
+
+
+/* Premium expandable Other Services card — all remaining services grouped here */
+.studio-other-card{position:relative;overflow:hidden!important;padding:22px!important;border:1px solid #b9d8ef!important;border-radius:22px!important;background:linear-gradient(145deg,#102b4d 0%,#174b70 52%,#087e83 100%)!important;color:#fff!important;box-shadow:0 16px 34px rgba(11,48,83,.22)!important}
+.other-card-glow{position:absolute;width:190px;height:190px;right:-70px;top:-85px;border-radius:50%;background:radial-gradient(circle,rgba(120,226,236,.35),transparent 70%);pointer-events:none}
+.other-card-topline{position:relative;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:9px;letter-spacing:1.4px;font-weight:900;color:#bcecf3}
+.other-card-count{padding:5px 8px;border:1px solid #6aa7bb;border-radius:20px;background:#ffffff12;color:#e5fbff;letter-spacing:.7px}
+.other-card-icon{position:relative;display:grid;place-items:center;width:54px;height:54px;margin:18px 0 12px;border:1px solid #83c9d4;border-radius:17px;background:linear-gradient(145deg,#ffffff2b,#ffffff0b);font-size:32px;color:#fff;box-shadow:inset 0 1px #ffffff44}
+.studio-other-card h3{position:relative!important;margin:0 0 8px!important;color:#fff!important;font-size:23px!important;letter-spacing:-.4px}
+.studio-other-card>p{position:relative;color:#d7edf5!important;font-size:12px!important;line-height:1.65!important}
+.other-feature-pills{display:flex;flex-wrap:wrap;gap:7px;margin:15px 0}
+.other-feature-pills span{padding:7px 10px;border:1px solid #ffffff35;border-radius:20px;background:#ffffff12;color:#e9fbff;font-size:10px;font-weight:750}
+.other-services-details{position:relative;margin-top:16px;border:1px solid #8bc8d2;border-radius:14px;background:#f8fcff;overflow:hidden}
+.other-services-details>summary{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 15px;list-style:none;cursor:pointer;background:linear-gradient(90deg,#e7f6ff,#e8fbf7);color:#12395c;font-size:13px;font-weight:850}
+.other-services-details>summary::-webkit-details-marker{display:none}
+.other-summary-arrow{display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:#d4eafa;color:#145c83;font-size:18px;transition:transform .2s}
+.other-services-details[open] .other-summary-arrow{transform:rotate(45deg)}
+.other-services-expanded{padding:13px;background:#f5f9fd;max-height:65vh;overflow:auto}
+.other-service-list{margin:0 0 14px}
+.other-service-list button{width:100%;min-height:42px;padding:10px 12px;border:1px solid #d6e4f0;border-radius:10px;background:#fff;color:#183b5d;text-align:left;font:inherit;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 2px 6px #1736570a}
+.other-service-list button+button{margin-top:7px}
+.other-embedded-services .self-service,.other-embedded-services .composing-services{display:block!important;margin:12px 0!important;padding:12px!important;border:1px solid #dce7f1!important;border-radius:13px!important;background:#fff!important;box-shadow:none!important}
+.other-embedded-services .composing-heading{margin:2px 0 12px!important}
+.other-embedded-services .composing-heading h2{font-size:16px!important;color:#193b5b!important}
+.other-embedded-services .composing-heading p{font-size:11px!important;color:#60758a!important}
+.other-embedded-services .grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}
+.other-embedded-services .card{min-width:0;padding:11px!important;border:1px solid #e0e9f2!important;border-radius:11px!important;background:#fff!important;box-shadow:0 3px 10px #1736570a!important}
+.other-embedded-services .card h3{font-size:12px!important;color:#1a3555!important}
+.other-embedded-services .card p{font-size:10px!important;color:#60758a!important;line-height:1.45!important}
+.other-embedded-services .card .icon{font-size:21px!important}
+.other-embedded-services .card .btn{width:100%;padding:8px 6px!important;font-size:10px!important}
+.other-embedded-services .composing-grid{grid-template-columns:1fr!important}
+.other-embedded-services .education-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+@media(max-width:520px){.other-embedded-services .grid,.other-embedded-services .education-cards{grid-template-columns:1fr!important}.other-services-expanded{max-height:70vh}.studio-other-card{padding:18px!important}}
+
+
+/* Simple Other Services card with a separate full services screen */
+.studio-other-card{min-height:100%;display:flex;flex-direction:column;align-items:flex-start}
+.other-view-button{margin-top:12px!important;min-width:190px;background:linear-gradient(120deg,#2c69d8,#087f86)!important;color:#fff!important;border:1px solid #ffffff55!important;box-shadow:0 7px 18px #061b3540!important}
+.other-services-screen{margin-top:22px;padding:16px;border:1px solid #d7e3ef;border-radius:18px;background:#f5f8fc}
+.other-services-screen .other-services-expanded{max-height:none;overflow:visible;padding:0;background:transparent}
+.other-back-row{display:flex;justify-content:center;margin:18px 0 4px}
+.other-back-row .btn{background:#17395f;color:#fff}
+
+
+
+/* NEXA subtle premium polish — visual-only overrides */
+:root{
+  --bg:#07101f;--panel:#111f34;--panel2:#192c47;
+  --text:#f5f8ff;--muted:#aebbd0;--blue:#397ff0;
+  --cyan:#53ded5;--gold:#f2c96d;--border:rgba(133,164,207,.22);
+}
+html{scroll-behavior:smooth}
+body{
+  background:radial-gradient(ellipse at 12% 0%,rgba(42,103,185,.16),transparent 34%),
+             radial-gradient(ellipse at 90% 18%,rgba(30,167,164,.09),transparent 28%),var(--bg);
+  letter-spacing:.1px;
+}
+header{
+  background:rgba(8,19,36,.94);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(111,151,207,.2);
+  box-shadow:0 8px 28px rgba(0,0,0,.18);
+}
+.logo{letter-spacing:.5px;font-size:22px}
+.logo span{text-shadow:0 0 18px rgba(83,222,213,.28)}
+.container{width:min(1180px,94%)}
+.page{padding-top:28px}
+.hero{
+  position:relative;overflow:hidden;
+  background:linear-gradient(120deg,rgba(27,65,112,.96),rgba(13,31,54,.98) 58%,rgba(14,66,70,.9));
+  border:1px solid rgba(113,167,224,.28);border-radius:20px;
+  box-shadow:0 16px 40px rgba(0,0,0,.2);
+}
+.hero:after{content:"";position:absolute;width:230px;height:230px;border:1px solid rgba(255,255,255,.08);border-radius:50%;right:-75px;top:-105px;box-shadow:0 0 0 25px rgba(255,255,255,.025),0 0 0 55px rgba(255,255,255,.018);pointer-events:none}
+.hero h1{letter-spacing:-.8px;line-height:1.12}
+.card,.panel{
+  background:linear-gradient(155deg,rgba(20,37,61,.98),rgba(14,28,47,.98));
+  border:1px solid rgba(128,158,199,.2);border-radius:15px;
+  box-shadow:0 8px 22px rgba(0,0,0,.13);
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.card:hover{transform:translateY(-3px);border-color:rgba(83,222,213,.38);box-shadow:0 13px 28px rgba(0,0,0,.22)}
+.card h3,.panel h2,.panel h3{letter-spacing:.15px}
+.icon{filter:drop-shadow(0 4px 8px rgba(0,0,0,.22))}
+button{border-radius:10px;transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
+button:hover{filter:brightness(1.09);transform:translateY(-1px)}
+button:active{transform:translateY(0)}
+.btn{background:linear-gradient(135deg,#438cf8,#2866d1);box-shadow:0 5px 14px rgba(47,115,224,.2)}
+.btn.green{background:linear-gradient(135deg,#1ca77c,#117b5e)}
+.btn.gold{background:linear-gradient(135deg,#c99535,#98701e)}
+.btn.red{background:linear-gradient(135deg,#d45568,#a83249)}
+nav button{border:1px solid transparent}
+nav button:hover{border-color:rgba(125,165,218,.2)}
+input,select,textarea{border:1px solid rgba(125,157,202,.3);background:rgba(5,16,31,.72);border-radius:10px;outline:none;transition:border-color .15s ease,box-shadow .15s ease}
+input:focus,select:focus,textarea:focus{border-color:#53b9e9;box-shadow:0 0 0 3px rgba(83,185,233,.12)}
+label{font-weight:600;letter-spacing:.15px}
+.entry{background:rgba(7,19,35,.72);border-color:rgba(125,157,202,.2);border-radius:10px}
+.chip{background:rgba(48,91,139,.55);border:1px solid rgba(135,177,226,.15)}
+.preview{box-shadow:inset 0 0 0 1px rgba(24,45,72,.08)}
+.status{border:1px solid rgba(255,255,255,.08)}
+table{width:100%;border-collapse:collapse}
+th{background:#1b3454;color:#eaf2ff;font-weight:700}
+th,td{padding:11px 12px;border-bottom:1px solid rgba(135,164,203,.16);text-align:left}
+tr:hover td{background:rgba(63,112,170,.08)}
+footer{border-top-color:rgba(133,164,207,.18)}
+@media(max-width:650px){
+ .container{width:93%}.page{padding-top:18px}
+ .card,.panel{border-radius:13px;padding:14px}
+ .hero{border-radius:16px}
+ nav{gap:4px}nav button{border-radius:8px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+
+
+/* Compact premium footer branding */
+.nexa-footer{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:9px 10px!important;margin:8px auto 12px!important;text-align:center;border-top:1px solid rgba(91,177,220,.22)!important}
+.nexa-footer>strong{font-size:11px;line-height:1.2;letter-spacing:1.7px;font-weight:900;color:#8fe9e4;text-shadow:0 0 12px rgba(72,211,205,.18)}
+.nexa-footer .credit{font-size:9px;line-height:1.35;letter-spacing:.25px;color:#9aacc1}
+.nexa-footer .credit b{font-size:9px;color:#e5c779;font-weight:800;letter-spacing:.55px}
+@media(max-width:380px){.nexa-footer{gap:2px}.nexa-footer>strong{font-size:10px;letter-spacing:1.4px}.nexa-footer .credit,.nexa-footer .credit b{font-size:8px}}
+
+</style>
+
+<style id="nexa-signature-redesign-2026">
+/* NEXA Signature Edition — visual-only redesign; existing tools and actions remain intact */
+:root{--bg:#f3f6fb;--panel:#ffffff;--panel2:#edf3fb;--text:#14233c;--muted:#66758c;--blue:#245bd6;--cyan:#12a99e;--gold:#bd8b32;--border:#dce5f0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--text);background:radial-gradient(ellipse at 8% 0%,#dceaff 0,transparent 32%),radial-gradient(ellipse at 100% 18%,#d8f4ef 0,transparent 27%),#f3f6fb;background-attachment:fixed}
+header{position:sticky;top:0;z-index:50;padding:13px max(3%,calc((100% - 1240px)/2));background:rgba(9,23,47,.96);border:0;border-bottom:1px solid #ffffff20;box-shadow:0 8px 30px #10284b24;backdrop-filter:blur(18px)}
+.logo{font-size:22px;letter-spacing:1.2px;color:#fff}.logo span{background:linear-gradient(90deg,#7de8dc,#8db8ff 70%,#f3d38b);-webkit-background-clip:text;background-clip:text;color:transparent}
+.header-tagline{font-size:10px;font-weight:800;letter-spacing:2px;color:#a9bfdc}
+.container{width:min(1200px,92%);margin:30px auto 0}.page{padding:10px 0 48px}.page>h1{font-size:clamp(27px,4vw,38px);font-weight:850;letter-spacing:-1px;color:#142746;margin:10px 0 8px}.page>p.muted{font-size:14px;color:#718098;margin:0 0 24px}
+.hero{isolation:isolate;position:relative;overflow:hidden;min-height:350px;padding:clamp(28px,5vw,62px);border:1px solid #294b7c;border-radius:28px;background:linear-gradient(112deg,#0b1d3b 0%,#153d70 53%,#087c7b 115%);box-shadow:0 24px 55px #102d5630;margin-bottom:26px}
+.hero:before{content:"";position:absolute;z-index:-1;width:420px;height:420px;right:-120px;top:-210px;border:1px solid #b8f6ef44;border-radius:50%;box-shadow:0 0 0 34px #b8f6ef0c,0 0 0 72px #b8f6ef0a,0 0 0 112px #b8f6ef08}
+.hero:after{content:"N";position:absolute;z-index:-1;right:7%;bottom:-100px;font-size:clamp(220px,35vw,430px);font-weight:900;line-height:1;color:#ffffff09;transform:rotate(-10deg);pointer-events:none}
+.hero-eyebrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:23px;color:#b8d9ef;font-size:10px;font-weight:850;letter-spacing:2px}.hero-live-dot{width:7px;height:7px;border-radius:50%;background:#64e6c7;box-shadow:0 0 0 5px #64e6c722}.hero-eyebrow-line{width:32px;height:1px;background:#9bc9d8}
+.hero h1{max-width:760px;font-size:clamp(37px,7vw,76px);line-height:.99;letter-spacing:-2.5px;font-weight:900;color:#fff;margin:0 0 18px}.hero h1 span{color:#75ead9;text-shadow:none}.hero p{max-width:560px;color:#d4e4f5;font-size:clamp(14px,2vw,17px);line-height:1.75;margin:0 0 24px}
+.hero .btn{min-width:145px;margin:4px 8px 4px 0;padding:13px 19px;border-radius:11px;background:linear-gradient(120deg,#70e4d2,#37b8b2);color:#08243c;box-shadow:0 8px 20px #0c111f30;font-size:13px}.hero .btn.secondary{background:#ffffff12;color:#fff;border:1px solid #ffffff42;box-shadow:none}.hero-highlights{display:flex;gap:10px 22px;flex-wrap:wrap;margin-top:27px;padding-top:19px;border-top:1px solid #ffffff27;color:#c7d9eb;font-size:11px;font-weight:700}.hero-highlights span{display:flex;align-items:center;gap:7px}.hero-highlights b{color:#75ead9;font-size:15px}
+.services-intro{position:relative;overflow:hidden;margin:0 0 30px;padding:clamp(22px,4vw,38px);border-radius:22px;background:#fff;border:1px solid #e0e8f2;box-shadow:0 12px 35px #1a365512}.intro-kicker,.composing-heading>span{display:inline-flex;align-items:center;gap:7px;color:#167f80;font-size:10px;font-weight:900;letter-spacing:2px}.intro-kicker:before,.composing-heading>span:before{content:"";width:18px;height:2px;background:#18aaa0;border-radius:4px}.services-intro h2,.composing-heading h2{font-size:clamp(22px,3.5vw,31px);line-height:1.15;letter-spacing:-.8px;color:#172b4b;margin:11px 0}.services-intro p,.composing-heading p{max-width:760px;color:#687991;font-size:14px;line-height:1.75}.intro-points{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0 20px}.intro-points span{padding:9px 12px;border:1px solid #e0eaf3;border-radius:9px;background:#f6f9fd;color:#40536e;font-size:12px;font-weight:700}
+.grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,235px),1fr));gap:17px}.card,.panel{background:#fff;color:#172943;border:1px solid #e1e9f2;border-radius:17px;padding:20px;box-shadow:0 8px 25px #18365b0c;transition:transform .22s,border-color .22s,box-shadow .22s}.card:hover{transform:translateY(-4px);border-color:#b8d6e5;box-shadow:0 17px 35px #18365b17}.card h3{font-size:16px;line-height:1.35;color:#172b4b;margin:12px 0 7px}.card p{color:#718097;font-size:13px;line-height:1.65}.card .icon{display:grid;place-items:center;width:49px;height:49px;border-radius:14px;background:linear-gradient(145deg,#e6f2ff,#e3f8f3);font-size:25px}.price{color:#137e78;font-size:14px}.price-old{color:#9aa6b6}.price-new{font-weight:900;color:#137e78}.discount-note{font-size:10px;color:#9b6c1c;font-weight:900;letter-spacing:.7px;margin:5px 0 12px}
+button{border-radius:10px;font-size:12px;font-weight:800;transition:transform .18s,filter .18s,box-shadow .18s}button:hover{filter:brightness(1.04)}button:active{transform:scale(.985)}.btn{padding:11px 16px;background:linear-gradient(120deg,#2866df,#174dbb);color:#fff;box-shadow:0 5px 13px #245bd629}.btn.secondary{background:#eaf0f8;color:#294362;box-shadow:none}.btn.green{background:linear-gradient(120deg,#159b79,#087a68)}.btn.gold{background:linear-gradient(120deg,#d6a74b,#a97823)}
+.composing-services,.self-service{margin-top:35px;padding:clamp(18px,3vw,30px);border-radius:22px;background:#eaf0f7;border:1px solid #dce6f0}.self-service{background:linear-gradient(145deg,#e8f5f5,#eef3fb);border-color:#d7e9e8}.composing-heading{margin-bottom:21px}.composing-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.compose-card{position:relative;overflow:hidden;padding:21px;border:1px solid #e0e8f1;border-radius:17px;background:#fff;box-shadow:0 7px 22px #1736570b}.compose-card:before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#2b67d7,#1bb3a5)}.compose-icon{display:grid;place-items:center;width:44px;height:44px;margin-bottom:12px;border-radius:13px;background:#eaf3ff;font-size:23px}.compose-card h3{font-size:16px;color:#1a3153;margin:0 0 14px}.service-chips{display:flex;flex-wrap:wrap;gap:7px}.service-chips button{padding:8px 10px;border:1px solid #dce7f2;background:#f5f8fc;color:#435873;border-radius:8px;font-size:11px;font-weight:700}.service-chips button:hover{background:#e8f5f4;border-color:#a7d9d2;color:#087d78}
+input,select,textarea{background:#f8fafd;color:#1c2f4b;border:1px solid #d4dfeb;border-radius:9px;padding:12px;box-shadow:none}input:focus,select:focus,textarea:focus{border-color:#36aaa5;box-shadow:0 0 0 3px #36aaa51c}label{color:#52647d;font-size:12px;font-weight:800} .tool-area{background:#fff;border:1px solid #dce6f0;border-radius:17px;padding:20px}.preview{background:#f1f5fa;color:#243b59;border:1px solid #dce5ef;border-radius:10px}.entry{background:#f5f8fc;border:1px solid #dce6f0;color:#263b57;border-radius:10px}.chip{background:#eaf2fb;border:1px solid #d4e3f2;color:#385574}
+.status.success{background:#e5f7ef;color:#16714e}.status.error{background:#fff0f1;color:#a83347}.status.info{background:#eaf3ff;color:#275b9c}.cv-template-card{background:#fff!important}.cv-template-card.selected{border-color:#16a99e!important;box-shadow:0 0 0 3px #16a99e20!important}
+.bottom-nav{background:rgba(9,23,47,.97);border-top:1px solid #ffffff24;box-shadow:0 -8px 28px #10284b22;backdrop-filter:blur(15px)}footer{color:#7a899e;border-top:1px solid #e0e8f0;background:transparent}
+@media(max-width:700px){.container{width:94%;margin-top:17px}.hero{min-height:0;padding:27px 20px;border-radius:20px}.hero h1{letter-spacing:-1.5px}.hero-eyebrow{font-size:8px;letter-spacing:1.2px}.hero-highlights{gap:10px 14px}.services-intro{border-radius:17px}.composing-grid{grid-template-columns:1fr}.compose-card{padding:17px}.composing-services,.self-service{padding:17px;border-radius:17px}.grid{gap:12px}.card{padding:16px}.card:hover{transform:none}header{padding:12px 4%}.header-tagline{font-size:8px;letter-spacing:1.3px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+@media print{body{background:#fff!important;color:#111!important}.hero,.services-intro,.composing-services,.self-service{box-shadow:none!important}}
+</style>
+
+
+<style id="nexa-site-polish-2026">
+:root{
+ --nexa-radius:16px;
+ --nexa-shadow:0 10px 28px rgba(0,0,0,.18);
+ --nexa-shadow-hover:0 16px 34px rgba(0,0,0,.26);
+}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
+body{
+ background:radial-gradient(ellipse at 12% 0%,rgba(52,127,240,.10),transparent 34%),
+            radial-gradient(ellipse at 90% 22%,rgba(49,213,207,.07),transparent 30%),var(--bg);
+ letter-spacing:.08px;
+}
+header{
+ backdrop-filter:blur(14px);
+ background:rgba(12,23,41,.94);
+ box-shadow:0 5px 22px rgba(0,0,0,.13);
+}
+.logo{letter-spacing:.45px}
+nav{align-items:center}
+nav button{border:1px solid transparent;transition:background .2s ease,color .2s ease,border-color .2s ease}
+nav button:hover,nav button:focus-visible{border-color:rgba(49,213,207,.28)}
+.container{max-width:1180px}
+.page{padding-top:28px;padding-bottom:48px}
+.hero{
+ position:relative;overflow:hidden;
+ background:linear-gradient(125deg,rgba(23,54,95,.98),rgba(16,32,53,.98) 58%,rgba(18,67,74,.96));
+ border-radius:22px;box-shadow:var(--nexa-shadow);padding:clamp(26px,4vw,44px);
+}
+.hero:after{content:"";position:absolute;width:240px;height:240px;border:1px solid rgba(255,255,255,.08);border-radius:50%;right:-75px;top:-100px;box-shadow:0 0 0 28px rgba(255,255,255,.025),0 0 0 58px rgba(255,255,255,.018);pointer-events:none}
+.hero h1{line-height:1.12;letter-spacing:-.8px}
+.hero p{max-width:720px;color:#d2deef}
+.card,.panel{
+ border-radius:var(--nexa-radius);box-shadow:0 5px 18px rgba(0,0,0,.11);
+ transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.card:hover{transform:translateY(-2px);border-color:rgba(49,213,207,.42);box-shadow:var(--nexa-shadow-hover)}
+.panel{padding:clamp(16px,2.4vw,24px)}
+.card h3,.panel h2,.panel h3{letter-spacing:-.2px;line-height:1.3}
+button,.btn{transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
+button:hover,.btn:hover{filter:brightness(1.08)}
+button:active,.btn:active{transform:translateY(1px)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(49,213,207,.55);outline-offset:2px}
+input,select,textarea{
+ max-width:100%;border-radius:10px!important;border:1px solid var(--border)!important;
+ background:#0e1b2e!important;color:var(--text)!important;padding:11px 12px!important;
+}
+input::placeholder,textarea::placeholder{color:#8294ad}
+hr{border:0;border-top:1px solid var(--border);margin:20px 0}
+img{max-width:100%;height:auto}
+#nexaSupportLauncher,#nexa-support-launcher,.nexa-support-launcher{box-shadow:0 9px 25px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.18)}
+@media(max-width:700px){
+ header{padding:12px 4%;gap:9px}
+ nav{width:100%;gap:5px}
+ nav button{padding:9px 10px;font-size:13px}
+ .container{width:min(100% - 24px,1180px)}
+ .page{padding-top:18px;padding-bottom:32px}
+ .hero{border-radius:17px;padding:24px 18px}
+ .hero h1{font-size:clamp(27px,8vw,38px)}
+ .grid{gap:11px}
+ .card,.panel{border-radius:14px}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ *,*:before,*:after{transition:none!important;animation:none!important}
+}
+</style>
+
+
+<style id="nexa-visible-form-fields-final">
+/* Clear, customer-friendly form fields across every tool and section */
+.page input:not([type="checkbox"]):not([type="radio"]),
+.page select,
+.page textarea,
+#toolArea input:not([type="checkbox"]):not([type="radio"]),
+#toolArea select,
+#toolArea textarea,
+#quickToolArea input:not([type="checkbox"]):not([type="radio"]),
+#quickToolArea select,
+#quickToolArea textarea,
+#nexaSupportPanel input {
+  display:block; width:100%; min-height:46px; padding:12px 14px !important;
+  background:#ffffff !important; color:#172b48 !important;
+  -webkit-text-fill-color:#172b48 !important;
+  border:1.5px solid #cbd8e8 !important; border-radius:11px !important;
+  box-shadow:0 2px 7px rgba(27,55,91,.045) !important;
+  font:inherit; font-size:14px; line-height:1.45; opacity:1 !important;
+}
+.page textarea,#toolArea textarea,#quickToolArea textarea {min-height:105px; resize:vertical;}
+.page input::placeholder,#toolArea input::placeholder,#quickToolArea input::placeholder,
+.page textarea::placeholder,#toolArea textarea::placeholder,#quickToolArea textarea::placeholder {
+  color:#8292a8 !important; -webkit-text-fill-color:#8292a8 !important; opacity:1;
+}
+.page input:focus,.page select:focus,.page textarea:focus,
+#toolArea input:focus,#toolArea select:focus,#toolArea textarea:focus,
+#quickToolArea input:focus,#quickToolArea select:focus,#quickToolArea textarea:focus {
+  outline:none; border-color:#3478e8 !important;
+  box-shadow:0 0 0 4px rgba(52,120,232,.13) !important;
+}
+.page label,#toolArea label,#quickToolArea label {
+  display:block; margin:12px 0 6px; color:#263e5e !important;
+  font-size:13px; font-weight:800; line-height:1.35; letter-spacing:.1px;
+}
+.page select option,#toolArea select option,#quickToolArea select option {background:#fff !important;color:#172b48 !important;}
+.page input[type="file"],#toolArea input[type="file"] {padding:9px !important;background:#f7faff !important;}
+#toolArea>.panel,#toolArea .panel {background:linear-gradient(180deg,#fff,#fbfdff) !important;border:1px solid #d9e4f1 !important;box-shadow:0 8px 24px rgba(28,57,91,.07) !important;border-radius:16px !important;}
+#toolArea h2,#toolArea h3 {color:#172f50;}
+#toolArea .form-grid {gap:12px 16px;}
+#toolArea .entry {background:#f1f6fc !important;color:#243d5e !important;border:1px solid #d6e2ef !important;padding:12px 14px;border-radius:11px;}
+#toolArea .chip {background:#e8f2ff !important;color:#24517f !important;border:1px solid #d2e2f5;}
+@media(max-width:650px){
+ .page input:not([type="checkbox"]):not([type="radio"]),.page select,.page textarea,
+ #toolArea input:not([type="checkbox"]):not([type="radio"]),#toolArea select,#toolArea textarea,
+ #quickToolArea input:not([type="checkbox"]):not([type="radio"]),#quickToolArea select,#quickToolArea textarea {min-height:47px;font-size:16px;}
+ #toolArea .form-grid {grid-template-columns:1fr;gap:9px;}
+}
+</style>
+
+
+<style id="nexa-other-services-simple-fullscreen">
+/* Match the three main cards; show remaining services on a dedicated full-screen view. */
+#studio .studio-main-grid{align-items:stretch;grid-template-columns:repeat(3,minmax(0,1fr))!important}
+#studio .studio-primary-card{display:flex;flex-direction:column;align-items:flex-start;min-height:245px;padding:20px!important;border-radius:18px!important}
+#studio .studio-primary-card p{flex:1}
+#studio .studio-other-card{background:#fff!important;color:var(--text)!important;border:1px solid var(--border)!important;box-shadow:0 8px 22px rgba(20,45,80,.09)!important;overflow:visible!important;min-height:245px!important}
+#studio .studio-other-card h3{color:var(--text)!important}
+#studio .studio-other-card p{color:var(--muted)!important}
+#studio .studio-other-card .icon{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:#eaf1ff;color:#245bd6;font-size:26px}
+#studio .studio-other-card .btn{width:100%;margin-top:12px}
+#otherServicesScreen.other-services-screen{position:fixed!important;inset:0!important;z-index:9999!important;width:100vw!important;height:100dvh!important;max-height:100dvh!important;overflow-y:auto!important;box-sizing:border-box!important;margin:0!important;padding:22px max(16px,calc((100vw - 1100px)/2)) 34px!important;border:0!important;border-radius:0!important;background:#f3f6fb!important;display:none;overscroll-behavior:contain}
+#otherServicesScreen.other-services-screen.is-open{display:block!important}
+.other-screen-heading{max-width:1100px;margin:4px auto 20px;text-align:center;padding:12px 8px 18px}
+.other-screen-heading>span{font-size:11px;font-weight:800;letter-spacing:2px;color:#245bd6}
+.other-screen-heading h1{margin:8px 0!important;font-size:clamp(25px,5vw,38px)!important;color:#14233c}
+.other-screen-heading p{margin:0!important;color:#66758c}
+#otherServicesScreen .other-services-expanded{max-width:1100px;margin:0 auto;max-height:none!important;overflow:visible!important;padding:0!important;background:transparent!important}
+#otherServicesScreen .other-back-row{max-width:1100px;margin:22px auto 8px}
+@media(max-width:700px){#studio .studio-main-grid{grid-template-columns:1fr!important}#studio .studio-primary-card{min-height:0!important}#otherServicesScreen.other-services-screen{padding:16px 13px 30px!important}}
+</style>
+
+<style id="nexa-featured-other-service-cards">
+/* Five featured WhatsApp services displayed as matching service cards */
+.other-top-service-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:0 0 18px}
+.other-top-service-cards .card{min-width:0;padding:16px;border:1px solid #dce7f1;border-radius:15px;background:#fff;box-shadow:0 5px 16px #17365710;display:flex;flex-direction:column;align-items:flex-start}
+.other-top-service-cards .card .icon{font-size:27px;margin-bottom:8px}
+.other-top-service-cards .card h3{font-size:15px;color:#193b5b;margin:0 0 7px}
+.other-top-service-cards .card p{font-size:12px;line-height:1.5;color:#60758a;flex:1;margin:0 0 13px}
+.other-top-service-cards .card .btn{width:100%;margin-top:auto;font-size:11px;padding:10px 8px}
+@media(max-width:760px){.other-top-service-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.other-top-service-cards .card{padding:12px}.other-top-service-cards .card h3{font-size:13px}.other-top-service-cards .card p{font-size:11px}}
+@media(max-width:390px){.other-top-service-cards{grid-template-columns:1fr}}
+</style>
+
+<style id="nexa-unified-other-service-cards">
+/* Make every card in the Other Services screen match the top five service cards */
+.other-services-screen .other-top-service-cards,
+.other-services-screen .other-embedded-services .self-grid,
+.other-services-screen .other-embedded-services .education-cards{
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important;align-items:stretch!important;
+}
+.other-services-screen .other-top-service-cards>.card,
+.other-services-screen .other-embedded-services .self-grid>.card,
+.other-services-screen .other-embedded-services .education-cards>.card{
+ box-sizing:border-box!important;min-width:0!important;min-height:245px!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:8px!important;
+ padding:20px!important;border:1px solid #dce6f1!important;border-radius:17px!important;
+ background:linear-gradient(155deg,#fff 0%,#f5f9ff 100%)!important;
+ box-shadow:0 7px 20px rgba(24,58,95,.09)!important;
+}
+.other-services-screen .other-top-service-cards>.card .icon,
+.other-services-screen .other-embedded-services .card .icon{
+ width:48px!important;height:48px!important;display:grid!important;place-items:center!important;margin:0 0 5px!important;
+ border-radius:14px!important;background:linear-gradient(135deg,#e5efff,#e1f7f4)!important;font-size:25px!important;
+}
+.other-services-screen .other-top-service-cards>.card h3,
+.other-services-screen .other-embedded-services .card h3{
+ margin:0!important;color:#17395f!important;font-size:15px!important;font-weight:800!important;line-height:1.35!important;
+}
+.other-services-screen .other-top-service-cards>.card p,
+.other-services-screen .other-embedded-services .card p{
+ margin:0!important;color:#64758a!important;font-size:12px!important;line-height:1.55!important;
+}
+.other-services-screen .other-top-service-cards>.card .btn,
+.other-services-screen .other-embedded-services .card .btn{
+ width:100%!important;margin-top:auto!important;padding:11px 10px!important;border-radius:10px!important;font-size:11px!important;font-weight:800!important;
+}
+.other-services-screen .other-embedded-services .self-service,
+.other-services-screen .other-embedded-services .composing-services{
+ display:block!important;margin:20px 0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
+}
+.other-services-screen .other-embedded-services .composing-heading{margin:20px 0 14px!important}
+.other-services-screen .other-embedded-services .composing-heading h2{font-size:19px!important;color:#17395f!important}
+.other-services-screen .other-embedded-services .composing-heading p{font-size:12px!important;color:#64758a!important}
+.other-services-screen .other-embedded-services .composing-grid{display:block!important}
+@media(max-width:760px){
+ .other-services-screen .other-top-service-cards,
+ .other-services-screen .other-embedded-services .self-grid,
+ .other-services-screen .other-embedded-services .education-cards{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:11px!important}
+ .other-services-screen .other-top-service-cards>.card,
+ .other-services-screen .other-embedded-services .self-grid>.card,
+ .other-services-screen .other-embedded-services .education-cards>.card{min-height:220px!important;padding:14px!important}
+}
+@media(max-width:360px){
+ .other-services-screen .other-top-service-cards,
+ .other-services-screen .other-embedded-services .self-grid,
+ .other-services-screen .other-embedded-services .education-cards{grid-template-columns:1fr!important}
+}
+</style>
+
+<style id="nexa-cv-only-cleanup">
+#otherServicesScreen,.self-service,.composing-services,.studio-other-card{display:none!important}
+#studio .studio-main-grid{grid-template-columns:minmax(0,1fr)!important}
+</style>
+
+<style id="nexa-cv-premium-polish">
+:root{--bg:#071426;--panel:#10233c;--panel2:#173452;--text:#f5f8ff;--muted:#aebfd5;--blue:#347ff0;--cyan:#42ddd4;--gold:#e9c36a;--border:#294766}
+html{scroll-behavior:smooth}body{background:radial-gradient(ellipse at 12% 0%,#17385b 0,transparent 34%),radial-gradient(ellipse at 92% 14%,#123e4a 0,transparent 30%),#071426;color:var(--text);letter-spacing:.08px}
+header{background:rgba(7,19,35,.94);backdrop-filter:blur(14px);border-bottom:1px solid #3a5b79;box-shadow:0 8px 28px #0004;padding:15px max(4%,calc((100% - 1200px)/2));}
+.logo{font-size:23px;letter-spacing:1.1px}.logo span{color:var(--cyan);text-shadow:0 0 18px #42ddd455}.header-tagline{font-size:10px;letter-spacing:2px;color:#a9bfd5;font-weight:800}
+.container{width:min(1180px,93%)}.page{padding:30px 0 48px}.page>h1{letter-spacing:-.6px}.hero{position:relative;overflow:hidden;padding:clamp(28px,5vw,58px);border:1px solid #3b6689;border-radius:23px;background:linear-gradient(118deg,#143c69 0%,#102944 55%,#10434a 100%);box-shadow:0 18px 44px #0004;margin-bottom:22px}.hero:after{content:"";position:absolute;width:290px;height:290px;right:-105px;top:-130px;border:1px solid #8bded522;border-radius:50%;box-shadow:0 0 0 28px #8bded50a,0 0 0 58px #8bded508;pointer-events:none}.hero h1{font-size:clamp(31px,5.5vw,56px);line-height:1.08;letter-spacing:-1.6px}.hero h1 span{color:#55e2d8;text-shadow:0 5px 22px #31d5cf33}.hero p{color:#d0deee;max-width:590px;font-size:15px}
+.services-intro,.panel,.card{background:linear-gradient(145deg,rgba(20,43,68,.97),rgba(12,30,50,.98));border:1px solid #2b4b6a;border-radius:17px;box-shadow:0 10px 28px #0002}.services-intro{padding:24px;margin:18px 0}.services-intro h2{font-size:clamp(21px,3vw,29px);margin:7px 0 9px;color:#f5f8ff}.services-intro p{color:#b8c9dc;max-width:760px}.intro-kicker,.hero-eyebrow{font-size:10px;letter-spacing:2px;color:#55ded5;font-weight:900}.intro-points{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}.intro-points span,.hero-highlights span{padding:8px 11px;border:1px solid #3a5b75;border-radius:30px;background:#183650;color:#dceaf7;font-size:12px}
+.btn,button{transition:transform .18s ease,filter .18s ease,box-shadow .18s ease}.btn{border-radius:10px;padding:11px 17px;background:linear-gradient(115deg,#3988ff,#2464ce);box-shadow:0 6px 15px #2464ce35;border:1px solid #76aaff44}.btn:hover,button:hover{filter:brightness(1.1);transform:translateY(-1px)}.btn.secondary{background:linear-gradient(115deg,#405875,#293f5b)}.btn.green{background:linear-gradient(115deg,#1da77e,#117454)}.btn.gold{background:linear-gradient(115deg,#d6a94e,#9e7024);color:#171d2b}
+.card,.panel{padding:19px}.card h3,.panel h3{color:#f1f6ff}.card p,.muted{color:#afc1d6}.card{transition:transform .2s,border-color .2s,box-shadow .2s}.card:hover{transform:translateY(-3px);border-color:#4c91b9;box-shadow:0 15px 30px #0003}.icon{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(145deg,#204b70,#15364f);border:1px solid #47718c;font-size:25px}.price-new{color:#6be4d0;font-weight:900}.discount-note{color:#f2d17e;font-size:11px;font-weight:800}
+label{color:#d9e7f5;font-weight:700;font-size:12px;letter-spacing:.2px}input,select,textarea{border:1px solid #365675;background:#091a2d;color:#f3f7ff;border-radius:10px;padding:12px;outline:none;transition:border-color .18s,box-shadow .18s}input:focus,select:focus,textarea:focus{border-color:#4bd8d0;box-shadow:0 0 0 3px #31d5cf20}textarea{line-height:1.5}.entry{background:linear-gradient(120deg,#0d2035,#122b43);border-color:#355675;border-radius:11px}.chip{background:#1b4560;border:1px solid #3a7080;color:#e2f7f5}
+.tool-area{border:1px solid #3a6680;border-radius:18px;padding:16px;background:linear-gradient(145deg,#102943,#0b1c30);box-shadow:0 14px 32px #0003}.preview{border:1px solid #c6d4e5;box-shadow:0 8px 22px #0003}.a4-stage{box-shadow:0 12px 34px #0006;border-radius:2px}.cv-template-card{border-radius:13px!important;transition:transform .18s,border-color .18s,box-shadow .18s}.cv-template-card:hover{transform:translateY(-2px);border-color:#4bd8d0!important}.cv-template-card.selected{border:2px solid #4bd8d0!important;box-shadow:0 0 0 3px #31d5cf22,0 8px 20px #0003!important}
+.bottom-nav{background:rgba(5,16,29,.96)!important;backdrop-filter:blur(14px);border-top:1px solid #34536e!important;box-shadow:0 -8px 28px #0005!important}.bottom-nav-item{transition:background .18s,color .18s}.bottom-nav-item.active{background:linear-gradient(130deg,#245b9b55,#1c8b8750)!important;box-shadow:inset 0 0 0 1px #4a9de866;border-radius:12px}.bottom-nav-item.active span{color:#70e6dc}footer{border-top:1px solid #29445e;color:#9db2ca}
+.status{border:1px solid #3a6075;border-radius:10px}.status.success{background:#123d35;color:#aaf2d7}.status.error{background:#482535;color:#ffc1cc}.status.info{background:#173653;color:#c4e2ff}
+@media(max-width:650px){header{padding:12px 4%;gap:8px}.logo{font-size:20px}.header-tagline{font-size:9px}.container{width:92%}.page{padding:20px 0 38px}.hero{padding:26px 18px;border-radius:18px}.hero h1{letter-spacing:-.8px}.services-intro{padding:17px}.panel,.card{padding:15px}.tool-area{padding:11px}.btn{padding:10px 13px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+
+
+<style>
+.admin-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.admin-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0 24px}
+.admin-stat{background:linear-gradient(145deg,#142d49,#1c405d);border:1px solid #315b77;border-radius:14px;padding:15px;min-width:0}
+.admin-stat span,.admin-stat small{display:block;color:#b7ccdc;font-size:12px}.admin-stat strong{display:block;color:#fff;font-size:25px;margin:8px 0;overflow-wrap:anywhere}.admin-stat small{font-size:11px}.admin-money{background:linear-gradient(145deg,#10483e,#176354);border-color:#267c69}
+.admin-report-section{margin:25px 0}.admin-report-section h2{margin-bottom:6px}.admin-table-wrap{width:100%;overflow-x:auto;border:1px solid #31536b;border-radius:12px}
+.admin-report-table{width:100%;border-collapse:collapse;min-width:650px}.admin-report-table th,.admin-report-table td{padding:12px;text-align:left;border-bottom:1px solid #31536b;font-size:13px}.admin-report-table th{background:#193b58;color:#dcecff}.admin-report-table td{color:#e9f2fa}
+.payment-summary{border:1px solid #31536b;border-radius:12px;padding:12px}.payment-summary-row{display:flex;justify-content:space-between;gap:12px;padding:10px 4px;border-bottom:1px solid #31536b}.payment-summary-row:last-child{border-bottom:0}.admin-order-card{margin:12px 0}.admin-status{display:inline-block;padding:3px 9px;border-radius:20px;background:#34485b;color:#fff;font-size:12px}.admin-status.approved{background:#145c47}.admin-status.pending{background:#76551a}.admin-status.rejected{background:#713344}
+@media(max-width:650px){.admin-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.admin-stat{padding:11px}.admin-stat strong{font-size:20px}.admin-toolbar>div:last-child{width:100%}.admin-toolbar button{margin:3px 0}}
+</style>
+
+
+<style id="nexa-section-heading-visibility">
+/* Clear, high-contrast headings on every dark section */
+.page>h1,.page>h2,.page>h3,.page .section-title,.page .admin-report-section>h2{
+  color:#ffffff!important;
+  text-shadow:0 2px 12px rgba(0,0,0,.38);
+}
+.page>h1{
+  font-size:clamp(27px,4vw,36px)!important;
+  font-weight:900!important;
+  letter-spacing:-.55px!important;
+  line-height:1.2!important;
+  padding-left:13px;
+  border-left:4px solid #42ddd4;
+  margin:8px 0 14px!important;
+}
+.page>h2,.page .admin-report-section>h2{font-weight:850!important;color:#72e8df!important}
+.page>h3{color:#dcecff!important}
+@media(max-width:650px){.page>h1{font-size:27px!important;padding-left:10px}}
+</style>
+
+
+<style id="nexa-cv-preview-protection">
+/* NEXA CV preview deterrents: browser code cannot disable device screenshots. */
+#cvPreview{position:relative!important;isolation:isolate;-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important;}
+#cvPreview *{-webkit-user-select:none!important;user-select:none!important;-webkit-user-drag:none!important;}
+#cvPreview:after{content:"NEXA CV BUILDER  •  PAYMENT PENDING\A NEXA CV BUILDER  •  PAYMENT PENDING\A NEXA CV BUILDER  •  PAYMENT PENDING\A NEXA CV BUILDER  •  PAYMENT PENDING";white-space:pre;position:absolute;z-index:20;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;pointer-events:none;color:rgba(12,35,75,.22);font-size:clamp(16px,3vw,27px);font-weight:900;letter-spacing:2px;line-height:5.5;transform:rotate(-24deg);text-shadow:0 1px 0 rgba(255,255,255,.18);}
+#cvPreview[data-approved="true"]:after{display:none;}
+.nexa-watermark-notice{display:block!important;position:relative;margin:14px 0 16px;padding:16px 17px!important;border:1px solid #39cbd0!important;border-left:5px solid #39e0d4!important;border-radius:13px!important;background:#09243b!important;background-image:linear-gradient(135deg,#09243b 0%,#123d59 100%)!important;color:#ffffff!important;font-size:14px!important;font-weight:600!important;line-height:1.8!important;text-align:left!important;box-shadow:0 6px 18px rgba(0,0,0,.28)!important;text-shadow:none!important;opacity:1!important;isolation:isolate;}
+.nexa-watermark-notice b{color:#ffe477!important;font-weight:850!important;}
+@media(max-width:650px){.nexa-watermark-notice{font-size:13px!important;padding:14px!important;line-height:1.75!important;}}
+@media print{#cvPreview{display:none!important}#cvPreview:after{display:none!important}}
+</style>
+
+<style id="nexa-cv-name-uppercase">#cvName{text-transform:uppercase!important}</style>
+
+<style id="nexa-cv-justify-format">
+/* Justify descriptive text inside CV previews only; keep headings and labels aligned naturally. */
+#cvPreview p { text-align: justify !important; text-justify: inter-word; }
+#cvPreview .cv-justify { text-align: justify !important; text-justify: inter-word; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">NEXA <span>CV STUDIO</span></div>
+  <div class="header-tagline">PROFESSIONAL CV BUILDER</div>
+</header>
+
+<main class="container">
+
+<section id="home" class="page active">
+  <div class="hero">
+    <div class="hero-eyebrow"><span class="hero-live-dot"></span> NEXA CV BUILDER <span class="hero-eyebrow-line"></span> PROFESSIONAL RESUMES</div>
+    <h1>BUILD YOUR FUTURE.<br><span>CREATE YOUR CV.</span></h1>
+    <p>Create a professional CV in a few simple steps.</p>
+    <button class="btn" onclick="showPage('studio')">Explore Studio</button>
+    
+    <div class="hero-highlights"><span><b>✓</b> Easy CV Builder</span><span><b>▣</b> Multiple CV Designs</span><span><b>✦</b> A4 PDF Format</span></div>
+  </div>
+
+    <section class="services-intro">
+    <div class="intro-kicker">NEXA CV BUILDER</div>
+    <h2>Your Professional CV, Made Simple</h2>
+    <p>Apni personal details, education, experience aur skills add karein. Apna pasandeeda design select karein aur professional CV tayyar karein.</p>
+    <div class="intro-points"><span>📄 Professional CV</span><span>🎨 Multiple Templates</span><span>⬇️ A4 PDF Download</span></div>
+    <button class="btn" onclick="showPage('studio')">Create Your CV →</button>
+  </section>
+</section>
+
+<section id="studio" class="page">
+  <h1>CV Builder</h1>
+  <p class="muted">Apna professional CV khud tayyar karein. Neeche button dabakar shuru karein.</p>
+  <div class="grid studio-main-grid" style="grid-template-columns:minmax(0,1fr);max-width:620px;margin:20px auto">
+    <div class="card studio-primary-card" style="min-height:250px"><div class="icon">📄</div><h3>Professional CV Builder</h3><p>Personal information, education, work experience aur skills add karke apna CV banayein.</p><div class="price"><span class="price-old">Rs. 300</span><span class="price-new">Rs. 270</span></div><div class="discount-note">🎉 10% DISCOUNT</div><button class="btn" onclick="openTool('cv')">Create CV</button></div>
+  </div>
+  <div id="toolArea" class="tool-area panel"></div>
+</section>
+
+<section id="payment" class="page">
+  <h1>CV Builder Payment</h1>
+  <p class="muted">Apne CV ki payment details submit karein. Approval ke baad PDF download unlock ho jayega.</p>
+  <div class="discount-banner">🎉 CV BUILDER SPECIAL OFFER: 10% DISCOUNT</div>
+  <div class="panel">
+    <div class="form-grid">
+      <div><label>Your Name</label><input id="customerName"></div>
+      <div><label>Phone Number</label><input id="customerPhone"></div>
+      <div><label>Service</label>
+        <select id="orderService" onchange="updateAmount()">
+          <option>CV Builder</option>
+        </select>
+      </div>
+      <div><label>Amount (PKR)</label><input id="orderAmount" readonly></div>
+      <div><label>Payment Method</label><select id="paymentMethod"><option>JazzCash</option><option>Easypaisa</option></select></div>
+      <div><label>Payment Number</label><input value="03469799347" readonly></div>
+      <div class="full"><label>Transaction ID</label><input id="transactionId"></div>
+      <div class="full"><label>Additional Instructions</label><textarea id="orderNotes"></textarea></div>
+    </div>
+    <p class="muted">JazzCash / Easypaisa: <b>03469799347</b></p>
+    <button class="btn green" onclick="submitOrder()">Submit Order</button>
+    <div id="orderStatus" class="status"></div>
+  </div>
+  <div id="cvUnlockPanel" class="panel" style="display:none">
+    <h3>My CV Order</h3>
+    <p id="cvOrderStatus">Waiting for approval.</p>
+    <button class="btn" onclick="checkApproval()">Check Approval</button>
+    <button class="btn green" id="downloadCVButton" style="display:none" onclick="downloadCV()">Download CV PDF</button>
+  </div>
+</section>
+
+<section id="admin" class="page">
+  <h1>Admin Panel</h1>
+  <div id="adminLogin" class="panel">
+    <label>Admin Email</label><input id="adminEmail" type="email">
+    <label>Password</label><input id="adminPassword" type="password">
+    <button class="btn" onclick="adminLogin()">Admin Login</button>
+    <div id="adminLoginStatus" class="status"></div>
+  </div>
+  <div id="adminDashboard" class="panel" style="display:none">
+    <div class="admin-toolbar"><div><h2 style="margin:0">Business Overview</h2><p class="muted" style="margin:5px 0 0">CV orders, payments and monthly performance</p></div><div><button class="btn secondary" onclick="loadOrders()">↻ Refresh Reports</button> <button class="btn red" onclick="adminLogout()">Logout</button></div></div>
+    <div id="adminReportStatus" class="status"></div>
+    <div class="admin-stats">
+      <div class="admin-stat"><span>Total CV Orders</span><strong id="reportTotal">0</strong><small>All received orders</small></div>
+      <div class="admin-stat"><span>Approved Orders</span><strong id="reportApproved">0</strong><small>Payment verified</small></div>
+      <div class="admin-stat"><span>Pending Orders</span><strong id="reportPending">0</strong><small>Awaiting review</small></div>
+      <div class="admin-stat"><span>Rejected Orders</span><strong id="reportRejected">0</strong><small>Not approved</small></div>
+      <div class="admin-stat admin-money"><span>Total Money Received</span><strong id="reportReceived">Rs. 0</strong><small>Approved orders only</small></div>
+      <div class="admin-stat"><span>Pending Payment Value</span><strong id="reportPendingMoney">Rs. 0</strong><small>Not counted as received</small></div>
+    </div>
+    <section class="admin-report-section"><h2>Monthly Report</h2><p class="muted">Orders and verified income grouped by order month.</p><div class="admin-table-wrap"><table class="admin-report-table"><thead><tr><th>Month</th><th>Total Orders</th><th>Approved</th><th>Pending</th><th>Rejected</th><th>Received</th></tr></thead><tbody id="monthlyReportRows"><tr><td colspan="6">Reports will appear after loading.</td></tr></tbody></table></div></section>
+    <section class="admin-report-section"><h2>Payment Summary</h2><div id="paymentSummary" class="payment-summary">No payment data yet.</div></section>
+    <section class="admin-report-section"><h2>All CV Orders</h2><div id="adminOrders"></div></section>
+  </div>
+</section>
+
+</main>
+<footer class="nexa-footer"><strong>NEXA CV STUDIO</strong><span class="credit">Designed &amp; Developed by <b>NCC Bannu</b></span></footer>
+
+<nav class="bottom-nav" aria-label="Main navigation">
+  <button class="bottom-nav-item active" data-page="home" onclick="showPage('home')"><span class="nav-icon">⌂</span><span>Home</span></button>
+  <button class="bottom-nav-item" data-page="studio" onclick="showPage('studio')"><span class="nav-icon">✦</span><span>CV Builder</span></button>
+  <button class="bottom-nav-item" data-page="payment" onclick="showPage('payment')"><span class="nav-icon">▣</span><span>Orders</span></button>
+  <button class="bottom-nav-item" data-page="admin" onclick="showPage('admin')"><span class="nav-icon">♙</span><span>Admin</span></button>
+</nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+const SUPABASE_URL="https://njfobttocvkjsrvlcjaj.supabase.co";
+const SUPABASE_KEY="sb_publishable_EkEFOVho4ryOYcIOVAqMhQ_z9yoD9TB";
+const supabase=createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const ORIGINAL_PRICES={
+ "CV Builder":300
+};
+const PRICES=Object.fromEntries(Object.entries(ORIGINAL_PRICES).map(([k,v])=>[k,Math.round(v*.9)]));
+// 10% discount applies to the CV Builder.
+
+const $=id=>document.getElementById(id);
+const escapeHTML=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let currentTool="",currentDesign={},cvData=null,approvedCV=null,selectedTemplate="Modern";
+
+window.toggleOtherServices=function(show){
+ const screen=$("otherServicesScreen");
+ if(!screen)return;
+ screen.style.display=show?"block":"none";
+ if(show){screen.scrollIntoView({behavior:"smooth",block:"start"});}
+ else {const card=document.querySelector(".studio-main-grid");if(card)card.scrollIntoView({behavior:"smooth",block:"start"});}
+};
+
+function showStatus(id,text,type="info"){
+ const el=$(id);if(!el)return;
+ el.textContent=text;el.className="status "+type;
+}
+window.showPage=function(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ if($(id)) $(id).classList.add("active");
+ document.querySelectorAll(".bottom-nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+ window.scrollTo({top:0,behavior:"smooth"});
+};
+// WHATSAPP SERVICE REQUESTS — all services except CV and Experience Certificate
+const NEXA_WHATSAPP_NUMBER="923469799347";
+window.contactNexaWhatsApp=function(service,details=""){
+ const message=`Assalam-o-Alaikum NEXA Creative Studio!\n\nMujhe is service ki zaroorat hai: ${service}.\n${details?`Details: ${details}\n`:""}Please price aur requirements bata dein. Shukriya.`;
+ const url=`https://wa.me/${NEXA_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+ window.open(url,"_blank","noopener,noreferrer");
+};
+function toolName(k){
+ return {
+  cv:"CV Builder",poster:"Poster Maker",logo:"Logo Maker",
+  document:"Document Studio",social:"Social Media Designer",
+  website:"Website Development",experience:"Experience Certificate"
+ }[k]||"CV Builder";
+}
+window.openTool=function(tool){
+ if(tool!=="cv"){return;}
+ currentTool=tool;currentDesign={};showPage("studio");
+ $("toolArea").style.display="block";
+ if(tool==="experience")experienceCertificateForm();
+ else if(tool==="cv")cvForm();
+ else otherToolForm(tool);
+ $("toolArea").scrollIntoView({behavior:"smooth"});
+};
+
+/* EXPERIENCE CERTIFICATE — reference-inspired navy and gold layout */
+function experienceCertificateForm(){
+  $("toolArea").innerHTML=`
+  <h2>🏅 Experience Certificate Maker</h2>
+  <p class="muted">Enter the details below. The certificate preview will use the navy-blue and gold design shown in your reference image. Employer verification and authorization are required before official use.</p>
+  <div class="panel">
+   <div class="form-grid">
+    <div><label>Employee Full Name *</label><input id="ecName" placeholder="Employee full name"></div>
+    <div><label>Company Name *</label><input id="ecCompany" placeholder="Company name"></div>
+    <div><label>Job Title / Designation *</label><input id="ecJob" placeholder="e.g. Field Executive"></div>
+    <div><label>Experience Badge Text</label><input id="ecYears" value="5 YEAR" placeholder="e.g. 2 YEAR"></div>
+    <div><label>Joining Date</label><input id="ecStart" type="date"></div>
+    <div><label>Leaving Date</label><input id="ecEnd" type="date"></div>
+    <div><label>Certificate Issue Date</label><input id="ecIssue" type="date"></div>
+    <div><label>Certificate Reference (optional)</label><input id="ecID" placeholder="Reference number"></div>
+    <div class="full"><label>Experience / Work Description *</label><textarea id="ecDescription" placeholder="Write the employee's verified experience and responsibilities..."></textarea></div>
+    <div><label>Authorized Person Name</label><input id="ecAuthorized" placeholder="Employer / authorized person"></div>
+    <div><label>Authorized Person Designation</label><input id="ecAuthority" placeholder="Designation"></div>
+   </div>
+  </div>
+  <div class="panel">
+   <h3>Live Certificate Preview</h3>
+   <div id="experiencePreview" class="nexa-certificate">
+    <svg class="cert-art" viewBox="0 0 1000 700" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 0H1000V700H0Z" fill="#172d5b"/>
+      <path d="M34 24H966V676H34Z" fill="#f8f7f1"/>
+      <path d="M42 30H958V670H42Z" fill="none" stroke="#d6b45b" stroke-width="5"/>
+      <path d="M650 0 C790 35 900 85 1000 175 L1000 520 C900 570 790 635 620 700 L1000 700 L1000 0Z" fill="#172d5b"/>
+      <path d="M730 0 C855 42 940 100 1000 190 L1000 500 C900 555 810 620 675 700 C810 655 930 610 1000 560 L1000 0Z" fill="#e5bd54"/>
+      <path d="M0 560 C200 640 420 655 650 610 C790 582 900 535 1000 475 L1000 700H0Z" fill="#172d5b"/>
+      <path d="M0 575 C220 655 440 665 670 620 C820 590 925 540 1000 500" fill="none" stroke="#d9b34f" stroke-width="18"/>
+      <path d="M0 0H1000V700H0Z" fill="none" stroke="#fff" stroke-width="12"/>
+    </svg>
+    <div class="cert-inner">
+      <div class="cert-ribbon"></div>
+      <div class="cert-badge"><span id="pvECYears">5 YEAR</span></div>
+      <div class="cert-ornament">❧　❦　❧</div>
+      <div class="cert-heading">Certificate</div>
+      <div class="cert-subheading">Of Experience</div>
+      <div class="cert-present">PROUDLY PRESENTED TO</div>
+      <div class="cert-name" id="pvECName">Employee Name</div>
+      <div class="cert-company" id="pvECCompany">Company Name</div>
+      <div class="cert-copy" id="pvECDescription">This certificate is presented in recognition of the employee's professional experience, contribution and service.</div>
+      <div class="cert-job" id="pvECJob">Designation</div>
+      <div class="cert-period" id="pvECDates">Employment Period: Joining Date — Leaving Date</div>
+      <div class="cert-reference" id="pvECID"></div>
+      <div class="cert-bottom">
+        <div><span id="pvECIssue">Date: __________</span><small>DATE</small></div>
+        <div class="cert-sign"><span id="pvECAuthorized">________________________</span><small>AUTHORIZED SIGNATURE</small></div>
+      </div>
+      <div class="cert-draft-mark">DRAFT — SUBJECT TO EMPLOYER VERIFICATION & SIGNATURE</div>
+    </div>
+   </div>
+   <div class="cert-actions">
+    <button class="btn" onclick="renderExperienceCertificate()">Update Preview</button>
+    <button class="btn green" onclick="downloadExperienceCertificate()">Download Certificate PDF</button>
+    <button class="btn secondary" onclick="saveOther('experience')">Save Requirements</button>
+    <button class="btn gold" onclick="goToOrder('experience')">Continue to Order · Rs. 270</button>
+   </div>
+   <div id="otherMessage" class="status"></div>
+  </div>`;
+  ["ecName","ecCompany","ecJob","ecYears","ecStart","ecEnd","ecIssue","ecID","ecDescription","ecAuthorized","ecAuthority"].forEach(id=>{
+    $(id).addEventListener("input",renderExperienceCertificate);
+    $(id).addEventListener("change",renderExperienceCertificate);
+  });
+  renderExperienceCertificate();
+}
+window.renderExperienceCertificate=function(){
+  if(!$("ecName"))return;
+  const val=id=>$(id).value.trim();
+  $("pvECName").textContent=val("ecName")||"Employee Name";
+  $("pvECCompany").textContent=val("ecCompany")||"Company Name";
+  $("pvECJob").textContent=val("ecJob")||"Designation";
+  $("pvECYears").textContent=val("ecYears")||"EXPERIENCE";
+  $("pvECDescription").textContent=val("ecDescription")||"This certificate is presented in recognition of the employee's professional experience, contribution and service.";
+  const start=$("ecStart").value||"Joining Date",end=$("ecEnd").value||"Leaving Date";
+  $("pvECDates").textContent="Employment Period: "+start+" — "+end;
+  $("pvECID").textContent=val("ecID")?"Certificate Ref: "+val("ecID"):"";
+  $("pvECIssue").textContent="Date: "+($("ecIssue").value||"____________");
+  const auth=val("ecAuthorized"),role=val("ecAuthority");
+  $("pvECAuthorized").textContent=auth?(auth+(role?" · "+role:"")):"________________________";
+};
+window.downloadExperienceCertificate=async function(){
+  if(!saveOther("experience"))return;
+  if(!$("ecDescription").value.trim()){
+    showStatus("otherMessage","Please enter the experience description.","error");return;
+  }
+  renderExperienceCertificate();
+  const el=$("experiencePreview");
+  if(!window.html2canvas||!window.jspdf?.jsPDF){
+    alert("PDF libraries could not be loaded. Check your internet connection and try again.");return;
+  }
+  try{
+    const canvas=await html2canvas(el,{scale:2,backgroundColor:null,useCORS:true});
+    const img=canvas.toDataURL("image/jpeg",0.96);
+    const pdf=new jspdf.jsPDF({orientation:"landscape",unit:"mm",format:"a4"});
+    const pageW=297,pageH=210,ratio=canvas.width/canvas.height;
+    let w=pageW,h=w/ratio;
+    if(h>pageH){h=pageH;w=h*ratio;}
+    pdf.addImage(img,"JPEG",(pageW-w)/2,(pageH-h)/2,w,h,undefined,"FAST");
+    pdf.save("NEXA-Experience-Certificate-DRAFT.pdf");
+    showStatus("otherMessage","Certificate PDF downloaded. Have the employer verify and sign it before official use.","success");
+  }catch(e){console.error(e);showStatus("otherMessage","PDF could not be created: "+e.message,"error");}
+};
+
+/* CV BUILDER — SINGLE BLUE SIDEBAR TEMPLATE */
+let education=[],work=[],skills=[],cvPhotoData="";
+function cvForm(){
+ education=[];work=[];skills=[];cvPhotoData="";
+ $("toolArea").innerHTML=`
+ <h2>Professional CV Builder</h2>
+ <p class="muted">Select your preferred CV design from the visual previews below.</p>
+ <div class="panel"><h3>Choose Your CV Design</h3><p class="muted">Each template is displayed as a visual preview. Select a design by clicking its card.</p>
+  <select id="cvTemplate" onchange="syncCVTemplateCards();previewCV()" style="display:none"><option value="Blue Sidebar">Blue Sidebar — Modern</option><option value="Navy Geometric">Navy Geometric — Classic</option><option value="Navy Pink">Navy & Pink — Professional</option><option value="Charcoal Gold">Charcoal & Gold — Executive</option></select>
+  <div class="cv-template-gallery">
+   <button type="button" class="cv-template-card selected" data-template="Blue Sidebar" onclick="chooseCVTemplate('Blue Sidebar')"><div class="thumb"><div class="thumb-side"><div style="width:42px;height:42px;border-radius:50%;background:#dce8fa;margin:4px auto 15px"></div><div class="mini-title"></div><div class="thumb-line"></div><div class="thumb-line short"></div><div class="mini-title"></div><div class="thumb-line"></div><div class="thumb-line mid"></div></div><div class="thumb-main"><h4>YOUR NAME</h4><div class="thumb-line mid"></div><div class="mini-title" style="color:#2057a0"></div><div class="thumb-line"></div><div class="thumb-line mid"></div><div class="mini-title" style="color:#2057a0"></div><div class="thumb-line"></div><div class="thumb-line short"></div></div></div><div class="template-name">Blue Sidebar</div><div class="template-style">Modern · Clean</div><div class="choose-mark">✓ Selected</div></button>
+   <button type="button" class="cv-template-card" data-template="Navy Geometric" onclick="chooseCVTemplate('Navy Geometric')"><div class="thumb geometric"><div class="thumb-side"><div style="width:38px;height:38px;border-radius:3px;background:#dce8fa;margin:4px auto 15px"></div><div class="mini-title"></div><div class="thumb-line"></div><div class="thumb-line short"></div><div class="mini-title"></div><div class="thumb-line"></div></div><div class="thumb-main"><h4>YOUR NAME</h4><div class="thumb-line mid"></div><div class="mini-title" style="color:#17234c"></div><div class="thumb-line"></div><div class="thumb-line"></div><div class="mini-title" style="color:#17234c"></div><div class="thumb-line mid"></div></div></div><div class="template-name">Navy Geometric</div><div class="template-style">Classic · Structured</div><div class="choose-mark">Tap to select</div></button>
+   <button type="button" class="cv-template-card" data-template="Navy Pink" onclick="chooseCVTemplate('Navy Pink')"><div class="thumb pink"><div class="thumb-side"><div style="width:38px;height:38px;border-radius:50%;background:#dce8fa;margin:4px auto 15px"></div><div class="mini-title"></div><div class="thumb-line"></div><div class="thumb-line short"></div><div class="mini-title"></div><div class="thumb-line"></div></div><div class="thumb-main"><div class="mini-head"></div><h4>YOUR NAME</h4><div class="thumb-line mid"></div><div class="mini-title" style="color:#17213d"></div><div class="thumb-line"></div><div class="thumb-line mid"></div><div class="mini-title" style="color:#17213d"></div><div class="thumb-line"></div></div></div><div class="template-name">Navy & Pink</div><div class="template-style">Professional · Bold</div><div class="choose-mark">Tap to select</div></button>
+   <button type="button" class="cv-template-card" data-template="Charcoal Gold" onclick="chooseCVTemplate('Charcoal Gold')"><div class="thumb gold"><div class="thumb-side"><div style="width:38px;height:38px;border-radius:3px;background:#f0b400;margin:4px auto 15px"></div><div class="mini-title" style="color:#f0b400"></div><div class="thumb-line"></div><div class="thumb-line short"></div><div class="mini-title" style="color:#f0b400"></div><div class="thumb-line"></div></div><div class="thumb-main"><div class="mini-head"></div><h4>YOUR NAME</h4><div class="thumb-line mid"></div><div class="mini-title" style="color:#b78b27"></div><div class="thumb-line"></div><div class="thumb-line mid"></div><div class="mini-title" style="color:#b78b27"></div><div class="thumb-line"></div></div></div><div class="template-name">Charcoal & Gold</div><div class="template-style">Executive · Premium</div><div class="choose-mark">Tap to select</div></button>
+  </div><p class="muted">Click a design card to update the CV preview below.</p></div>
+ <div class="panel"><h3>Personal Information</h3>
+  <div class="form-grid">
+   <div><label>Full Name *</label><input id="cvName" placeholder="Your full name"></div>
+   <div><label>Professional Title</label><input id="cvJob" placeholder="e.g. Professional Accountant"></div>
+   <div><label>Phone *</label><input id="cvPhone" type="tel" value="+92 " placeholder="+92 3XX XXXXXXX" inputmode="tel" autocomplete="tel"></div>
+   <div><label>Email</label><input id="cvEmail" type="email" placeholder="Email address"></div>
+   <div class="full"><label>Website / LinkedIn</label><input id="cvWebsite" placeholder="www.example.com"></div>
+   <div class="full"><label>Address</label><input id="cvAddress" placeholder="Street, City, Country"></div>
+   <div class="full"><label>Profile Photo (optional)</label><input id="cvPhoto" type="file" accept="image/*"></div>
+   <div class="full"><label>About Me / Professional Profile</label><textarea id="cvProfile" placeholder="Write a short professional introduction...">Motivated and responsible professional with a positive attitude and a strong willingness to learn. Able to communicate effectively, work independently or as part of a team, and manage tasks with care and attention to detail. Eager to contribute skills, take on new challenges, and support the goals of the organization.</textarea><small class="muted">This is a ready-made profile. You can edit it or replace it with your own introduction.</small></div><div class="full"><label>References (optional)</label><textarea id="cvReferences" placeholder="Reference name, designation, company, phone or email"></textarea></div><div class="full"><label>Languages (optional)</label><input id="cvLanguages" placeholder="e.g. English, Urdu, Pashto"></div>
+  </div>
+ </div>
+ <div class="panel"><h3>Education</h3>
+  <div class="form-grid">
+   <div><label>Qualification</label><select id="eduQualification"><option value="">Select Qualification</option><option>Middle</option><option>Matric</option><option>Intermediate (FA)</option><option>Intermediate (FSc Pre-Medical)</option><option>Intermediate (FSc Pre-Engineering)</option><option>Intermediate (ICS)</option><option>Intermediate (I.Com)</option><option>DAE</option><option>BA</option><option>BSc</option><option>B.Com</option><option>BS</option><option>BBA</option><option>MA</option><option>MSc</option><option>M.Com</option><option>MBA</option><option>MPhil</option><option>PhD</option><option value="Other">Other</option></select><input id="eduQualificationOther" placeholder="Enter qualification" style="display:none;margin-top:7px"></div>
+   <div><label>Institute</label><input id="eduInstitute"></div>
+   <div><label>Subject / Group</label><select id="eduSubject"><option value="">Select Subject / Group</option><option>Pre-Medical</option><option>Pre-Engineering</option><option>Computer Science</option><option>Commerce</option><option>Arts / Humanities</option><option>General Science</option><option>Computer Science / IT</option><option>Business Administration</option><option>English</option><option>Education</option><option>Islamic Studies</option><option>Other</option></select></div>
+   <div><label>Passing Year</label><input id="eduYear"></div>
+  </div>
+  <button class="btn green" onclick="addEducation()">Add Education</button><div id="educationList"></div>
+ </div>
+ <div class="panel"><h3>Work Experience</h3>
+  <div class="form-grid">
+   <div><label>Job Title</label><select id="workJob"><option value="">Select Job Title</option><option>Field Executive</option><option>Sales Representative</option><option>Accountant</option><option>Teacher</option><option>Office Assistant</option><option>Data Entry Operator</option><option>Computer Operator</option><option>Graphic Designer</option><option>Web Developer</option><option>Customer Support Officer</option><option>Marketing Officer</option><option>Manager</option><option>Intern</option><option value="Other">Other</option></select><input id="workJobOther" placeholder="Enter job title" style="display:none;margin-top:7px"></div>
+   <div><label>Company / Location</label><input id="workCompany"></div>
+   <div><label>Start Date</label><input id="workStart" type="month"></div>
+   <div><label>End Date</label><input id="workEnd" type="month" placeholder="Leave blank if current"></div>
+   <div class="full"><label>Responsibilities</label><textarea id="workDescription"></textarea></div>
+  </div>
+  <button class="btn green" onclick="addWork()">Add Experience</button><div id="workList"></div>
+ </div>
+ <div class="panel"><h3>Expertise / Skills</h3><div class="form-grid"><div><label>Choose Skill</label><select id="skillSelect"><option value="">Select a skill</option><option>Microsoft Word</option><option>Microsoft Excel</option><option>Microsoft PowerPoint</option><option>Communication</option><option>Teamwork</option><option>Leadership</option><option>Problem Solving</option><option>Time Management</option><option>Data Entry</option><option>Customer Service</option><option>Sales & Marketing</option><option>Graphic Design</option><option>Video Editing</option><option>Web Development</option><option>Computer Literacy</option><option value="Other">Other</option></select></div><div><label>Custom Skill (optional)</label><input id="skillInput" placeholder="Type your own skill"></div></div><button class="btn green" onclick="addSkill()">Add Skill</button><div id="skillsList"></div></div>
+ <div class="panel"><h3>Live CV Preview</h3>
+  <button class="btn" onclick="previewCV()">Update Preview</button>
+  <div id="cvPreview" class="preview" style="padding:0;overflow:hidden;background:#fff;color:#333"></div>
+  <div class="nexa-watermark-notice" role="note">🔒 <b>Preview Protection:</b> Payment approve hone tak CV par <b>NEXA CV BUILDER</b> watermark nazar aayega. Admin se payment approve hote hi watermark automatically hat jayega aur PDF download unlock ho jayega.</div>
+  <button class="btn gold" onclick="requestCVPayment()">Continue to Payment</button>
+  <div id="cvMessage" class="status"></div>
+ </div>`;
+ $("cvPhoto").addEventListener("change",function(){
+  const f=this.files&&this.files[0];if(!f){cvPhotoData="";previewCV();return;}
+  if(!f.type.startsWith("image/")){alert("Please select an image file.");this.value="";return;}
+  const reader=new FileReader();reader.onload=()=>{cvPhotoData=reader.result;previewCV();};reader.readAsDataURL(f);
+ });
+ $("cvProfile").addEventListener("input",previewCV);
+ const qSelect=$("eduQualification"),qOther=$("eduQualificationOther");
+ qSelect.addEventListener("change",()=>{qOther.style.display=qSelect.value==="Other"?"block":"none";});
+ const jSelect=$("workJob"),jOther=$("workJobOther");
+ jSelect.addEventListener("change",()=>{jOther.style.display=jSelect.value==="Other"?"block":"none";});
+ syncCVTemplateCards();previewCV();
+}
+window.addEducation=function(){
+ const qualification=($("eduQualification").value==="Other"?$("eduQualificationOther").value:$("eduQualification").value).trim();
+ if(!qualification){alert("Please select or enter a qualification.");return;}
+ education.push({qualification,institute:$("eduInstitute").value,subject:$("eduSubject").value,year:$("eduYear").value});
+ $("educationList").innerHTML=education.map(e=>`<div class="entry">${escapeHTML(e.qualification)} — ${escapeHTML(e.institute)} (${escapeHTML(e.year)})</div>`).join("");
+ ["eduQualification","eduQualificationOther","eduInstitute","eduSubject","eduYear"].forEach(id=>$(id).value="");$("eduQualificationOther").style.display="none";previewCV();
+};
+window.addWork=function(){
+ const job=($("workJob").value==="Other"?$("workJobOther").value:$("workJob").value).trim();if(!job){alert("Please select or enter a job title.");return;}
+ work.push({job,company:$("workCompany").value,start:$("workStart").value,end:$("workEnd").value,description:$("workDescription").value});
+ $("workList").innerHTML=work.map(e=>`<div class="entry">${escapeHTML(e.job)} — ${escapeHTML(e.company)}<br>${escapeHTML(e.start)} to ${escapeHTML(e.end||"Present")}<br>${escapeHTML(e.description)}</div>`).join("");
+ ["workJob","workJobOther","workCompany","workStart","workEnd","workDescription"].forEach(id=>$(id).value="");$("workJobOther").style.display="none";previewCV();
+};
+window.addSkill=function(){
+ const s=($("skillInput").value.trim()||$("skillSelect").value).trim();if(!s||s==="Other"){alert("Please select a skill or enter a custom skill.");return;}if(skills.includes(s)){alert("This skill has already been added.");return;}skills.push(s);$("skillInput").value="";$("skillSelect").value="";
+ $("skillsList").innerHTML=skills.map(x=>`<span class="chip">${escapeHTML(x)}</span>`).join("");previewCV();
+};
+function fitCVPreview(){
+ const host=$("cvPreview");if(!host)return;
+ const old=host.querySelector(".a4-stage");
+ if(!old){const content=host.innerHTML;host.innerHTML=`<div class="a4-stage"><div class="a4-sheet">${content}</div></div>`;}
+ const stage=host.querySelector(".a4-stage"),sheet=host.querySelector(".a4-sheet");
+ if(stage&&sheet){const scale=stage.clientWidth/794;sheet.style.transform=`scale(${scale})`;}
+}
+window.addEventListener("resize",()=>{if($("cvPreview")&&$("cvPreview").querySelector(".a4-stage"))fitCVPreview();});
+window.syncCVTemplateCards=function(){
+ const chosen=$("cvTemplate")?.value||"Blue Sidebar";
+ document.querySelectorAll(".cv-template-card").forEach(card=>{
+  const active=card.dataset.template===chosen;
+  card.classList.toggle("selected",active);
+  const mark=card.querySelector(".choose-mark");
+  if(mark)mark.textContent=active?"✓ Selected":"Tap to select";
+ });
+};
+window.chooseCVTemplate=function(name){
+ const picker=$("cvTemplate");if(!picker)return;
+ picker.value=name;syncCVTemplateCards();previewCV();
+};
+function normalizeCVPhone(value){const raw=String(value||"").trim();if(!raw||raw==="+92")return "";const compact=raw.replace(/[\s()-]/g,"");if(compact.startsWith("+92"))return "+92 "+compact.slice(3);if(compact.startsWith("0092"))return "+92 "+compact.slice(4);if(compact.startsWith("0"))return "+92 "+compact.slice(1);return "+92 "+compact.replace(/^\+/,"");}
+function getCV(){return {name:$("cvName").value.trim().toUpperCase(),phone:normalizeCVPhone($("cvPhone").value),email:$("cvEmail").value,job:$("cvJob").value,website:$("cvWebsite").value,address:$("cvAddress").value,profile:$("cvProfile").value,references:$("cvReferences").value,languages:$("cvLanguages").value,photo:cvPhotoData,education:[...education],work:[...work],skills:[...skills],template:$("cvTemplate").value};}
+window.previewCV=function(){
+ if(!$("cvName"))return;
+ const d=getCV();
+ const photo=d.photo?`<img src="${d.photo}" style="width:${d.template==='Navy Geometric'?'88px':'112px'};height:${d.template==='Navy Geometric'?'88px':'112px'};border-radius:${d.template==='Navy Geometric'?'2px':'50%'};object-fit:cover;border:4px solid #fff;margin:10px auto 22px;display:block">`:`<div style="width:${d.template==='Navy Geometric'?'88px':'112px'};height:${d.template==='Navy Geometric'?'88px':'112px'};border-radius:${d.template==='Navy Geometric'?'2px':'50%'};background:#e8eef8;color:#2057a0;display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:bold;margin:10px auto 22px">${escapeHTML((d.name||"Y").charAt(0).toUpperCase())}</div>`;
+ const contact=[d.phone,d.email,d.website,d.address].filter(Boolean).map(x=>`<div style="font-size:10px;margin:5px 0;overflow-wrap:anywhere">${escapeHTML(x)}</div>`).join("");
+ if(d.template==="Navy Geometric"){
+  const navySkills=d.skills.map(x=>`<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:10px;margin:8px 0"><span>${escapeHTML(x)}</span><span style="display:block;width:48px;height:5px;background:#d8deea"><i style="display:block;width:75%;height:5px;background:#18264f"></i></span></div>`).join("");
+  const navyWork=d.work.map(e=>`<div style="margin:0 0 18px"><div style="display:flex;justify-content:space-between;gap:8px;font-weight:bold;font-size:12px"><span>${escapeHTML(e.job)}</span><span>${escapeHTML(e.start||"")}${e.end?"–"+escapeHTML(e.end):""}</span></div><div style="font-size:10px;margin:4px 0">${escapeHTML(e.company)}</div><div class="cv-justify" style="font-size:9px;color:#555;line-height:1.4">${escapeHTML(e.description)}</div></div>`).join("");
+  const navyEdu=d.education.map(e=>`<div style="margin:0 0 14px"><div style="display:flex;justify-content:space-between;gap:8px;font-weight:bold;font-size:11px"><span>${escapeHTML(e.qualification)}</span><span>${escapeHTML(e.year)}</span></div><div style="font-size:10px;margin-top:4px">${escapeHTML(e.institute)}${e.subject?" | "+escapeHTML(e.subject):""}</div></div>`).join("");
+  $("cvPreview").innerHTML=`<div style="display:grid;grid-template-columns:38% 62%;min-height:790px;font-family:Arial,sans-serif;text-align:left;background:#fff;color:#17213d"><aside style="background:#17234c;color:#fff;padding:18px 16px 35px;clip-path:polygon(0 0,100% 0,100% 88%,50% 100%,0 88%);min-height:700px">${photo}<h3 style="font-size:12px;border-bottom:1px solid #fff;padding-bottom:7px">Contact Me</h3><div style="font-size:9px;line-height:1.6">${contact||"Phone · Email · Address"}</div><h3 style="font-size:13px;border-bottom:1px solid #fff;padding-bottom:7px;margin-top:24px">About Me</h3><p style="font-size:9px;line-height:1.5">${escapeHTML(d.profile||"Your professional profile will appear here.")}</p></aside><main style="padding:28px 22px;background:#fff"><h1 style="font-size:30px;line-height:1.05;color:#151515;margin:0;overflow-wrap:anywhere">${escapeHTML(d.name||"Your Name")}</h1><div style="font-size:13px;letter-spacing:2px;color:#222;margin:5px 0 25px">${escapeHTML(d.job||"Professional Title")}</div><h3 style="font-size:15px;border-bottom:2px solid #17234c;padding-bottom:6px">Work Experience</h3>${navyWork||"<p style='font-size:10px;color:#888'>Work experience will appear here.</p>"}<h3 style="font-size:15px;border-bottom:2px solid #17234c;padding-bottom:6px;margin-top:20px">Education</h3>${navyEdu||"<p style='font-size:10px;color:#888'>Education details will appear here.</p>"}<h3 style="font-size:15px;border-bottom:2px solid #17234c;padding-bottom:6px;margin-top:20px">Skills</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 12px">${navySkills||"<span style='font-size:10px'>Your skills appear here.</span>"}</div><h3 style="font-size:13px;margin-top:22px">Reference</h3><b style="font-size:10px">Available on request</b></main></div>`;
+  fitCVPreview();return;
+ }
+ if(d.template==="Charcoal Gold"){
+  const goldPhoto=d.photo?`<img src="${d.photo}" style="width:92px;height:92px;object-fit:cover;border-radius:50%;border:4px solid #f4b400;display:block;margin:0 auto 22px">`:`<div style="width:92px;height:92px;border-radius:50%;background:#4a4a4a;border:4px solid #f4b400;color:#fff;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:bold;margin:0 auto 22px">${escapeHTML((d.name||"Y").charAt(0).toUpperCase())}</div>`;
+  const goldContact=[d.phone,d.email,d.website,d.address].filter(Boolean).map(x=>`<div style="font-size:9px;line-height:1.5;margin:5px 0;overflow-wrap:anywhere">${escapeHTML(x)}</div>`).join("");
+  const goldWork=d.work.map(e=>`<div style="margin:0 0 15px;font-size:10px;line-height:1.45"><div style="display:flex;justify-content:space-between;gap:8px"><b>${escapeHTML(e.job)}</b><span>${escapeHTML(e.start||"")}${e.end?" – "+escapeHTML(e.end):" – Present"}</span></div><div style="font-size:9px;color:#555;margin:3px 0">${escapeHTML(e.company)}</div><div class="cv-justify" style="font-size:9px;color:#666">${escapeHTML(e.description)}</div></div>`).join("");
+  const goldEdu=d.education.map(e=>`<div style="margin:0 0 12px;font-size:10px"><div style="display:flex;justify-content:space-between;gap:8px"><b>${escapeHTML(e.qualification)}</b><span>${escapeHTML(e.year)}</span></div><div style="font-size:9px;color:#555;margin-top:3px">${escapeHTML(e.institute)}${e.subject?" · "+escapeHTML(e.subject):""}</div></div>`).join("");
+  const goldSkills=d.skills.map(x=>`<div style="display:flex;align-items:center;gap:8px;font-size:9px;margin:8px 0"><span style="min-width:70px">${escapeHTML(x)}</span><span style="height:3px;background:#e8c65a;flex:1"></span></div>`).join("");
+  const goldRefs=escapeHTML(d.references||"References available on request.").replace(/\n/g,"<br>");
+  const goldLang=escapeHTML(d.languages||"");
+  $("cvPreview").innerHTML=`<div style="display:grid;grid-template-columns:35% 65%;min-height:800px;background:#f7f7f7;color:#252525;font-family:Arial,sans-serif;text-align:left;border:1px solid #ddd"><aside style="background:#292929;color:#fff;padding:22px 17px;min-width:0;border-right:3px solid #f0b400"><div style="background:#f0b400;margin:-22px -17px 22px;padding:18px 10px 14px;text-align:center">${goldPhoto}</div><h3 style="font-size:12px;border-bottom:1px solid #d9ad35;padding-bottom:7px">✦ CONTACT ME</h3><div>${goldContact||"Phone · Email · Address"}</div><h3 style="font-size:12px;border-bottom:1px solid #d9ad35;padding-bottom:7px;margin-top:24px">✦ REFERENCES</h3><div style="font-size:9px;line-height:1.55;overflow-wrap:anywhere">${goldRefs}</div><h3 style="font-size:12px;border-bottom:1px solid #d9ad35;padding-bottom:7px;margin-top:24px">✦ EDUCATION</h3>${goldEdu||"<small>Add education details.</small>"}</aside><main style="padding:25px 23px;background:#fff;min-width:0"><div style="border-left:5px solid #f0b400;padding:5px 0 8px 14px;margin-bottom:28px"><h1 style="font-size:27px;line-height:1.1;margin:0;color:#242424;overflow-wrap:anywhere">${escapeHTML(d.name||"YOUR FULL NAME")}</h1><div style="font-size:10px;letter-spacing:1px;color:#777;margin-top:5px">${escapeHTML(d.job||"PROFESSIONAL TITLE")}</div></div><h3 style="font-size:13px;color:#292929;border-bottom:1px solid #d8ad37;padding-bottom:7px">✦ ABOUT ME</h3><p style="font-size:9px;line-height:1.6;color:#666;margin:9px 0 24px">${escapeHTML(d.profile||"Your professional profile will appear here.")}</p><h3 style="font-size:13px;color:#292929;border-bottom:1px solid #d8ad37;padding-bottom:7px">✦ JOB EXPERIENCE</h3>${goldWork||"<p style='font-size:10px;color:#888'>Add your work experience.</p>"}<h3 style="font-size:13px;color:#292929;border-bottom:1px solid #d8ad37;padding-bottom:7px;margin-top:20px">✦ SKILLS</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:0 12px">${goldSkills||"<small>Add your skills.</small>"}</div><h3 style="font-size:12px;color:#292929;margin-top:20px">LANGUAGES</h3><p style="font-size:9px;color:#555">${goldLang||"Add languages in the form."}</p></main></div>`;
+  fitCVPreview();return;
+ }
+ if(d.template==="Navy Pink"){
+  const pinkWork=d.work.map(e=>`<div style="display:grid;grid-template-columns:36% 64%;gap:8px;margin:0 0 13px;font-size:10px;line-height:1.4"><div><b>${escapeHTML(e.start||"")} ${e.end?"– "+escapeHTML(e.end):"– Present"}</b></div><div><b>${escapeHTML(e.job)}</b><div>${escapeHTML(e.company)}</div><div class="cv-justify" style="color:#687080;margin-top:3px">${escapeHTML(e.description)}</div></div></div>`).join("");
+  const pinkEdu=d.education.map(e=>`<div style="display:grid;grid-template-columns:36% 64%;gap:8px;margin:0 0 10px;font-size:10px;line-height:1.4"><div><b>${escapeHTML(e.year)}</b></div><div><b>${escapeHTML(e.qualification)}</b><div>${escapeHTML(e.institute)}${e.subject?" · "+escapeHTML(e.subject):""}</div></div></div>`).join("");
+  const pinkSkills=d.skills.map(x=>`<div style="display:flex;align-items:center;gap:6px;margin:7px 0;font-size:9px"><span style="min-width:58px">${escapeHTML(x)}</span><span style="height:3px;background:#fff;flex:1;opacity:.85"></span></div>`).join("");
+  const refs=escapeHTML(d.references||"References available on request.").replace(/\n/g,"<br>");
+  const langs=escapeHTML(d.languages||"Add your languages in the form.");
+  const sidePhoto=d.photo?`<img src="${d.photo}" style="width:88px;height:88px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 24px;border:3px solid #27345b">`:`<div style="width:88px;height:88px;border-radius:50%;background:#27345b;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:32px;font-weight:bold">${escapeHTML((d.name||"Y").charAt(0).toUpperCase())}</div>`;
+  const sideContact=[d.phone,d.email,d.website,d.address].filter(Boolean).map(x=>`<div style="font-size:9px;line-height:1.45;margin:6px 0;overflow-wrap:anywhere">${escapeHTML(x)}</div>`).join("");
+  $("cvPreview").innerHTML=`<div style="display:grid;grid-template-columns:35% 65%;min-height:790px;background:#f5f6f8;color:#18213c;font-family:Arial,sans-serif;text-align:left"><aside style="background:#171d39;color:#fff;padding:22px 17px 28px;min-width:0">${sidePhoto}<div style="border-left:2px solid #e91e55;padding-left:12px;margin:0 0 30px"><h3 style="font-size:12px;margin:0 0 9px">Contact</h3>${sideContact||"<small>Phone · Email · Address</small>"}</div><div style="border-left:2px solid #e91e55;padding-left:12px;margin:0 0 28px"><h3 style="font-size:12px;margin:0 0 9px">Skills</h3>${pinkSkills||"<small>Add your skills</small>"}</div><div style="border-left:2px solid #e91e55;padding-left:12px"><h3 style="font-size:12px;margin:0 0 9px">References</h3><div style="font-size:9px;line-height:1.55;overflow-wrap:anywhere">${refs}</div></div></aside><main style="min-width:0;background:#f5f6f8;padding:0 22px 28px"><div style="background:#e91e55;color:white;padding:22px 18px;margin:0 -22px 28px"><div style="font-size:25px;letter-spacing:1px;font-weight:700;overflow-wrap:anywhere">${escapeHTML(d.name||"YOUR FULL NAME")}</div><div style="font-size:11px;letter-spacing:1px;margin-top:5px">${escapeHTML(d.job||"Current Designation")}${d.website?" | "+escapeHTML(d.website):""}</div></div><h3 style="font-size:13px;margin:0 0 8px">About Me</h3><p style="font-size:9px;line-height:1.55;color:#687080;margin:0 0 24px">${escapeHTML(d.profile||"Your professional profile will appear here.")}</p><h3 style="font-size:13px;border-bottom:1px solid #17213d;padding-bottom:6px">Work Experience</h3>${pinkWork||"<p style='font-size:10px;color:#888'>Add your work experience.</p>"}<h3 style="font-size:13px;border-bottom:1px solid #17213d;padding-bottom:6px;margin-top:20px">Education</h3>${pinkEdu||"<p style='font-size:10px;color:#888'>Add your education.</p>"}<h3 style="font-size:13px;border-bottom:1px solid #17213d;padding-bottom:6px;margin-top:20px">Languages</h3><p style="font-size:10px;line-height:1.5">${langs}</p></main></div>`;
+  fitCVPreview();return;
+ }
+ const skillsHTML=d.skills.map(x=>`<div style="font-size:11px;margin:9px 0">${escapeHTML(x)}</div>`).join("");
+ const workHTML=d.work.map(e=>`<div style="margin:0 0 22px"><div style="display:flex;justify-content:space-between;gap:8px;font-weight:bold;font-size:13px"><span>${escapeHTML(e.job)}</span><span>${escapeHTML(e.end||"Present")}</span></div><div style="font-size:11px;margin:5px 0">${escapeHTML(e.company)}${e.start?" | "+escapeHTML(e.start):""}</div><div class="cv-justify" style="font-size:10px;color:#777;line-height:1.45">${escapeHTML(e.description)}</div></div>`).join("");
+ const eduHTML=d.education.map(e=>`<div style="margin:0 0 18px"><div style="display:flex;justify-content:space-between;gap:8px;font-weight:bold;font-size:12px"><span>${escapeHTML(e.qualification)}</span><span>${escapeHTML(e.year)}</span></div><div style="font-size:11px;margin:5px 0">${escapeHTML(e.institute)}${e.subject?" | "+escapeHTML(e.subject):""}</div></div>`).join("");
+ $("cvPreview").innerHTML=`<div style="display:grid;grid-template-columns:34% 66%;min-height:780px;font-family:Arial,sans-serif;text-align:left"><aside style="background:#2057a0;color:white;padding:25px 18px">${photo}<h3 style="font-size:17px;border-bottom:1px solid #fff;padding-bottom:8px">About Me</h3><p style="font-size:10px;line-height:1.5">${escapeHTML(d.profile||"Your professional profile will appear here.")}</p><h3 style="font-size:17px;border-bottom:1px solid #fff;padding-bottom:8px;margin-top:28px">Expertise</h3>${skillsHTML||"<small>Your skills will appear here.</small>"}</aside><main style="padding:42px 28px;background:#fff"><h1 style="font-size:36px;line-height:1.05;color:#2057a0;margin:0;overflow-wrap:anywhere">${escapeHTML(d.name||"Your Name")}</h1><div style="font-size:27px;letter-spacing:5px;color:#2057a0;margin:4px 0 3px">${escapeHTML((d.name||"Your Name").split(" ").slice(1).join(" "))}</div><div style="font-size:15px;color:#444;margin-bottom:14px">${escapeHTML(d.job||"Professional Title")}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;margin-bottom:42px">${contact}</div><h3 style="font-size:18px;border-bottom:1px solid #555;padding-bottom:8px">Experience</h3>${workHTML||"<p style='font-size:11px;color:#888'>Work experience will appear here.</p>"}<h3 style="font-size:18px;border-bottom:1px solid #555;padding-bottom:8px;margin-top:28px">Education</h3>${eduHTML||"<p style='font-size:11px;color:#888'>Education details will appear here.</p>"}</main></div>`;
+ fitCVPreview();
+};
+window.requestCVPayment=function(){
+ const d=getCV();
+ if(!d.name||!d.phone){showStatus("cvMessage","Please enter your name and phone number.","error");return;}
+ if(!d.education.length){showStatus("cvMessage","Please add at least one education entry.","error");return;}
+ cvData=d;currentDesign={type:"cv",data:d};
+ $("customerName").value=d.name;$("customerPhone").value=d.phone;
+ $("orderService").value="CV Builder";updateAmount();showPage("payment");
+};
+function makeCVPDF(d){
+ const pdf=new jspdf.jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
+ if(d.template==="Charcoal Gold"){
+  const W=210,H=297,side=74,rightX=88,rightW=108;
+  pdf.setFillColor(42,42,42);pdf.rect(0,0,side,H,"F");pdf.setFillColor(240,180,0);pdf.rect(0,0,side,5,"F");pdf.setFillColor(240,180,0);pdf.rect(side,0,3,H,"F");
+  pdf.setFillColor(240,180,0);pdf.rect(0,0,side,53,"F");
+  if(d.photo){try{pdf.addImage(d.photo,"JPEG",20,10,34,34,undefined,"FAST");}catch(e){try{pdf.addImage(d.photo,"PNG",20,10,34,34,undefined,"FAST");}catch(_){}}}
+  else{pdf.setFillColor(70,70,70);pdf.circle(37,27,17,"F");pdf.setTextColor(255,255,255);pdf.setFont("helvetica","bold");pdf.setFontSize(22);pdf.text((d.name||"Y").charAt(0).toUpperCase(),37,34,{align:"center"});}
+  let sy=65;
+  const sh=t=>{pdf.setTextColor(255,190,20);pdf.setFont("helvetica","bold");pdf.setFontSize(10);pdf.text(t,9,sy);pdf.setDrawColor(210,165,40);pdf.line(9,sy+2,65,sy+2);sy+=8;};
+  const sb=(t,size=7)=>{pdf.setTextColor(245,245,245);pdf.setFont("helvetica","normal");pdf.setFontSize(size);const ls=pdf.splitTextToSize(String(t||""),56);pdf.text(ls,9,sy);sy+=ls.length*4.2+5;};
+  sh("CONTACT ME");[d.phone,d.email,d.website,d.address].filter(Boolean).forEach(x=>sb(x,6.5));sy+=5;sh("REFERENCES");sb(d.references||"Available on request.",6.5);sy+=5;sh("EDUCATION");d.education.forEach(e=>{sb(e.qualification+" · "+(e.year||""),7);sb([e.institute,e.subject].filter(Boolean).join(" · "),6.5);});
+  let y=23;pdf.setTextColor(40,40,40);pdf.setFont("helvetica","bold");pdf.setFontSize(24);const nm=pdf.splitTextToSize(d.name||"YOUR FULL NAME",rightW);pdf.text(nm,rightX,y);y+=nm.length*9+2;pdf.setFont("helvetica","normal");pdf.setFontSize(10);pdf.setTextColor(100,100,100);pdf.text(d.job||"PROFESSIONAL TITLE",rightX,y);y+=17;
+  const hd=t=>{if(y>272){pdf.addPage();y=20;}pdf.setTextColor(45,45,45);pdf.setFont("helvetica","bold");pdf.setFontSize(12);pdf.text(t,rightX,y);pdf.setDrawColor(220,170,35);pdf.setLineWidth(.6);pdf.line(rightX,y+2,rightX+rightW,y+2);y+=10;};
+  const tx=(t,size=7.5)=>{pdf.setTextColor(90,90,90);pdf.setFont("helvetica","normal");pdf.setFontSize(size);const ls=pdf.splitTextToSize(String(t||""),rightW);if(y+ls.length*3.8>H-12){pdf.addPage();y=20;}pdf.text(ls,rightX,y);y+=ls.length*3.8+3;};
+  hd("ABOUT ME");tx(d.profile||"");hd("JOB EXPERIENCE");if(d.work.length){d.work.forEach(e=>{pdf.setTextColor(45,45,45);pdf.setFont("helvetica","bold");pdf.setFontSize(8);pdf.text(pdf.splitTextToSize(e.job||"",rightW-25),rightX,y);pdf.setFont("helvetica","normal");pdf.setFontSize(7);pdf.text([e.start,e.end||"Present"].filter(Boolean).join(" – "),rightX+rightW,y,{align:"right"});y+=5;tx(e.company,7);tx(e.description,7);});}else tx("No work experience added.");
+  hd("SKILLS");tx(d.skills.join("     "),7.5);hd("LANGUAGES");tx(d.languages||"",7.5);
+  pdf.save("NEXA-Charcoal-Gold-CV.pdf");return;
+ }
+ if(d.template==="Navy Geometric"){
+  const W=210,H=297, sx=10, sw=76, rx=98, rw=100;
+  pdf.setFillColor(23,35,76);pdf.rect(sx,0,sw,H,"F");
+  let sy=20;
+  if(d.photo){try{pdf.addImage(d.photo,"JPEG",sx+20,sy,36,36,undefined,"FAST");}catch(e){try{pdf.addImage(d.photo,"PNG",sx+20,sy,36,36,undefined,"FAST");}catch(_){}}}
+  else{pdf.setFillColor(235,238,245);pdf.rect(sx+20,sy,36,36,"F");pdf.setTextColor(23,35,76);pdf.setFont("helvetica","bold");pdf.setFontSize(22);pdf.text((d.name||"Y").charAt(0).toUpperCase(),sx+38,sy+24,{align:"center"});}
+  sy=66;
+  const sideHead=t=>{pdf.setTextColor(255,255,255);pdf.setFont("helvetica","bold");pdf.setFontSize(11);pdf.text(t,sx+9,sy);pdf.setDrawColor(255,255,255);pdf.line(sx+9,sy+2, sx+sw-8,sy+2);sy+=8;};
+  const sideBody=t=>{pdf.setTextColor(245,247,252);pdf.setFont("helvetica","normal");pdf.setFontSize(7);const ls=pdf.splitTextToSize(String(t||""),sw-18);pdf.text(ls,sx+9,sy);sy+=ls.length*3.5+3;};
+  sideHead("Contact Me");[d.phone,d.email,d.website,d.address].filter(Boolean).forEach(sideBody);
+  sy+=5;sideHead("About Me");sideBody(d.profile||"");
+  let y=30;pdf.setTextColor(20,20,20);pdf.setFont("helvetica","bold");pdf.setFontSize(27);const nm=pdf.splitTextToSize(d.name||"Your Name",rw);pdf.text(nm,rx,y);y+=nm.length*11+5;
+  pdf.setFont("helvetica","normal");pdf.setFontSize(12);pdf.text(d.job||"Professional Title",rx,y);y+=20;
+  const head=t=>{if(y>270){pdf.addPage();y=20;}pdf.setTextColor(23,35,76);pdf.setFont("helvetica","bold");pdf.setFontSize(13);pdf.text(t,rx,y);pdf.setDrawColor(23,35,76);pdf.setLineWidth(.5);pdf.line(rx,y+2,rx+rw,y+2);y+=13;};
+  const body=(t,size=8)=>{pdf.setTextColor(65,65,65);pdf.setFont("helvetica","normal");pdf.setFontSize(size);const ls=pdf.splitTextToSize(String(t||""),rw);if(y+ls.length*4>285){pdf.addPage();y=20;}pdf.text(ls,rx,y);y+=ls.length*4.5+4;};
+  head("Work Experience");d.work.forEach(e=>{pdf.setFont("helvetica","bold");pdf.setFontSize(9);pdf.setTextColor(25,25,25);pdf.text(pdf.splitTextToSize(e.job||"",rw-22),rx,y);pdf.text([e.start,e.end||"Present"].filter(Boolean).join("–"),rx+rw,y,{align:"right"});y+=5;body(e.company);body(e.description,7);y+=3;});if(!d.work.length)body("No work experience added.");
+  head("Education");d.education.forEach(e=>{pdf.setFont("helvetica","bold");pdf.setFontSize(9);pdf.setTextColor(25,25,25);pdf.text(pdf.splitTextToSize(e.qualification||"",rw-20),rx,y);pdf.text(String(e.year||""),rx+rw,y,{align:"right"});y+=5;body([e.institute,e.subject].filter(Boolean).join(" | "));y+=2;});if(!d.education.length)body("No education details added.");
+  head("Skills");body(d.skills.join("     "),8);head("Reference");body("Available on request",8);
+  pdf.save("NEXA-Navy-Geometric-CV.pdf");return;
+ }
+ const W=210,H=297,side=70,rightX=82,rightW=116;
+ pdf.setFillColor(32,87,160);pdf.rect(0,0,side,H,"F");
+ pdf.setFillColor(255,255,255);pdf.rect(side,0,W-side,H,"F");
+ let sy=18;
+ if(d.photo){try{pdf.addImage(d.photo,"JPEG",19,sy,32,32,undefined,"FAST");}catch(e){try{pdf.addImage(d.photo,"PNG",19,sy,32,32,undefined,"FAST");}catch(_){}}}
+ else {pdf.setFillColor(235,241,250);pdf.circle(35,sy+16,16,"F");pdf.setTextColor(32,87,160);pdf.setFont("helvetica","bold");pdf.setFontSize(22);pdf.text((d.name||"Y").charAt(0).toUpperCase(),35,sy+23,{align:"center"});}
+ sy= d.photo?62:58;
+ function sideTitle(t){pdf.setTextColor(255,255,255);pdf.setFont("helvetica","bold");pdf.setFontSize(14);pdf.text(t,14,sy);pdf.setDrawColor(255,255,255);pdf.setLineWidth(.35);pdf.line(14,sy+3,side-12,sy+3);sy+=10;}
+ function sideText(t,size=8){pdf.setTextColor(245,248,255);pdf.setFont("helvetica","normal");pdf.setFontSize(size);const lines=pdf.splitTextToSize(String(t||""),side-26);pdf.text(lines,14,sy);sy+=lines.length*4+3;}
+ sideTitle("About Me");sideText(d.profile||"",8);
+ sy+=5;sideTitle("Expertise");d.skills.forEach(x=>sideText(x,8));
+ let y=25;
+ pdf.setTextColor(32,87,160);pdf.setFont("helvetica","bold");pdf.setFontSize(27);
+ const nameLines=pdf.splitTextToSize(d.name||"Your Name",rightW);pdf.text(nameLines,rightX,y);y+=nameLines.length*11+1;
+ pdf.setFont("helvetica","normal");pdf.setFontSize(15);pdf.setTextColor(45,91,153);pdf.text(d.job||"Professional Title",rightX,y);y+=9;
+ pdf.setTextColor(75,75,75);pdf.setFontSize(8);
+ [d.phone,d.email,d.website,d.address].filter(Boolean).forEach(t=>{const lines=pdf.splitTextToSize(String(t),rightW);pdf.text(lines,rightX,y);y+=lines.length*4+1;});
+ y+=12;
+ function heading(t){if(y>H-25){pdf.addPage();y=20;}pdf.setTextColor(55,55,55);pdf.setFont("helvetica","bold");pdf.setFontSize(14);pdf.text(t,rightX,y);pdf.setDrawColor(80,80,80);pdf.setLineWidth(.25);pdf.line(rightX,y+3,W-12,y+3);y+=11;}
+ function body(t,size=8){pdf.setFont("helvetica","normal");pdf.setFontSize(size);pdf.setTextColor(85,85,85);const lines=pdf.splitTextToSize(String(t||""),rightW);if(y+lines.length*4>H-12){pdf.addPage();y=20;}pdf.text(lines,rightX,y);y+=lines.length*4+3;}
+ heading("Experience");
+ if(d.work.length){d.work.forEach(e=>{pdf.setFont("helvetica","bold");pdf.setFontSize(10);pdf.setTextColor(55,55,55);const jobLines=pdf.splitTextToSize(e.job||"",rightW-22);pdf.text(jobLines,rightX,y);pdf.setFont("helvetica","bold");pdf.setFontSize(9);pdf.text(e.end||"Present",W-12,y,{align:"right"});y+=jobLines.length*4+2;body([e.company,e.start].filter(Boolean).join(" | "));body(e.description);y+=3;});}else body("No work experience added.");
+ heading("Education");
+ if(d.education.length){d.education.forEach(e=>{pdf.setFont("helvetica","bold");pdf.setFontSize(9);pdf.setTextColor(55,55,55);const q=pdf.splitTextToSize(e.qualification||"",rightW-20);pdf.text(q,rightX,y);pdf.text(String(e.year||""),W-12,y,{align:"right"});y+=q.length*4+2;body([e.institute,e.subject].filter(Boolean).join(" | "));y+=3;});}else body("No education details added.");
+ pdf.save("NEXA-Professional-CV.pdf");
+}
+window.downloadCV=function(){if(!approvedCV){alert("Admin approval required.");return;}makeCVPDF(approvedCV);};
+
+/* OTHER SERVICES */
+function otherToolForm(tool){
+ const configs={
+  poster:["Poster Maker",["Poster Title","Subtitle","Description","Contact Details"]],
+  logo:["Logo Maker",["Brand Name","Tagline","Preferred Colors","Logo Description"]],
+  document:["Document Studio",["Document Title","Document Type","Document Content","Instructions"]],
+  social:["Social Media Designer",["Business Name","Post Type","Post Text","Platform","Instructions"]],
+  website:["Website Development",["Website Name","Website Type","Required Pages","Required Features","Instructions"]]
+ };
+ const c=configs[tool];if(!c)return;
+ $("toolArea").innerHTML=`<h2>${c[0]}</h2><div class="panel"><div class="form-grid">${c[1].map((f,i)=>`<div class="${i>1?"full":""}"><label>${f}</label>${i>1?`<textarea id="other${i}"></textarea>`:`<input id="other${i}">`}</div>`).join("")}</div><button class="btn" onclick="saveOther('${tool}')">Save Requirements</button> <button class="btn gold" onclick="goToOrder('${tool}')">Continue to Order</button><div id="otherMessage" class="status"></div></div>`;
+}
+window.saveOther=function(tool){
+ if(tool==="experience"){
+  const fields={
+   employeeName:$("ecName").value.trim(),company:$("ecCompany").value.trim(),
+   job:$("ecJob").value.trim(),department:$("ecDepartment").value.trim(),
+   start:$("ecStart").value,end:$("ecEnd").value,issueDate:$("ecIssue").value,
+   certificateId:$("ecID").value.trim(),description:$("ecDescription").value.trim(),
+   authorizedPerson:$("ecAuthorized").value.trim(),
+   authorizedDesignation:$("ecAuthority").value.trim()
+  };
+  if(!fields.employeeName||!fields.company||!fields.job){
+   showStatus("otherMessage","Employee name, company name, and job title are required.","error");return false;
+  }
+  currentDesign={type:"experience",fields};
+  showStatus("otherMessage","Experience Certificate requirements saved.","success");
+  return true;
+ }
+ if(tool==="cv"){currentDesign={type:"cv",data:getCV()};return true;}
+ const fields={};
+ for(let i=0;i<10;i++){if($("other"+i))fields["field"+i]=$("other"+i).value;}
+ currentDesign={type:tool,fields};
+ showStatus("otherMessage","Requirements saved successfully.","success");
+ return true;
+};
+window.goToOrder=function(tool){
+ const saved=saveOther(tool);if(saved===false)return;
+ $("orderService").value=toolName(tool);updateAmount();showPage("payment");
+};
+
+
+/* SELF-SERVICE TOOLS — client-side utilities; no data is uploaded */
+window.openQuickTool=function(kind){
+ const quickNames={writer:"Application & Letter Writing",editor:"Typing & Text Editing",pdf:"Text to PDF Conversion",invoice:"Invoice & Bill Preparation",poster:"Poster Design"};
+ contactNexaWhatsApp(quickNames[kind]||"Digital Service");
+ return;
+ const area=$("quickToolArea");if(!area)return;area.style.display="block";showPage("studio");
+ const views={
+ writer:`<h2>📝 Application & Letter Writer</h2><p class="muted">Template select karein, apni details bharein aur draft generate karein. Official approval/verification zaroor check karein.</p><div class="form-grid"><div><label>Document Type</label><select id="qwType"><option value="general">General Application</option><option value="leave">Leave Application</option><option value="job">Job Application</option><option value="admission">Admission Application</option><option value="resignation">Resignation Letter</option><option value="complaint">Complaint Letter</option></select></div><div><label>Language</label><select id="qwLang"><option value="en">English</option><option value="ur">Urdu (editable draft)</option></select></div><div><label>Your Name</label><input id="qwName" placeholder="Full name"></div><div><label>Recipient / Office</label><input id="qwTo" placeholder="The Principal / Manager"></div><div><label>Subject</label><input id="qwSubject" placeholder="Application subject"></div><div><label>Date</label><input id="qwDate" type="date"></div><div class="full"><label>Reason / Details</label><textarea id="qwReason" placeholder="Write the reason and necessary details..."></textarea></div></div><div class="quick-actions"><button class="btn" onclick="generateQuickLetter()">Generate Draft</button></div><div id="qwPreview" class="quick-preview" style="margin-top:12px">Your generated application will appear here.</div><div class="quick-actions"><button class="btn green" onclick="downloadQuickText('qwPreview','NEXA-Application.txt')">Download TXT</button><button class="btn secondary" onclick="printQuick('qwPreview')">Print / Save PDF</button></div>`,
+ editor:`<h2>⌨️ Typing & Text Editor</h2><p class="muted">Apna text type ya paste karein. Text isi device ke browser mein process hota hai.</p><label>Document Text</label><textarea id="qeText" rows="12" placeholder="Yahan Urdu ya English mein type karein..."></textarea><p id="qeCount" class="muted">0 words · 0 characters</p><div class="quick-actions"><button class="btn" onclick="formatQuickText('upper')">UPPERCASE</button><button class="btn" onclick="formatQuickText('lower')">lowercase</button><button class="btn secondary" onclick="formatQuickText('title')">Title Case</button><button class="btn red" onclick="document.getElementById('qeText').value='';updateQuickCount()">Clear</button><button class="btn green" onclick="downloadQuickText('qeText','NEXA-Typed-Document.txt')">Download TXT</button><button class="btn secondary" onclick="printQuick('qeText')">Print / Save PDF</button></div>`,
+ pdf:`<h2>📄 Text to PDF</h2><p class="muted">Text likhein aur PDF generate karein. Urdu font support browser print mein behtar ho sakti hai.</p><label>PDF Document Title</label><input id="qpTitle" value="NEXA Document"><label>Content</label><textarea id="qpText" rows="12" placeholder="Write or paste your document here..."></textarea><div class="quick-actions"><button class="btn green" onclick="createTextPDF()">Download PDF</button><button class="btn secondary" onclick="printQuick('qpText','qpTitle')">Print / Save PDF</button></div>`,
+ invoice:`<h2>🧾 Invoice & Bill Calculator</h2><div class="form-grid"><div><label>Business / Shop Name</label><input id="qiShop" placeholder="Business name"></div><div><label>Customer Name</label><input id="qiCustomer" placeholder="Customer name"></div><div><label>Item / Service</label><input id="qiItem" placeholder="Item name"></div><div><label>Quantity</label><input id="qiQty" type="number" min="0" step="any" value="1" oninput="calculateQuickInvoice()"></div><div><label>Rate (Rs.)</label><input id="qiRate" type="number" min="0" step="any" value="0" oninput="calculateQuickInvoice()"></div><div><label>Discount (Rs.)</label><input id="qiDiscount" type="number" min="0" step="any" value="0" oninput="calculateQuickInvoice()"></div></div><div id="qiResult" class="quick-preview">Total: Rs. 0</div><div class="quick-actions"><button class="btn" onclick="calculateQuickInvoice()">Calculate</button><button class="btn secondary" onclick="printQuick('qiResult')">Print Bill</button></div>`,
+ poster:`<h2>🎨 Poster Maker Lite</h2><p class="muted">Simple poster design. Download PNG image and share it.</p><div class="form-grid"><div><label>Poster Title</label><input id="qpostTitle" value="YOUR TITLE" oninput="drawQuickPoster()"></div><div><label>Subtitle</label><input id="qpostSub" placeholder="Your tagline" oninput="drawQuickPoster()"></div><div><label>Details</label><textarea id="qpostBody" oninput="drawQuickPoster()" placeholder="Add details, date, contact..."></textarea></div><div><label>Background</label><select id="qpostColor" onchange="drawQuickPoster()"><option value="#102b50">Navy Blue</option><option value="#145c54">Green</option><option value="#5a2c70">Purple</option><option value="#8a3b25">Brown</option></select></div></div><canvas id="qpostCanvas" class="poster-canvas" width="800" height="1000"></canvas><div class="quick-actions"><button class="btn green" onclick="downloadQuickPoster()">Download PNG</button></div>`
+ };
+ area.innerHTML=views[kind]||"<p>Tool not available.</p>";area.scrollIntoView({behavior:"smooth",block:"start"});
+ if(kind==="editor"){const t=$("qeText");t.addEventListener("input",updateQuickCount);updateQuickCount();}
+ if(kind==="poster")drawQuickPoster();if(kind==="invoice")calculateQuickInvoice();
+};
+window.generateQuickLetter=function(){
+ const val=id=>$(id)?.value?.trim()||"";const name=val("qwName")||"[Your Name]",to=val("qwTo")||"The Concerned Officer",subject=val("qwSubject")||"Request for Consideration",reason=val("qwReason")||"[Please add your reason and details]",date=val("qwDate")||new Date().toLocaleDateString();
+ const type=val("qwType"),lang=val("qwLang");let body="";
+ if(lang==="ur"){
+  const heads={general:"درخواست برائے غور",leave:"درخواست برائے رخصت",job:"ملازمت کے لیے درخواست",admission:"داخلے کے لیے درخواست",resignation:"استعفیٰ",complaint:"شکایت"};
+  body=`بخدمت جناب،
+${to}
+
+موضوع: ${subject||heads[type]}
+
+محترم جناب،
+
+مؤدبانہ گزارش ہے کہ ${reason}
+
+براہِ کرم میری درخواست پر ہمدردانہ غور فرمائیں۔ آپ کی مہربانی ہوگی۔
+
+شکریہ،
+${name}
+تاریخ: ${date}`;
+ }else{
+  const opening={general:"I respectfully request your kind consideration regarding the matter stated below.",leave:"I would like to request leave for the following reason.",job:"I am writing to apply for the position and would appreciate your consideration.",admission:"I respectfully request admission and consideration of my application.",resignation:"Please accept this letter as my formal resignation.",complaint:"I am writing to bring the following matter to your attention."};
+  body=`To,
+${to}
+
+Subject: ${subject}
+
+Dear Sir/Madam,
+
+${opening[type]}
+
+${reason}
+
+I shall be grateful for your consideration.
+
+Yours faithfully,
+${name}
+Date: ${date}`;
+ }
+ $("qwPreview").textContent=body;
+};
+window.updateQuickCount=function(){const t=$("qeText")?.value||"";const words=t.trim()?t.trim().split(/\s+/).length:0;$("qeCount").textContent=`${words} words · ${t.length} characters`;};
+window.formatQuickText=function(mode){const t=$("qeText");if(!t)return;const v=t.value;t.value=mode==="upper"?v.toLocaleUpperCase():mode==="lower"?v.toLocaleLowerCase():v.replace(/\b\w/g,c=>c.toUpperCase());updateQuickCount();};
+window.downloadQuickText=function(id,name){const el=$(id);if(!el)return;const text=el.value??el.textContent;const blob=new Blob([text],{type:"text/plain;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href);};
+window.printQuick=function(id,titleId){const el=$(id);if(!el)return;const title=titleId?($(titleId)?.value||"NEXA Document"):"NEXA Document";const value=el.value??el.textContent;const w=window.open("","_blank");if(!w){alert("Please allow pop-ups to print this document.");return;}w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>${escapeHTML(title)}</title><style>body{font:15px Arial,sans-serif;white-space:pre-wrap;line-height:1.65;padding:28px;color:#111}h1{font-size:22px}</style><style id="nexa-customer-first-all-cards-final">
+/* Same customer-friendly layout as Education for every service and self-service card */
+#studio .grid,
+#studio .self-grid{
+  display:flex!important;flex-direction:column!important;align-items:stretch!important;
+  gap:12px!important;width:100%!important;max-width:920px!important;margin:0 auto!important;
+}
+#studio .grid>.card,
+#studio .self-grid>.card{
+  box-sizing:border-box!important;position:relative!important;isolation:isolate!important;
+  display:grid!important;grid-template-columns:58px minmax(0,1fr) auto!important;
+  grid-template-rows:auto auto auto!important;align-items:center!important;
+  column-gap:16px!important;row-gap:8px!important;
+  width:100%!important;min-width:0!important;min-height:116px!important;height:auto!important;
+  aspect-ratio:auto!important;margin:0!important;padding:17px 18px!important;
+  border:1px solid #dce6f1!important;border-radius:18px!important;
+  background:linear-gradient(110deg,#fff 0%,#f8fbff 68%,#f0f8fb 100%)!important;
+  box-shadow:0 5px 18px rgba(24,55,91,.065)!important;
+  text-align:left!important;overflow:hidden!important;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease!important;
+}
+#studio .grid>.card:before,#studio .self-grid>.card:before{
+  content:""!important;position:absolute!important;z-index:-1!important;
+  width:130px!important;height:130px!important;right:-58px!important;top:-66px!important;
+  border-radius:50%!important;background:radial-gradient(circle,rgba(37,112,190,.12),transparent 70%)!important;
+}
+#studio .grid>.card:after,#studio .self-grid>.card:after{
+  content:""!important;position:absolute!important;z-index:0!important;
+  left:0!important;right:auto!important;top:14px!important;bottom:14px!important;
+  width:4px!important;height:auto!important;border-radius:0 8px 8px 0!important;
+  background:linear-gradient(180deg,#246bd0,#21b7ad)!important;
+}
+#studio .grid>.card:hover,#studio .self-grid>.card:hover{
+  transform:translateY(-2px)!important;border-color:#a9c9e9!important;
+  box-shadow:0 12px 25px rgba(20,48,82,.13)!important;
+}
+#studio .grid>.card>.icon,#studio .self-grid>.card>.icon{
+  grid-column:1!important;grid-row:1 / span 2!important;align-self:center!important;
+  display:grid!important;place-items:center!important;flex:none!important;
+  width:52px!important;height:52px!important;margin:0!important;padding:0!important;
+  border:1px solid #d4e6f5!important;border-radius:16px!important;
+  background:linear-gradient(145deg,#e5f1ff,#e2f7f4)!important;
+  color:#174e91!important;font-size:25px!important;
+  box-shadow:0 4px 10px rgba(30,90,150,.07)!important;
+}
+#studio .grid>.card>h3,#studio .self-grid>.card>h3{
+  grid-column:2!important;grid-row:1!important;align-self:end!important;width:100%!important;
+  margin:0 0 3px!important;padding:0!important;color:#173253!important;
+  font-size:15px!important;font-weight:850!important;line-height:1.35!important;
+  letter-spacing:-.1px!important;text-align:left!important;overflow-wrap:anywhere!important;
+}
+#studio .grid>.card>p,#studio .self-grid>.card>p{
+  grid-column:2!important;grid-row:2!important;align-self:start!important;min-height:0!important;
+  margin:0!important;color:#64758a!important;font-size:12px!important;
+  line-height:1.45!important;text-align:left!important;overflow-wrap:anywhere!important;
+}
+#studio .grid>.card>.price,#studio .self-grid>.card>.price{
+  grid-column:3!important;grid-row:1!important;justify-self:end!important;align-self:end!important;
+  display:flex!important;align-items:center!important;gap:6px!important;
+  margin:0!important;padding:0!important;white-space:nowrap!important;
+}
+#studio .grid>.card>.price .price-old,#studio .self-grid>.card>.price .price-old{
+  color:#8998aa!important;font-size:11px!important;text-decoration:line-through!important;
+}
+#studio .grid>.card>.price .price-new,#studio .self-grid>.card>.price .price-new{
+  color:#087e70!important;font-size:19px!important;font-weight:900!important;
+}
+#studio .grid>.card>.discount-note,#studio .self-grid>.card>.discount-note{
+  grid-column:3!important;grid-row:2!important;justify-self:end!important;align-self:start!important;
+  margin:3px 0 0!important;padding:4px 8px!important;border-radius:20px!important;
+  background:#e5f8f1!important;border:1px solid #bcebd8!important;color:#08765d!important;
+  font-size:9px!important;font-weight:900!important;white-space:nowrap!important;
+}
+#studio .grid>.card>.btn,#studio .self-grid>.card>.btn{
+  grid-column:2 / 4!important;grid-row:3!important;justify-self:end!important;
+  width:auto!important;min-width:150px!important;min-height:36px!important;
+  margin:4px 0 0!important;padding:8px 16px!important;border:0!important;
+  border-radius:11px!important;background:linear-gradient(110deg,#246bd0,#1552a5)!important;
+  color:#fff!important;font-size:11px!important;font-weight:850!important;
+  box-shadow:0 4px 10px rgba(30,91,170,.17)!important;white-space:normal!important;
+}
+@media(max-width:560px){
+  #studio .grid,#studio .self-grid{gap:10px!important}
+  #studio .grid>.card,#studio .self-grid>.card{
+    grid-template-columns:44px minmax(0,1fr)!important;
+    grid-template-rows:auto auto auto auto auto!important;
+    column-gap:11px!important;row-gap:5px!important;min-height:0!important;
+    padding:13px!important;border-radius:15px!important;
+  }
+  #studio .grid>.card>.icon,#studio .self-grid>.card>.icon{
+    grid-column:1!important;grid-row:1 / span 2!important;width:42px!important;height:42px!important;
+    border-radius:13px!important;font-size:21px!important;
+  }
+  #studio .grid>.card>h3,#studio .self-grid>.card>h3{grid-column:2!important;grid-row:1!important;font-size:13px!important}
+  #studio .grid>.card>p,#studio .self-grid>.card>p{grid-column:2!important;grid-row:2!important;font-size:11px!important}
+  #studio .grid>.card>.price,#studio .self-grid>.card>.price{
+    grid-column:2!important;grid-row:3!important;justify-self:start!important;align-self:center!important;margin-top:8px!important;
+  }
+  #studio .grid>.card>.price .price-new,#studio .self-grid>.card>.price .price-new{font-size:17px!important}
+  #studio .grid>.card>.discount-note,#studio .self-grid>.card>.discount-note{
+    grid-column:2!important;grid-row:4!important;justify-self:start!important;margin:5px 0 0!important;
+  }
+  #studio .grid>.card>.btn,#studio .self-grid>.card>.btn{
+    grid-column:2!important;grid-row:5!important;justify-self:stretch!important;
+    width:100%!important;min-width:0!important;margin-top:9px!important;
+  }
+  #studio .grid>.card:not(:has(>.price))>.btn,
+  #studio .self-grid>.card:not(:has(>.price))>.btn{grid-row:3!important}
+}
+@media(max-width:380px){
+  #studio .grid>.card,#studio .self-grid>.card{padding:11px!important;column-gap:9px!important}
+  #studio .grid>.card>.price .price-old,#studio .self-grid>.card>.price .price-old{font-size:10px!important}
+  #studio .grid>.card>.price .price-new,#studio .self-grid>.card>.price .price-new{font-size:16px!important}
+}
+@media(prefers-reduced-motion:reduce){#studio .grid>.card,#studio .self-grid>.card{transition:none!important}}
+</style>
+
+
+<style id="nexa-three-main-service-cards">
+.studio-main-grid{align-items:stretch}
+.studio-primary-card,.studio-other-card{height:100%;box-sizing:border-box}
+.other-service-list{display:grid;grid-template-columns:1fr;gap:8px;margin-top:14px}
+.other-service-list button{width:100%;min-height:42px;padding:10px 12px;border:1px solid rgba(30,90,150,.22);border-radius:10px;background:#f2f6fc;color:#17365d;text-align:left;font:inherit;font-size:13px;font-weight:650;cursor:pointer}
+.other-service-list button:focus-visible{outline:3px solid #4b91e8;outline-offset:2px}
+@media(min-width:760px){.studio-main-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.studio-other-card{grid-column:auto}}
+</style>
+</head><body><h1>${escapeHTML(title)}</h1>${escapeHTML(value)}
+<style id="nexa-education-pricing">
+/* Education card prices and introductory discount */
+#studio .education-cards>.education-service-card{padding-bottom:13px!important}
+#studio .education-price-block{position:relative;z-index:1;width:100%;margin-top:auto;padding-top:11px;display:flex;align-items:center;justify-content:space-between;gap:5px;flex-wrap:wrap}
+#studio .education-price-line{display:flex;align-items:baseline;gap:7px;min-width:0}
+#studio .education-price-old{font-size:10px;color:#8998aa;text-decoration:line-through;white-space:nowrap}
+#studio .education-price-new{font-size:16px;color:#087e70;font-weight:900;letter-spacing:-.25px;white-space:nowrap}
+#studio .education-discount{display:inline-flex;align-items:center;padding:4px 7px;border-radius:20px;background:#e5f8f1;border:1px solid #bcebd8;color:#08765d;font-size:8px;font-weight:900;letter-spacing:.35px;white-space:nowrap}
+#studio .education-cards>.education-service-card .education-card-arrow{top:12px;bottom:auto}
+@media(max-width:380px){
+ #studio .education-price-block{padding-top:8px;gap:4px}
+ #studio .education-price-old{font-size:9px}
+ #studio .education-price-new{font-size:14px}
+ #studio .education-discount{font-size:7px;padding:3px 5px}
+}
+</style>
+
+
+
+`);w.document.close();w.focus();w.print();};
+window.createTextPDF=function(){const text=$("qpText")?.value||"";if(!text.trim()){alert("Please enter document text first.");return;}if(!window.jspdf?.jsPDF){alert("PDF library load nahi hui. Print / Save PDF option use karein.");return;}const pdf=new window.jspdf.jsPDF({unit:"mm",format:"a4"});const title=$("qpTitle").value||"NEXA Document";pdf.setFont("helvetica","bold");pdf.setFontSize(16);pdf.text(title,15,18);pdf.setFont("helvetica","normal");pdf.setFontSize(11);const lines=pdf.splitTextToSize(text,180);let y=29;for(const line of lines){if(y>280){pdf.addPage();y=18;}pdf.text(line,15,y);y+=6;}pdf.save("NEXA-Document.pdf");};
+window.calculateQuickInvoice=function(){const n=id=>Math.max(0,Number($(id)?.value)||0);const sub=n("qiQty")*n("qiRate"),discount=Math.min(sub,n("qiDiscount")),total=sub-discount;$("qiResult").textContent=`NEXA INVOICE\n${$("qiShop").value||"Business"}\nCustomer: ${$("qiCustomer").value||"—"}\nItem: ${$("qiItem").value||"—"}\nQuantity: ${n("qiQty")} × Rs. ${n("qiRate").toFixed(2)}\nSubtotal: Rs. ${sub.toFixed(2)}\nDiscount: Rs. ${discount.toFixed(2)}\nTOTAL: Rs. ${total.toFixed(2)}`;};
+window.drawQuickPoster=function(){const c=$("qpostCanvas");if(!c)return;const x=c.getContext("2d"),bg=$("qpostColor").value;x.fillStyle=bg;x.fillRect(0,0,c.width,c.height);x.fillStyle="#ffffff";x.textAlign="center";x.font="bold 62px Arial";const title=$("qpostTitle").value||"YOUR TITLE";wrapCanvasText(x,title,400,350,680,76);x.font="32px Arial";wrapCanvasText(x,$("qpostSub").value||"Your tagline",400,500,660,46);x.font="27px Arial";wrapCanvasText(x,$("qpostBody").value||"Add your details here",400,650,650,42);x.fillStyle="#69e4d6";x.fillRect(100,820,600,5);x.font="bold 22px Arial";x.fillStyle="#ffffff";x.fillText("DESIGNED WITH NEXA CREATIVE STUDIO",400,890);};
+function wrapCanvasText(ctx,text,x,y,maxWidth,lineHeight){const words=String(text).split(/\s+/);let line="",yy=y;for(const word of words){const test=line?line+" "+word:word;if(ctx.measureText(test).width>maxWidth&&line){ctx.fillText(line,x,yy);line=word;yy+=lineHeight;}else line=test;}if(line)ctx.fillText(line,x,yy);}
+window.downloadQuickPoster=function(){const c=$("qpostCanvas");if(!c)return;const a=document.createElement("a");a.download="NEXA-Poster.png";a.href=c.toDataURL("image/png");a.click();};
+
+/* ORDER SYSTEM */
+window.requestQuote=function(service){
+ contactNexaWhatsApp(service);
+};
+window.updateAmount=function(){
+ const service=$("orderService").value;
+ const original=ORIGINAL_PRICES[service]||0;
+ const discounted=PRICES[service]||0;
+ $("orderAmount").value=original===0?"Quote required":discounted;
+};
+function randomToken(){
+ const a=new Uint8Array(24);crypto.getRandomValues(a);
+ return [...a].map(x=>x.toString(16).padStart(2,"0")).join("");
+}
+window.submitOrder=async function(){
+ const name=$("customerName").value.trim(),phone=$("customerPhone").value.trim();
+ const service=$("orderService").value,method=$("paymentMethod").value;
+ const transaction=$("transactionId").value.trim();
+ const quoteOnly=(PRICES[service]||0)===0;
+ if(!name||!phone||(!quoteOnly&&!transaction)){showStatus("orderStatus",quoteOnly?"Name and phone number are required for a quotation request.":"Name, phone number, and transaction ID are required.","error");return;}
+ const orderCode="NEXA-"+Math.random().toString(36).slice(2,9).toUpperCase();
+ const accessToken=randomToken();
+ const payload={
+  order_code:orderCode,access_token:accessToken,
+  customer_name:name,customer_phone:phone,tool_name:service,
+  amount:PRICES[service]||0,payment_method:quoteOnly?"Quotation Request":method,
+  payment_number:"03469799347",transaction_id:transaction||"QUOTE-REQUEST",
+  design_data:{...currentDesign,notes:$("orderNotes").value},
+  status:"pending"
+ };
+ showStatus("orderStatus","Submitting order...","info");
+ try{
+  const {error}=await supabase.from("creative_orders").insert(payload);
+  if(error)throw error;
+  if(service==="CV Builder"&&currentDesign.data){
+   const record={orderCode,accessToken,cv:currentDesign.data};
+   localStorage.setItem("nexa_cv_pending_order",JSON.stringify(record));
+   $("cvUnlockPanel").style.display="block";
+  }
+  showStatus("orderStatus",(quoteOnly?"Quotation request submitted. ":"Order submitted successfully. ")+"Order ID: "+orderCode+". "+(quoteOnly?"Please wait for price confirmation before making payment.":"Admin approval pending."),"success");
+  $("transactionId").value="";$("orderNotes").value="";
+ }catch(e){console.error(e);showStatus("orderStatus","Order error: "+e.message,"error");}
+};
+window.checkApproval=async function(){
+ let record;
+ try{record=JSON.parse(localStorage.getItem("nexa_cv_pending_order")||"null");}catch(e){}
+ if(!record){$("cvOrderStatus").textContent="No CV order found.";return;}
+ $("cvOrderStatus").textContent="Checking approval...";
+ try{
+  const {data,error}=await supabase.rpc("verify_cv_order",{p_order_code:record.orderCode,p_access_token:record.accessToken});
+  if(error)throw error;
+  const status=typeof data==="string"?data:data?.status;
+  if(status==="approved"){
+   approvedCV=record.cv;$("cvPreview").dataset.approved="true";$("cvOrderStatus").textContent="Payment approved. Download unlocked.";
+   $("downloadCVButton").style.display="inline-block";
+  }else $("cvOrderStatus").textContent="Order status: "+(status||"pending");
+ }catch(e){$("cvOrderStatus").textContent="Verification error: "+e.message;}
+};
+
+/* ADMIN PANEL */
+window.adminLogin=async function(){
+ const email=$("adminEmail").value.trim(),password=$("adminPassword").value;
+ showStatus("adminLoginStatus","Signing in...","info");
+ try{
+  const {error}=await supabase.auth.signInWithPassword({email,password});
+  if(error)throw error;
+  const {data,error:adminError}=await supabase.rpc("is_app_admin");
+  if(adminError)throw adminError;
+  if(!data){await supabase.auth.signOut();throw new Error("Admin access denied.");}
+  $("adminLogin").style.display="none";$("adminDashboard").style.display="block";
+  loadOrders();
+ }catch(e){showStatus("adminLoginStatus",e.message,"error");}
+};
+window.adminLogout=async function(){
+ await supabase.auth.signOut();
+ $("adminDashboard").style.display="none";$("adminLogin").style.display="block";
+};
+window.loadOrders=async function(){
+ $("adminOrders").textContent="Loading all CV orders and reports...";
+ showStatus("adminReportStatus","Fetching complete order history...","info");
+ try{
+  // Read in pages so the report is not limited to the latest 100 orders.
+  let data=[],from=0,batch=500;
+  while(true){
+   const {data:part,error}=await supabase.from("creative_orders").select("*").order("created_at",{ascending:false}).range(from,from+batch-1);
+   if(error)throw error;
+   data=data.concat(part||[]);
+   if(!part || part.length<batch)break;
+   from+=batch;
+  }
+  const money=o=>Number(o.amount)||0;
+  const state=o=>String(o.status||"pending").toLowerCase();
+  const approved=data.filter(o=>state(o)==="approved"), pending=data.filter(o=>state(o)==="pending"), rejected=data.filter(o=>state(o)==="rejected");
+  const received=approved.reduce((sum,o)=>sum+money(o),0), pendingValue=pending.reduce((sum,o)=>sum+money(o),0);
+  $("reportTotal").textContent=data.length;
+  $("reportApproved").textContent=approved.length;
+  $("reportPending").textContent=pending.length;
+  $("reportRejected").textContent=rejected.length;
+  $("reportReceived").textContent="Rs. "+received.toLocaleString("en-PK");
+  $("reportPendingMoney").textContent="Rs. "+pendingValue.toLocaleString("en-PK");
+
+  const months={};
+  data.forEach(o=>{
+   const d=new Date(o.created_at||Date.now()); if(Number.isNaN(d.getTime()))return;
+   const key=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+   if(!months[key])months[key]={total:0,approved:0,pending:0,rejected:0,received:0};
+   const m=months[key];m.total++;
+   if(state(o)==="approved"){m.approved++;m.received+=money(o)}
+   else if(state(o)==="rejected")m.rejected++;
+   else m.pending++;
+  });
+  const monthKeys=Object.keys(months).sort().reverse();
+  $("monthlyReportRows").innerHTML=monthKeys.length?monthKeys.map(k=>{const m=months[k];const label=new Date(Number(k.slice(0,4)),Number(k.slice(5))-1,1).toLocaleDateString("en-PK",{month:"long",year:"numeric"});return `<tr><td>${label}</td><td>${m.total}</td><td>${m.approved}</td><td>${m.pending}</td><td>${m.rejected}</td><td><b>Rs. ${m.received.toLocaleString("en-PK")}</b></td></tr>`}).join(""):'<tr><td colspan="6">No monthly order records found.</td></tr>';
+
+  const methods={};approved.forEach(o=>{const k=o.payment_method||"Not specified";methods[k]=(methods[k]||0)+money(o)});
+  $("paymentSummary").innerHTML=Object.keys(methods).length?Object.entries(methods).map(([k,v])=>`<div class="payment-summary-row"><span>${escapeHTML(k)}</span><b>Rs. ${v.toLocaleString("en-PK")}</b></div>`).join(""):'No approved payments recorded.';
+  $("adminOrders").innerHTML=data.length?data.map(o=>{
+   const st=state(o);const safeId=String(o.id).replace(/[^a-zA-Z0-9_-]/g,"");
+   return `<div class="panel admin-order-card"><h3>${escapeHTML(o.order_code||"CV Order")}</h3><p><b>Customer:</b> ${escapeHTML(o.customer_name||"—")} · ${escapeHTML(o.customer_phone||"—")}</p><p><b>Amount:</b> Rs. ${money(o).toLocaleString("en-PK")} | <b>Date:</b> ${o.created_at?new Date(o.created_at).toLocaleString("en-PK"):"—"}</p><p><b>Payment:</b> ${escapeHTML(o.payment_method||"—")} | <b>Transaction:</b> ${escapeHTML(o.transaction_id||"—")}</p><p><b>Status:</b> <span class="admin-status ${st}">${escapeHTML(st)}</span></p><details><summary>View CV Details / Requirements</summary><pre style="white-space:pre-wrap;overflow-wrap:anywhere">${escapeHTML(JSON.stringify(o.design_data??o.cv??{},null,2))}</pre></details>${st!=="approved"?`<button class="btn green" onclick="updateOrder('${safeId}','approved')">Approve Payment</button>`:""}${st!=="rejected"?` <button class="btn red" onclick="updateOrder('${safeId}','rejected')">Reject</button>`:""}</div>`;
+  }).join(""):'No CV orders found yet.';
+  showStatus("adminReportStatus",`Reports updated successfully. ${data.length} total order(s) checked.`,"success");
+ }catch(e){$("adminOrders").textContent="Could not load orders: "+e.message;showStatus("adminReportStatus","Report error: "+e.message,"error");}
+};
+window.updateOrder=async function(id,status){
+ try{
+  const {error}=await supabase.from("creative_orders").update({status,updated_at:new Date().toISOString()}).eq("id",id);
+  if(error)throw error;
+  alert("Order status updated: "+status);loadOrders();
+ }catch(e){alert("Update failed: "+e.message);}
+};
+updateAmount();
+</script>
+
+<!-- NEXA premium rotating CV notifications -->
+<div id="nexaNotice" class="nexa-notice" role="status" aria-live="polite">
+  <span class="nexa-notice-icon" aria-hidden="true">✦</span>
+  <span class="nexa-notice-copy"><b id="nexaNoticeTitle">NEXA CV STUDIO</b><span id="nexaNoticeText">Create a professional CV with NEXA.</span></span>
+  <button type="button" class="nexa-notice-close" aria-label="Close notification" onclick="document.getElementById('nexaNotice').classList.remove('show')">×</button>
+</div>
+<style>
+.nexa-notice{position:fixed;z-index:9999;top:76px;left:50%;transform:translate(-50%,-12px);width:min(430px,calc(100% - 24px));display:flex;align-items:center;gap:11px;padding:12px 14px;border:1px solid rgba(88,207,225,.58);border-radius:14px;background:#10243d;box-shadow:0 12px 32px rgba(0,0,0,.38);color:#fff;opacity:0;visibility:hidden;transition:opacity .25s ease,transform .25s ease,visibility .25s ease}
+.nexa-notice.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.nexa-notice-icon{width:32px;height:32px;flex:0 0 32px;border-radius:10px;display:grid;place-items:center;background:#153f56;border:1px solid #2c7185;color:#75edeb;font-size:19px}
+.nexa-notice-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
+.nexa-notice-copy b{font-size:10px;letter-spacing:1.15px;color:#7be7e5;font-weight:900}
+.nexa-notice-copy span{font-size:12px;line-height:1.45;color:#f5f8ff;font-weight:600}
+.nexa-notice-close{margin-left:auto;flex:0 0 auto;padding:2px 5px!important;background:transparent!important;border:0!important;color:#d5e5f3!important;font-size:22px;line-height:1;box-shadow:none!important}
+@media(max-width:600px){.nexa-notice{top:68px;padding:10px 11px;gap:9px}.nexa-notice-copy span{font-size:11px}.nexa-notice-copy b{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.nexa-notice{transition:none}}
+@media print{.nexa-notice{display:none!important}}
+</style>
+<script>
+(()=>{
+ const box=document.getElementById('nexaNotice');
+ const title=document.getElementById('nexaNoticeTitle');
+ const message=document.getElementById('nexaNoticeText');
+ if(!box||!title||!message)return;
+ const notices=[
+  ['NEXA CV STUDIO','Build a professional CV with simple, step-by-step details.'],
+  ['PROFESSIONAL TEMPLATES','Choose from the available CV designs and preview your details.'],
+  ['EDITABLE PROFILE','Your professional bio is pre-filled, and you can edit it anytime.'],
+  ['PAKISTAN PHONE FORMAT','Your CV phone number supports the Pakistan +92 country code.'],
+  ['PAYMENT & APPROVAL','Your CV watermark is removed after admin verifies and approves your payment.'],
+  ['PDF DOWNLOAD','Your final CV PDF becomes available after payment approval.'],
+  ['NEXA CV BUILDER','Enter your information carefully and review your CV before submitting.']
+ ];
+ let index=0;
+ let hideTimer=null;
+ const show=()=>{
+   title.textContent=notices[index][0];
+   message.textContent=notices[index][1];
+   box.classList.add('show');
+   if(hideTimer)clearTimeout(hideTimer);
+   hideTimer=setTimeout(()=>box.classList.remove('show'),6500);
+   index=(index+1)%notices.length;
+ };
+ box.querySelector('.nexa-notice-close')?.addEventListener('click',()=>{
+   box.classList.remove('show');
+   if(hideTimer)clearTimeout(hideTimer);
+ });
+ setTimeout(show,1800);
+ setInterval(show,60000);
+})();
+</script>
+
+
+
+<style id="nexa-education-pricing">
+/* Education card prices and introductory discount */
+#studio .education-cards>.education-service-card{padding-bottom:13px!important}
+#studio .education-price-block{position:relative;z-index:1;width:100%;margin-top:auto;padding-top:11px;display:flex;align-items:center;justify-content:space-between;gap:5px;flex-wrap:wrap}
+#studio .education-price-line{display:flex;align-items:baseline;gap:7px;min-width:0}
+#studio .education-price-old{font-size:10px;color:#8998aa;text-decoration:line-through;white-space:nowrap}
+#studio .education-price-new{font-size:16px;color:#087e70;font-weight:900;letter-spacing:-.25px;white-space:nowrap}
+#studio .education-discount{display:inline-flex;align-items:center;padding:4px 7px;border-radius:20px;background:#e5f8f1;border:1px solid #bcebd8;color:#08765d;font-size:8px;font-weight:900;letter-spacing:.35px;white-space:nowrap}
+#studio .education-cards>.education-service-card .education-card-arrow{top:12px;bottom:auto}
+@media(max-width:380px){
+ #studio .education-price-block{padding-top:8px;gap:4px}
+ #studio .education-price-old{font-size:9px}
+ #studio .education-price-new{font-size:14px}
+ #studio .education-discount{font-size:7px;padding:3px 5px}
+}
+</style>
+
+<style id="nexa-all-service-cards-match-education">
+/* Make every Studio service card follow the Education card layout */
+#studio .grid,
+#studio .self-grid{
+  display:flex!important;flex-direction:column!important;gap:12px!important;
+  width:100%!important;max-width:920px!important;margin:0 auto!important;
+}
+#studio .grid>.card,
+#studio .self-grid>.card{
+  box-sizing:border-box!important;position:relative!important;isolation:isolate!important;
+  display:grid!important;grid-template-columns:58px minmax(0,1fr) auto!important;
+  grid-template-rows:auto auto auto!important;align-items:center!important;
+  column-gap:16px!important;row-gap:7px!important;
+  width:100%!important;min-width:0!important;min-height:116px!important;height:auto!important;
+  aspect-ratio:auto!important;margin:0!important;padding:17px 18px!important;
+  border:1px solid #dce6f1!important;border-radius:18px!important;
+  background:linear-gradient(110deg,#fff 0%,#f8fbff 68%,#f0f8fb 100%)!important;
+  box-shadow:0 5px 18px rgba(24,55,91,.065)!important;
+  text-align:left!important;overflow:hidden!important;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease!important;
+}
+#studio .grid>.card:before,
+#studio .self-grid>.card:before{
+  content:""!important;position:absolute!important;z-index:-1!important;
+  width:130px!important;height:130px!important;right:-58px!important;top:-66px!important;
+  border-radius:50%!important;background:radial-gradient(circle,rgba(37,112,190,.12),transparent 70%)!important;
+}
+#studio .grid>.card:after,
+#studio .self-grid>.card:after{
+  content:""!important;position:absolute!important;z-index:0!important;
+  left:0!important;right:auto!important;top:14px!important;bottom:14px!important;
+  width:4px!important;height:auto!important;border-radius:0 8px 8px 0!important;
+  background:linear-gradient(180deg,#246bd0,#21b7ad)!important;
+}
+#studio .grid>.card:hover,
+#studio .self-grid>.card:hover{transform:translateY(-2px)!important;border-color:#a9c9e9!important;box-shadow:0 12px 25px rgba(20,48,82,.13)!important}
+#studio .grid>.card>.icon,
+#studio .self-grid>.card>.icon{
+  grid-column:1!important;grid-row:1 / span 2!important;align-self:center!important;
+  display:grid!important;place-items:center!important;flex:none!important;
+  width:52px!important;height:52px!important;margin:0!important;
+  border-radius:16px!important;background:linear-gradient(145deg,#e5f1ff,#e2f7f4)!important;
+  border:1px solid #d4e6f5!important;color:#174e91!important;font-size:25px!important;
+  box-shadow:0 4px 10px rgba(30,90,150,.07)!important;
+}
+#studio .grid>.card>h3,
+#studio .self-grid>.card>h3{
+  grid-column:2!important;grid-row:1!important;align-self:end!important;
+  width:100%!important;margin:0 0 3px!important;padding:0!important;
+  color:#173253!important;font-size:15px!important;font-weight:850!important;
+  line-height:1.35!important;letter-spacing:-.1px!important;text-align:left!important;
+}
+#studio .grid>.card>p,
+#studio .self-grid>.card>p{
+  grid-column:2!important;grid-row:2!important;align-self:start!important;
+  min-height:0!important;margin:0!important;color:#64758a!important;
+  font-size:12px!important;line-height:1.45!important;text-align:left!important;
+}
+#studio .grid>.card>.price,
+#studio .self-grid>.card>.price{
+  grid-column:3!important;grid-row:1!important;justify-self:end!important;align-self:end!important;
+  display:flex!important;align-items:center!important;gap:6px!important;
+  margin:0!important;padding:0!important;white-space:nowrap!important;
+}
+#studio .grid>.card>.price .price-old,
+#studio .self-grid>.card>.price .price-old{color:#8998aa!important;font-size:11px!important;text-decoration:line-through!important}
+#studio .grid>.card>.price .price-new,
+#studio .self-grid>.card>.price .price-new{color:#087e70!important;font-size:19px!important;font-weight:900!important}
+#studio .grid>.card>.discount-note,
+#studio .self-grid>.card>.discount-note{
+  grid-column:3!important;grid-row:2!important;justify-self:end!important;align-self:start!important;
+  margin:3px 0 0!important;padding:4px 8px!important;border-radius:20px!important;
+  background:#e5f8f1!important;border:1px solid #bcebd8!important;color:#08765d!important;
+  font-size:9px!important;font-weight:900!important;white-space:nowrap!important;
+}
+#studio .grid>.card>.btn,
+#studio .self-grid>.card>.btn{
+  grid-column:2 / 4!important;grid-row:3!important;justify-self:end!important;
+  width:auto!important;min-width:150px!important;min-height:36px!important;
+  margin:4px 0 0!important;padding:8px 16px!important;border:0!important;
+  border-radius:11px!important;background:linear-gradient(110deg,#246bd0,#1552a5)!important;
+  color:#fff!important;font-size:11px!important;font-weight:850!important;
+  box-shadow:0 4px 10px rgba(30,91,170,.17)!important;white-space:normal!important;
+}
+/* Cards without a price keep the same structure and place the action below the description */
+#studio .grid>.card:not(:has(>.price))>.btn,
+#studio .self-grid>.card:not(:has(>.price))>.btn{grid-column:2 / 4!important;grid-row:3!important}
+@media(max-width:560px){
+  #studio .grid,#studio .self-grid{gap:10px!important}
+  #studio .grid>.card,#studio .self-grid>.card{
+    grid-template-columns:44px minmax(0,1fr)!important;
+    grid-template-rows:auto auto auto auto auto!important;
+    column-gap:11px!important;row-gap:5px!important;
+    min-height:0!important;padding:13px!important;border-radius:15px!important;
+  }
+  #studio .grid>.card>.icon,#studio .self-grid>.card>.icon{
+    grid-column:1!important;grid-row:1 / span 2!important;
+    width:42px!important;height:42px!important;border-radius:13px!important;font-size:21px!important;
+  }
+  #studio .grid>.card>h3,#studio .self-grid>.card>h3{grid-column:2!important;grid-row:1!important;font-size:13px!important}
+  #studio .grid>.card>p,#studio .self-grid>.card>p{grid-column:2!important;grid-row:2!important;font-size:11px!important}
+  #studio .grid>.card>.price,#studio .self-grid>.card>.price{
+    grid-column:2!important;grid-row:3!important;justify-self:start!important;align-self:center!important;margin-top:8px!important;
+  }
+  #studio .grid>.card>.price .price-new,#studio .self-grid>.card>.price .price-new{font-size:17px!important}
+  #studio .grid>.card>.discount-note,#studio .self-grid>.card>.discount-note{
+    grid-column:2!important;grid-row:4!important;justify-self:start!important;margin:5px 0 0!important;
+  }
+  #studio .grid>.card>.btn,#studio .self-grid>.card>.btn{
+    grid-column:2!important;grid-row:5!important;justify-self:stretch!important;
+    width:100%!important;min-width:0!important;margin-top:9px!important;
+  }
+  #studio .grid>.card:not(:has(>.price))>.btn,
+  #studio .self-grid>.card:not(:has(>.price))>.btn{grid-row:3!important}
+}
+@media(max-width:360px){#studio .grid>.card,#studio .self-grid>.card{padding:11px!important;column-gap:9px!important}}
+</style>
+
+
+
+<style id="nexa-single-selected-service-view">
+#studio.nexa-service-open>.grid,#studio.nexa-service-open>.composing-services,#studio.nexa-service-open .self-service>.composing-heading,#studio.nexa-service-open .self-service>.grid{display:none!important}
+#studio.nexa-service-open:not(.nexa-quick-open)>.self-service{display:none!important}
+#studio.nexa-service-open.nexa-quick-open>.self-service{display:block!important;margin-top:0!important;padding:0!important;border:0!important;background:transparent!important}
+#studio.nexa-service-open>#toolArea{display:block!important;width:100%!important;max-width:920px!important;margin:12px auto!important}
+#studio.nexa-service-open.nexa-quick-open #quickToolArea{display:block!important;width:100%!important;max-width:920px!important;margin:12px auto!important}
+.nexa-service-back{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:8px!important;min-height:44px!important;margin:0 0 16px!important;padding:10px 16px!important;border:1px solid #cbd9e8!important;border-radius:12px!important;background:#edf5ff!important;color:#174e91!important;font-size:14px!important;font-weight:800!important;cursor:pointer!important;width:max-content!important;max-width:100%!important}
+.nexa-service-detail{padding:20px!important;border:1px solid #dce6f1!important;border-radius:17px!important;background:linear-gradient(150deg,#fff,#f4f9ff)!important;box-shadow:0 7px 20px rgba(20,48,82,.08)!important}
+.nexa-service-detail h2{margin:0 0 10px!important;color:#173253!important}.nexa-service-detail p{color:#64758a!important;line-height:1.6!important}.nexa-detail-icon{font-size:34px!important;margin-bottom:8px!important}.nexa-detail-price{font-size:16px!important;color:#087e70!important}
+@media(max-width:560px){.nexa-service-back{width:100%!important;justify-content:center!important}.nexa-service-detail{padding:16px!important}}
+</style>
+<script id="nexa-single-service-navigation">
+(function(){
+ function initNexaSingleServiceNavigation(){
+  const studio=document.getElementById('studio');
+  const toolArea=document.getElementById('toolArea');
+  const quickArea=document.getElementById('quickToolArea');
+  if(!studio||!toolArea||!quickArea||studio.dataset.singleServiceReady==='1')return;
+  studio.dataset.singleServiceReady='1';
+  function restoreList(){
+   studio.classList.remove('nexa-service-open','nexa-quick-open');
+   toolArea.style.display='none';quickArea.style.display='none';
+   toolArea.querySelector('.nexa-service-back')?.remove();
+   quickArea.querySelector('.nexa-service-back')?.remove();
+   studio.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function showSelected(area,title){
+   studio.classList.add('nexa-service-open');
+   studio.classList.toggle('nexa-quick-open',area===quickArea);
+   toolArea.style.display=area===toolArea?'block':'none';
+   quickArea.style.display=area===quickArea?'block':'none';
+   area.querySelector('.nexa-service-back')?.remove();
+   const back=document.createElement('button');
+   back.type='button';back.className='nexa-service-back';
+   back.setAttribute('aria-label','Back to all services');
+   back.textContent='← Back to All Services';
+   back.addEventListener('click',restoreList);
+   area.prepend(back);
+   area.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  const originalOpenTool=window.openTool;
+  if(typeof originalOpenTool==='function')window.openTool=function(tool){
+   const result=originalOpenTool.apply(this,arguments);
+   const names={cv:'CV Builder',poster:'Poster Maker',logo:'Logo Maker',document:'Document Studio',social:'Social Media Design',website:'Website Development',experience:'Experience Certificate'};
+   showSelected(toolArea,names[tool]||'Selected Service');return result;
+  };
+  const originalOpenQuick=window.openQuickTool;
+  if(typeof originalOpenQuick==='function')window.openQuickTool=function(kind){
+   const result=originalOpenQuick.apply(this,arguments);
+   const names={writer:'Application & Letter Writer',editor:'Typing & Text Editor',pdf:'Text to PDF',invoice:'Invoice & Bill Calculator',poster:'Poster Maker Lite'};
+   showSelected(quickArea,names[kind]||'Self-Service Tool');return result;
+  };
+  const originalQuote=window.requestQuote;
+  if(typeof originalQuote==='function')window.requestQuote=function(service){
+   const cards=[...studio.querySelectorAll('.education-cards .education-unified-card')];
+   const card=cards.find(c=>c.querySelector('h3')?.textContent.trim()===service);
+   if(card){
+    const title=card.querySelector('h3')?.textContent.trim()||service;
+    const desc=card.querySelector('p')?.textContent.trim()||'NEXA service';
+    const price=card.querySelector('.price-new')?.textContent.trim()||'Quotation required';
+    toolArea.innerHTML=`<div class="nexa-service-detail"><div class="nexa-detail-icon">${card.querySelector('.icon')?.textContent||'📄'}</div><h2>${title}</h2><p>${desc}</p><p class="nexa-detail-price"><strong>Service Price: ${price}</strong></p><p>Continue karne par sirf isi service ka order form khulega.</p><button type="button" class="btn" id="nexaContinueOrder">Continue to Order</button></div>`;
+    showSelected(toolArea,title);
+    document.getElementById('nexaContinueOrder').addEventListener('click',()=>{restoreList();originalQuote.call(window,service);});
+    return;
+   }
+   const result=originalQuote.apply(this,arguments);
+   // Existing requestQuote routes certain services into a self-service tool.
+   if(quickArea.style.display==='block')showSelected(quickArea,service);
+   else if(toolArea.style.display==='block')showSelected(toolArea,service);
+   return result;
+  };
+  toolArea.style.display='none';quickArea.style.display='none';
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initNexaSingleServiceNavigation,{once:true});
+ else initNexaSingleServiceNavigation();
+})();
+</script>
+
+<style id="nexa-support-ai-style">
+#nexaSupportAIButton{position:fixed;right:15px;bottom:calc(82px + env(safe-area-inset-bottom,0px));z-index:100000;border:0;border-radius:999px;padding:12px 17px;min-height:48px;background:linear-gradient(135deg,#1769d2,#104b9a);color:#fff;font:800 14px Arial,sans-serif;box-shadow:0 7px 22px rgba(15,65,130,.3);cursor:pointer}
+#nexaSupportAIButton:focus-visible,#nexaSupportSend:focus-visible{outline:3px solid #9bc8ff;outline-offset:3px}
+#nexaSupportPanel{position:fixed;right:14px;bottom:calc(140px + env(safe-area-inset-bottom,0px));z-index:100001;width:min(365px,calc(100vw - 28px));height:min(490px,calc(100dvh - 175px));min-height:330px;display:none;flex-direction:column;overflow:hidden;border:1px solid #cbd9eb;border-radius:18px;background:#fff;box-shadow:0 14px 45px rgba(12,35,70,.24);font-family:Arial,sans-serif}
+#nexaSupportPanel.nexa-ai-open{display:flex}
+#nexaSupportHead{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 14px;background:linear-gradient(135deg,#173f78,#1769d2);color:white}
+#nexaSupportHead strong{font-size:15px}#nexaSupportHead small{display:block;margin-top:3px;font-size:11px;opacity:.88}
+#nexaSupportClose{border:0;background:rgba(255,255,255,.17);color:#fff;border-radius:9px;width:34px;height:34px;font-size:21px;cursor:pointer}
+#nexaSupportMessages{flex:1;overflow-y:auto;padding:13px;background:#f4f7fb;display:flex;flex-direction:column;gap:9px}
+.nexa-ai-msg{max-width:88%;padding:10px 12px;border-radius:13px;font-size:13px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+.nexa-ai-msg.bot{align-self:flex-start;background:#fff;border:1px solid #e1e8f1;color:#26364a;border-bottom-left-radius:4px}
+.nexa-ai-msg.user{align-self:flex-end;background:#dcecff;color:#123d70;border-bottom-right-radius:4px}
+#nexaSupportQuick{display:flex;gap:6px;flex-wrap:wrap;padding:8px 10px;border-top:1px solid #e7edf5;background:#fff}
+#nexaSupportQuick button{border:1px solid #cbd9eb;background:#f7faff;color:#24558d;border-radius:999px;padding:6px 9px;font-size:11px;cursor:pointer}
+#nexaSupportForm{display:flex;gap:7px;padding:10px;border-top:1px solid #e7edf5;background:#fff}
+#nexaSupportInput{flex:1;min-width:0;border:1px solid #cbd6e4;border-radius:11px;padding:10px;font-size:13px;outline:none}
+#nexaSupportSend{border:0;border-radius:11px;padding:0 14px;background:#1769d2;color:#fff;font-weight:800;cursor:pointer}
+@media(max-width:480px){#nexaSupportAIButton{right:11px;bottom:calc(76px + env(safe-area-inset-bottom,0px));min-height:44px;padding:11px 14px;font-size:13px}#nexaSupportPanel{right:10px;bottom:calc(130px + env(safe-area-inset-bottom,0px));width:calc(100vw - 20px);height:min(470px,calc(100dvh - 155px))}}
+</style>
+<button id="nexaSupportAIButton" type="button" aria-controls="nexaSupportPanel" aria-expanded="false">✦ NEXA Support AI</button>
+<section id="nexaSupportPanel" role="dialog" aria-label="NEXA Support AI chat" aria-modal="false">
+ <header id="nexaSupportHead"><div><strong>✦ NEXA Support AI</strong><small>Website help assistant</small></div><button id="nexaSupportClose" type="button" aria-label="Close chat">×</button></header>
+ <div id="nexaSupportMessages" aria-live="polite"><div class="nexa-ai-msg bot">Assalam-o-Alaikum! Main NEXA Support AI hoon. Aap CV Builder, CV price, payment ya website use karne ke bare mein pooch sakte hain.</div></div>
+ <div id="nexaSupportQuick"><button type="button" data-question="CV ki price kya hai?">CV Price</button><button type="button" data-question="CV payment kaise karun?">Payment Guide</button><button type="button" data-question="CV Builder ke bare mein batao">CV Builder</button></div>
+ <form id="nexaSupportForm"><input id="nexaSupportInput" autocomplete="off" placeholder="Apna sawal likhein..." aria-label="Your question"><button id="nexaSupportSend" type="submit">Send</button></form>
+</section>
+<script id="nexa-support-ai-script">
+(()=>{
+ const btn=document.getElementById('nexaSupportAIButton'),panel=document.getElementById('nexaSupportPanel'),close=document.getElementById('nexaSupportClose'),form=document.getElementById('nexaSupportForm'),input=document.getElementById('nexaSupportInput'),messages=document.getElementById('nexaSupportMessages');
+ if(!btn||!panel||!form||!input||!messages)return;
+ const open=()=>{panel.classList.add('nexa-ai-open');btn.setAttribute('aria-expanded','true');input.focus();};
+ const shut=()=>{panel.classList.remove('nexa-ai-open');btn.setAttribute('aria-expanded','false');btn.focus();};
+ btn.addEventListener('click',()=>panel.classList.contains('nexa-ai-open')?shut():open());close.addEventListener('click',shut);
+ function add(text,who){const d=document.createElement('div');d.className='nexa-ai-msg '+who;d.textContent=text;messages.appendChild(d);messages.scrollTop=messages.scrollHeight;}
+ const answers=[
+  {keys:['price','prices','rate','kitne','qeemat','keemat','fees','fee','charges'],reply:'NEXA CV Builder ki price Rs. 270 hai (original Rs. 300). 10% discount apply hai.'},
+  {keys:['service','services','kya kya','options','available'],reply:'NEXA par ab sirf Professional CV Builder available hai. Studio mein CV Builder select karke apna CV banayein.'},
+  {keys:['cv','resume'],reply:'CV Builder open karein, apni details aur template fill karein. Request Payment dabayein aur payment details submit karein. Approval ke baad PDF download hoga.'},
+  {keys:['invoice','bill','calculator','voucher'],reply:'Invoice & Bill Calculator ke liye Self-Service Tools mein uska card select karein. Sirf selected tool khulega; wapas jane ke liye upar ← Back to All Services dabayein.'},
+  {keys:['order','book','select','purchase','kaise karun','kaise karoon'],reply:'CV Builder mein apni details complete karein, Request Payment dabayein aur JazzCash ya Easypaisa se Rs. 270 payment karke transaction ID submit karein.'},
+  {keys:['back','wapas','return','cards'],reply:'Kisi service ke andar upar maujood ← Back to All Services button dabayein. Is se service band hogi aur tamam cards wapas aa jayenge.'},
+  {keys:['education','admission','exam','roll number','result','date sheet','assignment','notes'],reply:'Education section mein apni required educational service ka card select karein. Selected service ki detail aur order option alag se khul jayega.'},
+  {keys:['whatsapp','human','person','insan','contact','support team','representative'],reply:'Agar aapko team se direct baat karni hai to website ke order/contact section mein diya gaya WhatsApp contact use karein. Apna sawal aur order details share karte waqt private passwords ya OTP kabhi na bhejein.'},
+  {keys:['hello','hi','salam','assalam','aoa'],reply:'Wa-Alaikum-Salam! Batayein NEXA ki kis service ya feature mein madad chahiye?'}
+ ];
+ function reply(q){const t=q.toLowerCase();const hit=answers.find(a=>a.keys.some(k=>t.includes(k)));return hit?hit.reply:'Main NEXA CV Builder, CV price, payment process aur CV PDF download mein madad kar sakta hoon. Apna sawal thora aur wazeh likhein.';}
+ function send(q){q=(q||'').trim();if(!q)return;add(q,'user');add(reply(q),'bot');}
+ form.addEventListener('submit',e=>{e.preventDefault();const q=input.value;input.value='';send(q);});
+ panel.querySelectorAll('[data-question]').forEach(b=>b.addEventListener('click',()=>send(b.getAttribute('data-question'))));
+})();
+</script>
+
+
+<script id="nexa-other-services-fullscreen-behavior">
+window.toggleOtherServices=function(show){
+ const screen=document.getElementById('otherServicesScreen');
+ const main=document.querySelector('#studio .studio-main-grid');
+ const tool=document.getElementById('toolArea');
+ if(!screen||!main)return;
+ if(show){
+   main.style.display='none';
+   if(tool)tool.style.display='none';
+   screen.style.display='block';screen.classList.add('is-open');
+   document.body.style.overflow='hidden';
+   screen.scrollTop=0;
+ }else{
+   screen.classList.remove('is-open');screen.style.display='none';
+   main.style.display='';
+   if(tool && tool.innerHTML.trim())tool.style.display='block';
+   document.body.style.overflow='';
+   window.scrollTo({top:document.getElementById('studio').offsetTop,behavior:'smooth'});
+ }
+};
+
+/* Preview protection: deter copying/printing; screenshots cannot be reliably blocked by a website. */
+(function(){
+ const protectedEvents=['contextmenu','copy','cut','dragstart','selectstart'];
+ protectedEvents.forEach(type=>document.addEventListener(type,function(e){
+  const el=e.target&&e.target.closest?e.target.closest('#cvPreview'):null;
+  if(el&&el.dataset.approved!=='true'){e.preventDefault();e.stopPropagation();}
+ },true));
+ document.addEventListener('keydown',function(e){
+  const el=document.getElementById('cvPreview');if(!el||el.dataset.approved==='true')return;
+  const key=(e.key||'').toLowerCase();
+  if((e.ctrlKey||e.metaKey)&&['p','c','x','s'].includes(key)){e.preventDefault();e.stopPropagation();}
+ },true);
+})();
+</script>
+
+</body>
+</html>
