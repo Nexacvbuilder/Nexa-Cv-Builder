@@ -1217,6 +1217,56 @@ body{color:#f7faff!important}
 .bottom-nav.admin-visible{grid-template-columns:repeat(4,minmax(0,1fr))!important}
 </style>
 
+
+<style id="nexa-registration-visibility-fix">
+/* Make every registration field and label readable over the page background. */
+#account .nexa-auth-card{
+  background:#121824!important;
+  color:#f7f9ff!important;
+  isolation:isolate!important;
+}
+#account #accountRegisterForm{
+  position:relative!important;
+  z-index:2!important;
+  padding:2px 0 4px!important;
+  background:transparent!important;
+  color:#f7f9ff!important;
+}
+#account #accountRegisterForm label{
+  display:block!important;
+  color:#f1f4ff!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+#account #accountRegisterForm input:not([type=checkbox]),
+#account #accountRegisterForm select{
+  background:#252e3d!important;
+  color:#ffffff!important;
+  border:1px solid #66738a!important;
+  opacity:1!important;
+  -webkit-text-fill-color:#ffffff!important;
+}
+#account #accountRegisterForm input::placeholder{
+  color:#c0cada!important;
+  opacity:1!important;
+  -webkit-text-fill-color:#c0cada!important;
+}
+#account #accountRegisterForm select option{
+  background:#202938!important;
+  color:#ffffff!important;
+}
+#account #accountRegisterForm .nexa-password-wrap{
+  position:relative!important;
+}
+#account #accountRegisterForm .nexa-eye-btn{
+  color:#e2e8f5!important;
+  background:#303b4d!important;
+}
+#account #accountRegisterForm .nexa-primary-submit{
+  color:#111827!important;
+  opacity:1!important;
+}
+</style>
 </head>
 <body>
 
