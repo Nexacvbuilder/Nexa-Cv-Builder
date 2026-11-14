@@ -1071,7 +1071,57 @@ body.nexa-authenticated main.container .page.active{display:block}
 .my-orders-empty{text-align:center;padding:42px 20px}
 .empty-icon{font-size:34px;opacity:.6}
 @media(max-width:600px){.orders-heading{align-items:flex-start}.my-order-card{padding:15px}.my-order-details{gap:12px}}
-</style>\n</head>
+</style>\n<style id="nexa-readable-contrast-fix">
+/* Site-wide readable text: stronger contrast on dark backgrounds */
+:root{
+ --bg:#071426!important;
+ --panel:#142943!important;
+ --panel2:#1b3655!important;
+ --text:#f7faff!important;
+ --muted:#c4d1e2!important;
+ --border:#45617f!important;
+}
+body{color:#f7faff!important}
+.page h1,.page h2,.page h3,.page h4,.page h5,
+.page .card h3,.page .panel h3,.page .panel h2,
+.page p,.page li,.page label,.page small,.page strong,
+.page b,.page .muted,.page .description,.page .subtitle,
+.page .form-help,.page .helper-text,.page .order-kicker,
+.page .my-order-date,.page .my-order-details small{
+ color:#f1f6ff!important;
+}
+.page .muted,.page .my-order-date,.page .order-kicker,
+.page .my-order-details small{color:#c4d1e2!important}
+.page .card,.page .panel,.page .tool-area,.page .entry,
+.page .admin-report-section,.page .admin-stat{
+ background-color:#142943!important;
+ color:#f7faff!important;
+ border-color:#45617f!important;
+}
+.page input,.page select,.page textarea{
+ background:#081a30!important;color:#ffffff!important;
+ border:1px solid #64809f!important;
+}
+.page input::placeholder,.page textarea::placeholder{color:#b8c7da!important;opacity:1}
+.page select option{background:#10243d!important;color:#fff!important}
+.page a:not(.btn){color:#8edcff!important}
+.page .discount-banner,.page .discount-note{
+ background:#123d35!important;color:#c9ffe4!important;border-color:#3ca77d!important;
+}
+.page .price-new{color:#65e6b1!important}
+.page .price-old{color:#c4d1e2!important}
+.page .order-status{color:#ffe0a0!important;background:#60491f!important}
+.page .order-status.approved{color:#baffdd!important;background:#14543d!important}
+.page .order-status.rejected{color:#ffd0d6!important;background:#642b38!important}
+.page .status.info{background:#173e62!important;color:#e2f3ff!important}
+.page .status.success{background:#15513c!important;color:#d4ffea!important}
+.page .status.error{background:#642b38!important;color:#ffe2e6!important}
+/* Keep the printable CV, template previews and support chat colors unchanged */
+.a4-sheet,.a4-sheet *,.certificate,.certificate *,
+#cvPreview,#cvPreview *,.nexa-certificate,.nexa-certificate *,
+#nexaSupportPanel,#nexaSupportPanel *{color:revert!important}
+</style>
+</head>
 <body>
 
 <header>
