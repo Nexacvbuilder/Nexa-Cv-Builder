@@ -1020,6 +1020,21 @@ input,select,textarea,button{font-family:Arial,"Segoe UI",sans-serif!important}
 }
 </style>
 
+<style id="nexa-login-required-gate">
+/* Visitors must sign in or register before any website section is available. */
+body:not(.nexa-authenticated) main.container .page:not(#account){display:none!important}
+body:not(.nexa-authenticated) .bottom-nav{display:none!important}
+body:not(.nexa-authenticated) #admin{display:none!important}
+body:not(.nexa-authenticated) #account.page{display:block!important;min-height:calc(100vh - 150px)!important}
+body:not(.nexa-authenticated) #account .account-auth-panel{display:block!important}
+body:not(.nexa-authenticated) #account .account-profile-panel{display:none!important}
+body.nexa-authenticated main.container .page{display:none}
+body.nexa-authenticated main.container .page.active{display:block}
+@media(min-width:1000px){
+ body:not(.nexa-authenticated) #account.page{max-width:100%!important;padding-top:64px!important}
+ body:not(.nexa-authenticated) #account .account-auth-panel{max-width:680px!important;margin:28px auto!important;padding:40px!important}
+}
+</style>
 </head>
 <body>
 
@@ -1216,6 +1231,8 @@ function setAdminVisibility(allowed){
  }
 }
 window.showPage=function(id){
+ const signedIn=document.body.classList.contains("nexa-authenticated");
+ if(!signedIn&&id!=="account"&&!(id==="admin"&&adminEntryRequested))id="account";
  if(id==="admin"&&!isAppAdmin&&!adminEntryRequested)id="home";
  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
  if($(id)) $(id).classList.add("active");
@@ -1235,7 +1252,12 @@ window.switchAccountMode=function(mode){
 function renderAccountUser(user){
  const authPanel=$("accountAuthPanel"),profile=$("accountProfilePanel");
  if(!authPanel||!profile)return;
- if(!user){authPanel.style.display="block";profile.style.display="none";return;}
+ document.body.classList.toggle("nexa-authenticated",!!user);
+ if(!user){
+  authPanel.style.display="block";profile.style.display="none";
+  if(typeof window.showPage==="function")window.showPage("account");
+  return;
+ }
  const meta=user.user_metadata||{};
  const name=meta.full_name||meta.name||"NEXA Member";
  $("accountProfileName").textContent=name;
