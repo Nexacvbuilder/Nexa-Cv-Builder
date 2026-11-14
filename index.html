@@ -2892,104 +2892,15 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape")document.getElementB
 @media print{#nexaAdminCvModal{position:static!important;display:block!important;background:#fff!important;padding:0!important}#nexaAdminCvToolbar{display:none!important}#nexaAdminCvPaper{box-shadow:none!important;width:100%!important}}
 </style>
 
-<style id="nexa-final-site-polish">
-/* Final consistency pass: tighter spacing, clearer hierarchy, mobile-first controls.
-   Printable A4 CV sheets and certificate artwork are intentionally excluded. */
-html{scroll-padding-top:84px}
-body{min-height:100vh;overflow-x:hidden;padding-bottom:calc(82px + env(safe-area-inset-bottom,0px))}
-header{min-height:58px;position:sticky;top:0;z-index:100;gap:8px}
-.logo{line-height:1.15}
-.header-tagline{line-height:1.35}
-.container{width:min(1160px,94%);margin:0 auto}
-.page{padding:18px 0 28px;min-height:0}
-.page>h1{margin:0 0 5px;line-height:1.15}
-.page>p.muted{margin:0 0 14px;line-height:1.5}
-.hero{margin:0 0 14px;padding:clamp(23px,4vw,42px) clamp(17px,4vw,36px);border-radius:19px}
-.hero-eyebrow{margin-bottom:14px;line-height:1.5}
-.hero h1{font-size:clamp(30px,5.4vw,52px);line-height:1.06;margin:0 0 9px}
-.hero p{margin:0 0 15px;line-height:1.55}
-.hero-highlights{margin-top:17px;padding-top:13px;gap:8px 10px}
-.hero-highlights span{padding:7px 9px;font-size:10px}
-.services-intro{margin:0 0 12px!important;padding:18px!important;border-radius:16px!important}
-.services-intro h2{margin:5px 0 7px!important;line-height:1.2}
-.services-intro p{margin:0 0 9px!important;line-height:1.55!important}
-.intro-points{margin:10px 0 13px!important;gap:7px}
-.intro-points span{padding:6px 9px;font-size:10px}
-.grid{gap:11px}
-.card,.panel{margin-bottom:9px;border-radius:15px}
-.page .panel:last-child,.page .card:last-child{margin-bottom:0}
-#studio>h1,#payment h1,#admin>h1{margin-top:0}
-#studio .studio-main-grid{margin:12px auto!important}
-#studio .studio-primary-card{min-height:0!important}
-#toolArea,#quickToolArea{margin-top:12px!important;border-radius:15px}
-.orders-heading{margin-bottom:12px;gap:10px}
-.orders-heading h1{line-height:1.15}
-.my-orders-list{display:grid;gap:10px}
-#admin .admin-toolbar{margin-bottom:12px!important;padding:13px!important;border-radius:14px}
-#admin .admin-stats{margin:12px 0 16px!important;gap:9px!important}
-#admin .admin-stat{min-height:0!important;padding:12px!important;border-radius:13px!important}
-#admin .admin-report-section{margin:12px 0!important;padding:14px!important;border-radius:14px!important}
-#admin .admin-report-section h2{margin:0 0 8px!important}
-#account.page{padding-top:14px;padding-bottom:22px}
-#account .nexa-auth-card{margin:8px auto!important}
-button,.btn{min-height:40px;touch-action:manipulation}
-button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #65cbd4;outline-offset:2px}
-input,select,textarea{min-height:42px;max-width:100%}
-textarea{min-height:82px}
-footer{padding:12px 10px 18px!important;line-height:1.5}
-.bottom-nav{padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))!important}
-.bottom-nav-item{min-width:0;min-height:44px;padding:7px 5px!important;gap:3px!important;font-size:10px!important}
-.bottom-nav-item .nav-icon{font-size:18px!important;line-height:1.1}
-@media(min-width:900px){
- .page{padding-top:22px;padding-bottom:30px}
- .hero{padding:42px 40px}
- .services-intro{padding:22px!important}
-}
+<style id="nexa-admin-top-spacing-fix">
+/* Keep the Admin page close to the top without changing other pages. */
+#admin.page{padding-top:8px!important;padding-bottom:24px!important}
+#admin>h1{margin-top:0!important}
 @media(max-width:650px){
- body{padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))}
- .container{width:94%;margin:0 auto!important}
- .page{padding:12px 0 22px!important}
- .hero{padding:23px 16px!important;margin-bottom:10px!important;border-radius:16px!important}
- .hero h1{font-size:clamp(28px,8vw,39px)!important;letter-spacing:-.7px!important}
- .hero-eyebrow{font-size:8px!important;letter-spacing:1px!important;margin-bottom:11px!important}
- .hero p{font-size:13px!important;margin-bottom:12px!important}
- .hero .btn{min-width:0!important;min-height:40px!important;padding:9px 12px!important}
- .hero-highlights{margin-top:13px!important;padding-top:11px!important;gap:7px!important}
- .hero-highlights span{padding:6px 8px!important;font-size:9px!important}
- .services-intro{padding:14px!important;margin:0 0 10px!important}
- .services-intro h2{font-size:20px!important}
- .services-intro p{font-size:12px!important;line-height:1.5!important}
- .intro-points{gap:6px!important;margin:9px 0 11px!important}
- .intro-points span{font-size:9px!important;padding:5px 7px!important}
- .services-intro .btn{min-width:0!important;min-height:39px!important}
- .card,.panel{padding:12px!important;margin-bottom:8px!important}
- #studio .studio-main-grid{margin:10px auto!important}
- #admin .admin-toolbar{padding:12px!important}
- #admin .admin-stats{gap:7px!important}
- #admin .admin-stat{padding:10px!important}
- #admin .admin-report-section{padding:11px!important}
- .orders-heading{align-items:center!important}
- .orders-heading h1{font-size:25px!important}
- .bottom-nav{width:100%!important;left:0!important;right:0!important;bottom:0!important;border-radius:14px 14px 0 0!important}
- .bottom-nav-item{font-size:9px!important;padding:6px 2px!important}
-}
-@media(max-width:380px){
- .container{width:95%}
- .hero{padding:20px 13px!important}
- .hero-highlights span{font-size:8px!important}
- .bottom-nav-item{font-size:8px!important}
- .bottom-nav-item .nav-icon{font-size:17px!important}
-}
-@media(prefers-reduced-motion:reduce){
- .page{animation:none!important}
- *,*:before,*:after{scroll-behavior:auto!important;transition-duration:.01ms!important}
-}
-@media print{
- body{padding:0!important}
- header,.bottom-nav,footer,.nexa-notice,#nexaSupportAIButton,#nexaSupportPanel{display:none!important}
- .page{padding:0!important}
+  #admin.page{padding-top:6px!important;padding-bottom:20px!important}
 }
 </style>
+
 
 </body>
 </html>
