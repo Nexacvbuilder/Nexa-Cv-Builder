@@ -1194,6 +1194,22 @@ body{color:#f7faff!important}
 }
 @media(prefers-reduced-motion:reduce){#account .nexa-auth-card *,#account .nexa-auth-card *:before{transition:none!important;animation:none!important}}
 </style>
+
+<style id="nexa-account-blank-space-fix">
+/* Remove the leftover full-screen blank area on the Account page only. */
+#account.page{
+  min-height:0!important;
+  height:auto!important;
+  display:block!important;
+  justify-content:flex-start!important;
+  padding-top:0!important;
+  padding-bottom:10px!important;
+}
+@media(max-width:560px){
+  #account.page{min-height:0!important;padding-top:0!important;padding-bottom:8px!important}
+}
+</style>
+
 </head>
 <body>
 
