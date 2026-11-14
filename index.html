@@ -501,6 +501,22 @@ footer{border-top-color:rgba(133,164,207,.18)}
 .nexa-footer .credit b{font-size:9px;color:#e5c779;font-weight:800;letter-spacing:.55px}
 @media(max-width:380px){.nexa-footer{gap:2px}.nexa-footer>strong{font-size:10px;letter-spacing:1.4px}.nexa-footer .credit,.nexa-footer .credit b{font-size:8px}}
 
+
+/* CV form: add breathing room around the add-entry buttons */
+#toolArea button[onclick="addEducation()"],
+#toolArea button[onclick="addWork()"],
+#toolArea button[onclick="addSkill()"]{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  margin-top:16px!important;
+  margin-bottom:12px!important;
+}
+#toolArea #educationList,
+#toolArea #workList,
+#toolArea #skillsList{
+  margin-top:8px!important;
+}
 </style>
 
 <style id="nexa-signature-redesign-2026">
