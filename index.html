@@ -2152,9 +2152,20 @@ window.loadOrders=async function(){
 
   const methods={};approved.forEach(o=>{const k=o.payment_method||"Not specified";methods[k]=(methods[k]||0)+money(o)});
   $("paymentSummary").innerHTML=Object.keys(methods).length?Object.entries(methods).map(([k,v])=>`<div class="payment-summary-row"><span>${escapeHTML(k)}</span><b>Rs. ${v.toLocaleString("en-PK")}</b></div>`).join(""):'No approved payments recorded.';
+  window.__nexaAdminOrders=Object.fromEntries(data.map(o=>[String(o.id),o]));
   $("adminOrders").innerHTML=data.length?data.map(o=>{
    const st=state(o);const safeId=String(o.id).replace(/[^a-zA-Z0-9_-]/g,"");
-   return `<div class="panel admin-order-card"><h3>${escapeHTML(o.order_code||"CV Order")}</h3><p><b>Customer:</b> ${escapeHTML(o.customer_name||"—")} · ${escapeHTML(o.customer_phone||"—")}</p><p><b>Amount:</b> Rs. ${money(o).toLocaleString("en-PK")} | <b>Date:</b> ${o.created_at?new Date(o.created_at).toLocaleString("en-PK"):"—"}</p><p><b>Payment:</b> ${escapeHTML(o.payment_method||"—")} | <b>Transaction:</b> ${escapeHTML(o.transaction_id||"—")}</p><p><b>Status:</b> <span class="admin-status ${st}">${escapeHTML(st)}</span></p><details><summary>View CV Details / Requirements</summary><pre style="white-space:pre-wrap;overflow-wrap:anywhere">${escapeHTML(JSON.stringify(o.design_data??o.cv??{},null,2))}</pre></details>${st!=="approved"?`<button class="btn green" onclick="updateOrder('${safeId}','approved')">Approve Payment</button>`:""}${st!=="rejected"?` <button class="btn red" onclick="updateOrder('${safeId}','rejected')">Reject</button>`:""}</div>`;
+   const orderDate=o.created_at?new Date(o.created_at).toLocaleString("en-PK"):"—";
+   return `<article class="panel admin-order-card">
+    <div class="admin-order-head"><div><span class="admin-order-kicker">CV ORDER</span><h3>${escapeHTML(o.order_code||"CV Order")}</h3></div><span class="admin-status ${st}">${escapeHTML(st.toUpperCase())}</span></div>
+    <div class="admin-order-info">
+     <div><small>Customer</small><b>${escapeHTML(o.customer_name||"—")}</b><span>${escapeHTML(o.customer_phone||"—")}</span></div>
+     <div><small>Order Amount</small><b>Rs. ${money(o).toLocaleString("en-PK")}</b><span>${escapeHTML(orderDate)}</span></div>
+     <div><small>Payment Method</small><b>${escapeHTML(o.payment_method||"—")}</b><span>Transaction: ${escapeHTML(o.transaction_id||"—")}</span></div>
+    </div>
+    <div class="admin-order-actions"><button type="button" class="admin-preview-btn" onclick="previewAdminCV('${safeId}')">▣ View Full CV Preview</button>${st!=="approved"?`<button class="btn green" onclick="updateOrder('${safeId}','approved')">✓ Approve Payment</button>`:""}${st!=="rejected"?`<button class="btn red" onclick="updateOrder('${safeId}','rejected')">Reject</button>`:""}</div>
+    <details class="admin-order-details"><summary>View CV Details / Requirements</summary><pre>${escapeHTML(JSON.stringify(o.design_data??o.cv??{},null,2))}</pre></details>
+   </article>`;
   }).join(""):'No CV orders found yet.';
   showStatus("adminReportStatus",`Reports updated successfully. ${data.length} total order(s) checked.`,"success");
  }catch(e){$("adminOrders").textContent="Could not load orders: "+e.message;showStatus("adminReportStatus","Report error: "+e.message,"error");}
@@ -2693,6 +2704,76 @@ window.toggleOtherServices=function(show){
 }
 @media(prefers-reduced-motion:reduce){#admin button{transition:none}}
 </style>
+
+
+<style id="nexa-admin-orders-pro">
+#admin .admin-order-card{padding:18px!important;margin:14px 0!important;border:1px solid #294b68!important;border-radius:18px!important;background:linear-gradient(145deg,#142b45,#0b192b)!important;box-shadow:0 12px 28px #020b1870!important}
+#admin .admin-order-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:13px;border-bottom:1px solid #29435d}
+#admin .admin-order-kicker{display:block;color:#69d9df;font-size:10px;font-weight:900;letter-spacing:1.8px;margin-bottom:4px}
+#admin .admin-order-head h3{margin:0!important;color:#f4f8ff!important;font-size:19px!important;letter-spacing:.3px;overflow-wrap:anywhere}
+#admin .admin-order-info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+#admin .admin-order-info>div{min-width:0;padding:12px;border:1px solid #29445f;border-radius:12px;background:#0b1b2e}
+#admin .admin-order-info small,#admin .admin-order-info span{display:block;color:#8fa9c0;font-size:11px;line-height:1.5}
+#admin .admin-order-info b{display:block;margin:5px 0;color:#edf6ff;font-size:13px;overflow-wrap:anywhere}
+#admin .admin-order-actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 8px}
+#admin .admin-order-actions button{min-height:42px;border-radius:11px;padding:10px 14px}
+#admin .admin-preview-btn{background:linear-gradient(110deg,#174e70,#087b88);border:1px solid #3b9aa7;color:#eaffff;font-weight:900}
+#admin .admin-order-details{margin-top:12px;padding:11px 13px;border:1px solid #29445f;border-radius:11px;background:#0a1728}
+#admin .admin-order-details summary{color:#9bdde5;font-weight:800;cursor:pointer}
+#admin .admin-order-details pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:260px;overflow:auto;color:#c8d9e8;font-size:11px;line-height:1.55}
+#nexaAdminCvModal{position:fixed;inset:0;z-index:100500;display:none;align-items:flex-start;justify-content:center;padding:16px 10px 30px;background:rgba(2,8,18,.92);overflow:auto}
+#nexaAdminCvModal.open{display:flex}
+#nexaAdminCvDialog{width:min(100%,900px);margin:auto}
+#nexaAdminCvToolbar{position:sticky;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 14px;margin-bottom:12px;border:1px solid #315675;border-radius:14px;background:#0d2035;color:#fff;box-shadow:0 8px 22px #0006}
+#nexaAdminCvToolbar strong{color:#9ce9eb;font-size:13px;letter-spacing:.6px}
+#nexaAdminCvToolbar button{background:#25445f;color:#fff}
+#nexaAdminCvPaper{width:min(100%,794px);min-height:1123px;margin:0 auto;padding:48px 52px;background:#fff;color:#202b3b;box-shadow:0 16px 50px #0008;font-family:Arial,sans-serif;overflow:hidden}
+#nexaAdminCvPaper .admin-cv-top{display:flex;align-items:center;gap:24px;padding-bottom:22px;border-bottom:3px solid #1769a5;margin-bottom:24px}
+#nexaAdminCvPaper .admin-cv-photo{width:116px;height:116px;flex:0 0 116px;border-radius:50%;object-fit:cover;border:4px solid #e5edf5}
+#nexaAdminCvPaper .admin-cv-initial{width:116px;height:116px;flex:0 0 116px;border-radius:50%;display:grid;place-items:center;background:#e7f0f8;color:#1769a5;font-size:42px;font-weight:900}
+#nexaAdminCvPaper h1{font-size:30px;line-height:1.15;margin:0 0 7px;color:#132d48;overflow-wrap:anywhere}
+#nexaAdminCvPaper .admin-cv-role{font-size:14px;letter-spacing:1.2px;color:#54718c;font-weight:700}
+#nexaAdminCvPaper .admin-cv-contact{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px;color:#53677b;font-size:11px;overflow-wrap:anywhere}
+#nexaAdminCvPaper .admin-cv-section{margin:22px 0}
+#nexaAdminCvPaper .admin-cv-section h2{font-size:14px;letter-spacing:1.4px;text-transform:uppercase;color:#1769a5;border-bottom:1px solid #d7e2ec;padding-bottom:7px;margin:0 0 12px}
+#nexaAdminCvPaper .admin-cv-profile{font-size:12px;line-height:1.7;color:#43566a;white-space:pre-wrap}
+#nexaAdminCvPaper .admin-cv-entry{margin:0 0 15px;break-inside:avoid}
+#nexaAdminCvPaper .admin-cv-entry-head{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:#203c58}
+#nexaAdminCvPaper .admin-cv-entry small{display:block;margin:4px 0;color:#667c91;font-size:11px}
+#nexaAdminCvPaper .admin-cv-entry p{margin:5px 0;color:#526579;font-size:11px;line-height:1.6;white-space:pre-wrap}
+#nexaAdminCvPaper .admin-cv-skills{display:flex;flex-wrap:wrap;gap:8px}
+#nexaAdminCvPaper .admin-cv-skills span{padding:7px 10px;border-radius:20px;background:#edf4fa;color:#245477;font-size:11px;font-weight:700}
+@media(max-width:650px){#admin .admin-order-info{grid-template-columns:1fr 1fr}#admin .admin-order-info>div:last-child{grid-column:1/-1}#admin .admin-order-actions button{flex:1 1 100%}#nexaAdminCvModal{padding:8px 6px 20px}#nexaAdminCvPaper{min-height:0;padding:28px 22px;width:100%}#nexaAdminCvPaper .admin-cv-top{align-items:flex-start;gap:14px}#nexaAdminCvPaper .admin-cv-photo,#nexaAdminCvPaper .admin-cv-initial{width:76px;height:76px;flex-basis:76px}#nexaAdminCvPaper h1{font-size:23px}}
+@media(max-width:380px){#admin .admin-order-info{grid-template-columns:1fr}#admin .admin-order-info>div:last-child{grid-column:auto}}
+</style>
+<script id="nexa-admin-cv-preview-script">
+window.previewAdminCV=function(id){
+ const order=window.__nexaAdminOrders&&window.__nexaAdminOrders[String(id)];
+ if(!order){alert("Order details are not available. Refresh the reports and try again.");return;}
+ const raw=order.design_data??order.cv??{};
+ const d=(raw&&raw.data&&typeof raw.data==="object")?raw.data:raw;
+ const safe=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ const list=v=>Array.isArray(v)?v:[];
+ const photo=String(d.photo||"");
+ const photoHTML=/^(data:image\/(png|jpeg|jpg|webp);base64,|https?:\/\/)/i.test(photo)?'<img class="admin-cv-photo" src="'+safe(photo)+'" alt="CV profile photo">':'<div class="admin-cv-initial">'+safe((d.name||order.customer_name||"N").trim().charAt(0).toUpperCase())+'</div>';
+ const work=list(d.work),education=list(d.education),skills=list(d.skills);
+ const section=(title,body)=>body?'<section class="admin-cv-section"><h2>'+title+'</h2>'+body+'</section>':'';
+ const workHTML=work.map(e=>'<div class="admin-cv-entry"><div class="admin-cv-entry-head"><b>'+safe(e.job||"Position")+'</b><b>'+safe([e.start,e.end].filter(Boolean).join(" – "))+'</b></div><small>'+safe(e.company||"")+'</small><p>'+safe(e.description||"")+'</p></div>').join("");
+ const eduHTML=education.map(e=>'<div class="admin-cv-entry"><div class="admin-cv-entry-head"><b>'+safe(e.qualification||"Education")+'</b><b>'+safe(e.year||"")+'</b></div><small>'+safe(e.institute||"")+(e.subject?" · "+safe(e.subject):"")+'</small></div>').join("");
+ const skillsHTML=skills.map(x=>'<span>'+safe(x)+'</span>').join("");
+ const contact=[d.phone,d.email,d.website,d.address].filter(Boolean).map(safe).join(" &nbsp; • &nbsp; ");
+ const paper='<div class="admin-cv-top">'+photoHTML+'<div><h1>'+safe(d.name||order.customer_name||"CV Preview")+'</h1><div class="admin-cv-role">'+safe(d.job||"Professional Profile")+'</div><div class="admin-cv-contact">'+(contact||"Contact details not provided")+'</div></div></div>'+
+ section("Professional Profile",'<div class="admin-cv-profile">'+safe(d.profile||"No professional profile supplied.")+'</div>')+
+ section("Work Experience",workHTML)+section("Education",eduHTML)+section("Skills",'<div class="admin-cv-skills">'+(skillsHTML||'<span>Not provided</span>')+'</div>')+
+ section("Languages",'<div class="admin-cv-profile">'+safe(d.languages||"Not provided")+'</div>')+
+ section("References",'<div class="admin-cv-profile">'+safe(d.references||"Available on request")+'</div>');
+ let modal=document.getElementById("nexaAdminCvModal");
+ if(!modal){modal=document.createElement("div");modal.id="nexaAdminCvModal";modal.innerHTML='<div id="nexaAdminCvDialog"><div id="nexaAdminCvToolbar"><strong>FULL-PAGE CV PREVIEW · '+safe(order.order_code||"NEXA ORDER")+'</strong><div><button type="button" onclick="window.print()">Print</button> <button type="button" onclick="document.getElementById(\'nexaAdminCvModal\').classList.remove(\'open\')">Close ✕</button></div></div><div id="nexaAdminCvPaper"></div></div>';document.body.appendChild(modal);}
+ document.getElementById("nexaAdminCvPaper").innerHTML=paper;
+ modal.classList.add("open");modal.scrollTop=0;
+};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.getElementById("nexaAdminCvModal")?.classList.remove("open");});
+</script>
 
 </body>
 </html>
