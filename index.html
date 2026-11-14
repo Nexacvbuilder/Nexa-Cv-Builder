@@ -1025,6 +1025,7 @@ input,select,textarea,button{font-family:Arial,"Segoe UI",sans-serif!important}
 body:not(.nexa-authenticated) main.container .page:not(#account){display:none!important}
 body:not(.nexa-authenticated) .bottom-nav{display:none!important}
 body:not(.nexa-authenticated) #admin{display:none!important}
+body.nexa-admin-entry:not(.nexa-authenticated) #admin.page.active{display:block!important}
 body:not(.nexa-authenticated) #account.page{display:block!important;min-height:calc(100vh - 150px)!important}
 body:not(.nexa-authenticated) #account .account-auth-panel{display:block!important}
 body:not(.nexa-authenticated) #account .account-profile-panel{display:none!important}
@@ -1218,6 +1219,7 @@ function showStatus(id,text,type="info"){
 }
 let isAppAdmin=false;
 const adminEntryRequested=new URLSearchParams(window.location.search).get("admin")==="1";
+if(adminEntryRequested)document.body.classList.add("nexa-admin-entry");
 const adminNavButton=$("adminNavButton");
 const adminPage=$("admin");
 function setAdminVisibility(allowed){
