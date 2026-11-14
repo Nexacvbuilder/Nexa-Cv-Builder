@@ -1121,6 +1121,41 @@ body{color:#f7faff!important}
 #cvPreview,#cvPreview *,.nexa-certificate,.nexa-certificate *,
 #nexaSupportPanel,#nexaSupportPanel *{color:revert!important}
 </style>
+<style id="nexa-premium-auth-redesign">
+#account.page{min-height:calc(100vh - 95px);display:flex;flex-direction:column;justify-content:center;padding:22px 0 34px!important}
+#account>.nexa-auth-hidden-title{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+#account .nexa-auth-card{width:min(100%,510px);margin:14px auto!important;padding:clamp(22px,5vw,38px)!important;border:1px solid #29313e!important;border-radius:27px!important;background:radial-gradient(ellipse at 50% -10%,#26304a 0%,#171b25 38%,#101319 78%)!important;color:#f5f6fb!important;box-shadow:0 24px 70px #0008,inset 0 1px #ffffff0b!important}
+.nexa-auth-brand{display:flex;align-items:center;gap:10px;color:#f4f6ff;font-weight:900;letter-spacing:1.6px;font-size:16px;margin-bottom:30px}
+.nexa-auth-brand small{display:block;color:#8993a7;font-size:9px;letter-spacing:2.3px;margin-top:3px}
+.nexa-auth-mark{width:35px;height:35px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(145deg,#a9b9ff,#6476d8);color:#11182c;font-size:19px;box-shadow:0 5px 18px #7085ff55}
+.nexa-auth-heading h2{font-size:clamp(29px,7vw,36px)!important;margin:0 0 5px!important;color:#f7f8ff!important;letter-spacing:-1px}
+.nexa-auth-heading p{color:#9299a9!important;margin:0 0 25px!important;font-size:13px}
+#account .nexa-auth-tabs{display:grid!important;grid-template-columns:1fr 1fr;gap:5px!important;padding:5px!important;margin:0 0 25px!important;border-radius:14px!important;background:#0c1017!important;border:1px solid #202633}
+#account .nexa-auth-tabs .account-tab{margin:0!important;min-height:43px;border-radius:10px!important;background:transparent!important;color:#aab1c0!important;font-size:13px!important}
+#account .nexa-auth-tabs .account-tab.active{background:linear-gradient(145deg,#343b49,#272e3a)!important;color:#fff!important;box-shadow:0 2px 8px #0006,inset 0 1px #ffffff12}
+#account .nexa-auth-form label{display:block;color:#c6ccda!important;font-size:12px!important;font-weight:700;margin:13px 0 7px!important}
+#account .nexa-auth-form input:not([type=checkbox]),#account .nexa-auth-form select{width:100%;min-height:52px;padding:0 15px!important;border:1px solid #303746!important;border-radius:13px!important;background:#202530!important;color:#f4f6fb!important;font-size:14px!important;box-shadow:inset 0 1px 3px #0003}
+#account .nexa-auth-form input::placeholder{color:#737d8f}
+#account .nexa-auth-form input:focus,#account .nexa-auth-form select:focus{outline:2px solid #8495ff!important;outline-offset:1px;border-color:#8495ff!important}
+.nexa-auth-label-row{display:flex;align-items:center;justify-content:space-between}
+.nexa-auth-label-row label{margin-bottom:7px!important}
+.nexa-text-btn{padding:0!important;background:none!important;color:#b6c1ff!important;font-size:12px!important}
+.nexa-password-wrap{position:relative}
+.nexa-password-wrap input{padding-right:50px!important}
+.nexa-eye-btn{position:absolute;right:8px;top:7px;width:38px;height:38px;padding:0!important;border-radius:9px!important;background:transparent!important;color:#8994a8!important;font-size:18px}
+#account .nexa-remember{display:flex;align-items:center;gap:9px;margin:19px 0!important;color:#b8bfcc!important;font-size:12px!important;font-weight:600}
+#account .nexa-remember input{width:19px;height:19px;accent-color:#aebaff;margin:0}
+#account .nexa-primary-submit{width:100%;min-height:55px!important;margin-top:5px!important;border-radius:14px!important;background:linear-gradient(105deg,#e8eaff,#aabaff)!important;color:#151b32!important;font-size:15px!important;font-weight:900!important;box-shadow:0 7px 20px #8094ff35!important}
+#account .nexa-primary-submit span{margin-left:8px;font-size:18px}
+.nexa-auth-divider{display:flex;align-items:center;gap:12px;margin:27px 0 17px;color:#737e91;font-size:10px;font-weight:800;letter-spacing:1.3px}
+.nexa-auth-divider:before,.nexa-auth-divider:after{content:"";height:1px;flex:1;background:#29313e}
+.nexa-google-btn{width:100%;min-height:50px!important;border:1px solid #303847!important;border-radius:12px!important;background:#1b202a!important;color:#e8ebf3!important;font-size:13px!important;font-weight:700!important}
+.nexa-google-g{display:inline-grid;place-items:center;width:23px;height:23px;margin-right:8px;border-radius:50%;background:#fff;color:#4285f4;font-size:16px;font-weight:900}
+#account .account-note{margin:19px 0 0!important;text-align:center;color:#788397!important;font-size:11px!important;line-height:1.6}
+#account #accountAuthStatus{margin-top:14px}
+@media(max-width:560px){#account.page{padding:12px 0 25px!important;min-height:calc(100vh - 35px)}#account .nexa-auth-card{width:calc(100% - 16px);padding:23px 19px!important;border-radius:23px!important}.nexa-auth-brand{margin-bottom:25px}}
+@media(min-width:900px){#account.page{min-height:calc(100vh - 100px)}#account .nexa-auth-card{width:490px}}
+</style>
 </head>
 <body>
 
@@ -1171,42 +1206,42 @@ body{color:#f7faff!important}
 </section>
 
 <section id="account" class="page active">
-  <h1>My Account</h1>
-  <p class="muted">Create your NEXA account or sign in to continue.</p>
-  <div id="accountAuthPanel" class="panel account-auth-panel">
-    <div class="account-tabs">
-      <button type="button" id="accountLoginTab" class="btn account-tab active" onclick="switchAccountMode('login')">Login</button>
-      <button type="button" id="accountRegisterTab" class="btn secondary account-tab" onclick="switchAccountMode('register')">Create Account</button>
+  <h1 class="nexa-auth-hidden-title">My Account</h1>
+  <p class="muted nexa-auth-hidden-title">Create your NEXA account or sign in to continue.</p>
+  <div id="accountAuthPanel" class="panel account-auth-panel nexa-auth-card">
+    <div class="nexa-auth-brand"><span class="nexa-auth-mark">N</span><span>NEXA <small>CV BUILDER</small></span></div>
+    <div class="nexa-auth-heading"><h2>Welcome</h2><p>Sign in to continue to your account</p></div>
+    <div class="account-tabs nexa-auth-tabs">
+      <button type="button" id="accountLoginTab" class="btn account-tab active" onclick="switchAccountMode('login')">Sign In</button>
+      <button type="button" id="accountRegisterTab" class="btn secondary account-tab" onclick="switchAccountMode('register')">Sign Up</button>
     </div>
-    <div id="accountLoginForm">
-      <h2>Welcome Back</h2>
-      <label for="accountLoginEmail">Email Address</label>
-      <input id="accountLoginEmail" type="email" autocomplete="email" placeholder="name@example.com" required>
-      <label for="accountLoginPassword">Password</label>
-      <input id="accountLoginPassword" type="password" autocomplete="current-password" placeholder="Enter your password" required>
-      <button type="button" class="btn account-submit" onclick="loginAccount()">Login</button>
+    <div id="accountLoginForm" class="nexa-auth-form">
+      <label for="accountLoginEmail">Username or Email</label>
+      <input id="accountLoginEmail" type="email" autocomplete="username" placeholder="Enter username or email" required>
+      <div class="nexa-auth-label-row"><label for="accountLoginPassword">Password</label><button type="button" class="nexa-text-btn" onclick="forgotAccountPassword()">Forgot?</button></div>
+      <div class="nexa-password-wrap"><input id="accountLoginPassword" type="password" autocomplete="current-password" placeholder="Enter password" required><button type="button" class="nexa-eye-btn" aria-label="Show password" onclick="toggleAccountPassword('accountLoginPassword',this)">◉</button></div>
+      <label class="nexa-remember"><input id="accountRememberMe" type="checkbox" checked><span>Remember me</span></label>
+      <button type="button" class="btn account-submit nexa-primary-submit" onclick="loginAccount()">Sign In <span>➜</span></button>
     </div>
-    <div id="accountRegisterForm" style="display:none">
-      <h2>Create Your Account</h2>
+    <div id="accountRegisterForm" class="nexa-auth-form" style="display:none">
       <label for="accountFullName">Full Name</label>
       <input id="accountFullName" type="text" autocomplete="name" maxlength="80" placeholder="Enter your full name" required>
       <label for="accountRegisterEmail">Email Address</label>
       <input id="accountRegisterEmail" type="email" autocomplete="email" placeholder="name@example.com" required>
       <label for="accountGender">Gender</label>
       <select id="accountGender" required>
-        <option value="">Select gender</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Prefer not to say">Prefer not to say</option>
+        <option value="">Select gender</option><option value="Male">Male</option><option value="Female">Female</option><option value="Prefer not to say">Prefer not to say</option>
       </select>
       <label for="accountRegisterPassword">Create Password</label>
-      <input id="accountRegisterPassword" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required>
+      <div class="nexa-password-wrap"><input id="accountRegisterPassword" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required><button type="button" class="nexa-eye-btn" aria-label="Show password" onclick="toggleAccountPassword('accountRegisterPassword',this)">◉</button></div>
       <label for="accountConfirmPassword">Confirm Password</label>
-      <input id="accountConfirmPassword" type="password" autocomplete="new-password" minlength="8" placeholder="Enter password again" required>
-      <button type="button" class="btn account-submit" onclick="registerAccount()">Create Account</button>
+      <div class="nexa-password-wrap"><input id="accountConfirmPassword" type="password" autocomplete="new-password" minlength="8" placeholder="Enter password again" required><button type="button" class="nexa-eye-btn" aria-label="Show password" onclick="toggleAccountPassword('accountConfirmPassword',this)">◉</button></div>
+      <button type="button" class="btn account-submit nexa-primary-submit" onclick="registerAccount()">Create Account <span>➜</span></button>
     </div>
+    <div class="nexa-auth-divider"><span>OR CONTINUE WITH</span></div>
+    <button type="button" class="nexa-google-btn" onclick="loginWithGoogle()"><span class="nexa-google-g">G</span> Continue with Google</button>
     <div id="accountAuthStatus" class="status" aria-live="polite"></div>
-    <p class="muted account-note">Your password is used to protect your account. NEXA will not ask you to share it with anyone.</p>
+    <p class="muted account-note">Your account details are protected. Never share your password with anyone.</p>
   </div>
   <div id="accountProfilePanel" class="panel" style="display:none">
     <div class="account-profile-head"><div class="account-avatar" id="accountAvatar">N</div><div><h2 id="accountProfileName">Welcome</h2><p class="muted" id="accountProfileEmail"></p></div></div>
@@ -1334,6 +1369,29 @@ function renderAccountUser(user){
  $("accountAvatar").textContent=(name.trim()[0]||"N").toUpperCase();
  authPanel.style.display="none";profile.style.display="block";
 }
+window.toggleAccountPassword=function(id,button){
+ const field=document.getElementById(id);if(!field)return;
+ field.type=field.type==="password"?"text":"password";
+ button.setAttribute("aria-label",field.type==="password"?"Show password":"Hide password");
+ button.textContent=field.type==="password"?"◉":"◎";
+};
+window.forgotAccountPassword=async function(){
+ const email=$("accountLoginEmail").value.trim().toLowerCase();
+ if(!email){showStatus("accountAuthStatus","Enter your email address first, then choose Forgot.","error");return;}
+ showStatus("accountAuthStatus","Sending password reset email...","info");
+ try{
+  const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+window.location.pathname});
+  if(error)throw error;
+  showStatus("accountAuthStatus","If this email is registered, a password reset link has been sent.","success");
+ }catch(e){showStatus("accountAuthStatus",e.message||"Could not send reset email.","error");}
+};
+window.loginWithGoogle=async function(){
+ showStatus("accountAuthStatus","Connecting to Google...","info");
+ try{
+  const {error}=await supabase.auth.signInWithOAuth({provider:"google",options:{redirectTo:window.location.origin+window.location.pathname}});
+  if(error)throw error;
+ }catch(e){showStatus("accountAuthStatus",e.message||"Google sign-in is not available. Check Google provider settings in Supabase.","error");}
+};
 window.registerAccount=async function(){
  const name=$("accountFullName").value.trim();
  const email=$("accountRegisterEmail").value.trim().toLowerCase();
