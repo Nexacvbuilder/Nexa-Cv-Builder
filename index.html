@@ -1036,7 +1036,26 @@ body.nexa-authenticated main.container .page.active{display:block}
  body:not(.nexa-authenticated) #account .account-auth-panel{max-width:680px!important;margin:28px auto!important;padding:40px!important}
 }
 </style>
-</head>
+<style id="nexa-my-orders-only">
+.orders-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+.orders-heading h1{margin-bottom:5px}
+.my-orders-list{display:grid;gap:14px}
+.my-order-card{padding:20px;margin:0}
+.my-order-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.my-order-top>div{display:grid;gap:5px;min-width:0}
+.order-kicker,.my-order-details small{font-size:11px;letter-spacing:.08em;color:var(--muted)}
+.my-order-top strong{overflow-wrap:anywhere}
+.order-status{font-size:12px;font-weight:800;padding:7px 12px;border-radius:30px;background:#e9a23b22;color:#b97812;white-space:nowrap}
+.order-status.approved{background:#1fa97120;color:#20a36f}
+.order-status.rejected{background:#e0525220;color:#e05252}
+.my-order-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;padding:16px 0}
+.my-order-details>div{display:grid;gap:5px;min-width:0}
+.my-order-details b{font-size:14px;overflow-wrap:anywhere}
+.my-order-date{font-size:12px;color:var(--muted);border-top:1px solid var(--border);padding-top:12px}
+.my-orders-empty{text-align:center;padding:42px 20px}
+.empty-icon{font-size:34px;opacity:.6}
+@media(max-width:600px){.orders-heading{align-items:flex-start}.my-order-card{padding:15px}.my-order-details{gap:12px}}
+</style>\n</head>
 <body>
 
 <header>
@@ -1075,33 +1094,13 @@ body.nexa-authenticated main.container .page.active{display:block}
 </section>
 
 <section id="payment" class="page">
-  <h1>CV Builder Payment</h1>
-  <p class="muted">Apne CV ki payment details submit karein. Approval ke baad PDF download unlock ho jayega.</p>
-  <div class="discount-banner">🎉 CV BUILDER SPECIAL OFFER: 10% DISCOUNT</div>
-  <div class="panel">
-    <div class="form-grid">
-      <div><label>Your Name</label><input id="customerName"></div>
-      <div><label>Phone Number</label><input id="customerPhone"></div>
-      <div><label>Service</label>
-        <select id="orderService" onchange="updateAmount()">
-          <option>CV Builder</option>
-        </select>
-      </div>
-      <div><label>Amount (PKR)</label><input id="orderAmount" readonly></div>
-      <div><label>Payment Method</label><select id="paymentMethod"><option>JazzCash</option><option>Easypaisa</option></select></div>
-      <div><label>Payment Number</label><input value="03469799347" readonly></div>
-      <div class="full"><label>Transaction ID</label><input id="transactionId"></div>
-      <div class="full"><label>Additional Instructions</label><textarea id="orderNotes"></textarea></div>
-    </div>
-    <p class="muted">JazzCash / Easypaisa: <b>03469799347</b></p>
-    <button class="btn green" onclick="submitOrder()">Submit Order</button>
-    <div id="orderStatus" class="status"></div>
+  <div class="orders-heading">
+    <div><h1>My Orders</h1><p class="muted">Yahan sirf aapke submit kiye hue orders nazar aayenge.</p></div>
+    <button class="btn secondary" type="button" onclick="loadMyOrders()">↻ Refresh</button>
   </div>
-  <div id="cvUnlockPanel" class="panel" style="display:none">
-    <h3>My CV Order</h3>
-    <p id="cvOrderStatus">Waiting for approval.</p>
-    <button class="btn" onclick="checkApproval()">Check Approval</button>
-    <button class="btn green" id="downloadCVButton" style="display:none" onclick="downloadCV()">Download CV PDF</button>
+  <div id="myOrdersStatus" class="status" aria-live="polite"></div>
+  <div id="myOrdersList" class="my-orders-list">
+    <div class="panel muted">Aapke orders load ho rahe hain...</div>
   </div>
 </section>
 
@@ -1956,6 +1955,35 @@ window.submitOrder=async function(){
   showStatus("orderStatus",(quoteOnly?"Quotation request submitted. ":"Order submitted successfully. ")+"Order ID: "+orderCode+". "+(quoteOnly?"Please wait for price confirmation before making payment.":"Admin approval pending."),"success");
   $("transactionId").value="";$("orderNotes").value="";
  }catch(e){console.error(e);showStatus("orderStatus","Order error: "+e.message,"error");}
+};
+window.loadMyOrders=async function(){
+ const list=$("myOrdersList"),status=$("myOrdersStatus");
+ if(!list)return;
+ list.innerHTML='<div class="panel muted">Aapke orders load ho rahe hain...</div>';
+ try{
+  const {data:{user},error:userError}=await supabase.auth.getUser();
+  if(userError||!user)throw new Error("Orders dekhne ke liye login karein.");
+  const {data,error}=await supabase.from("creative_orders")
+   .select("id,order_code,customer_name,tool_name,amount,payment_method,transaction_id,status,created_at")
+   .eq("user_id",user.id).order("created_at",{ascending:false});
+  if(error)throw error;
+  if(!data||!data.length){
+   list.innerHTML='<div class="panel my-orders-empty"><div class="empty-icon">▣</div><h3>Abhi koi order nahi</h3><p class="muted">Aapke submit kiye hue orders yahan dikhai denge.</p></div>';
+   status.textContent="";
+   return;
+  }
+  list.innerHTML=data.map(o=>{
+   const state=String(o.status||"pending").toLowerCase();
+   const label=state==="approved"?"Approved":state==="rejected"?"Rejected":"Pending";
+   const date=o.created_at?new Date(o.created_at).toLocaleString("en-PK",{dateStyle:"medium",timeStyle:"short"}):"—";
+   const safe=v=>String(v??"—").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+   return '<article class="panel my-order-card"><div class="my-order-top"><div><span class="muted order-kicker">ORDER ID</span><strong>'+safe(o.order_code)+'</strong></div><span class="order-status '+safe(state)+'">'+label+'</span></div><div class="my-order-details"><div><small>Service</small><b>'+safe(o.tool_name)+'</b></div><div><small>Amount</small><b>Rs. '+Number(o.amount||0).toLocaleString("en-PK")+'</b></div><div><small>Payment Method</small><b>'+safe(o.payment_method)+'</b></div><div><small>Transaction ID</small><b>'+safe(o.transaction_id)+'</b></div></div><div class="my-order-date">Submitted: '+safe(date)+'</div></article>';
+  }).join("");
+  status.textContent=data.length+" order(s) found.";
+ }catch(e){
+  list.innerHTML='<div class="panel my-orders-empty">Orders load nahi ho sake: '+String(e.message).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))+'</div>';
+  status.textContent="";
+ }
 };
 window.checkApproval=async function(){
  let record;
