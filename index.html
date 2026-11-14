@@ -865,17 +865,13 @@ label{color:#d9e7f5;font-weight:700;font-size:12px;letter-spacing:.2px}input,sel
 }
 </style>
 
-<!-- Reliable desktop text and symbol font fallbacks -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800;900&family=Noto+Sans+Symbols+2&display=swap" rel="stylesheet">
-<style id="nexa-font-rendering-fix">
-html,body,button,input,select,textarea{font-family:"Noto Sans","Segoe UI",Arial,sans-serif!important;font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
-@media(min-width:761px){
- body{font-size:15px;letter-spacing:normal}
- body :where(h1,h2,h3,h4,p,label,button,a,span,li,td,th,input,select,textarea){font-family:"Noto Sans","Segoe UI",Arial,sans-serif}
- body :where(.nav-icon,.cert-badge,.nexa-notice-icon){font-family:"Noto Sans Symbols 2","Segoe UI Symbol","Noto Sans",sans-serif}
-}
+
+
+<style id="nexa-force-readable-fonts">
+/* Force standard readable text fonts on desktop; keep symbols on their natural fallback fonts. */
+html,body,body *:not(svg):not(path){font-family:Arial,"Segoe UI",sans-serif!important}
+input,select,textarea,button{font-family:Arial,"Segoe UI",sans-serif!important}
+@media(min-width:761px){body{font-size:15px;-webkit-font-smoothing:antialiased;text-rendering:auto}}
 </style>
 </head>
 <body>
