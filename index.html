@@ -1539,7 +1539,13 @@ function cvForm(){
    <div class="full"><label>Website / LinkedIn</label><input id="cvWebsite" placeholder="www.example.com"></div>
    <div class="full"><label>Address</label><input id="cvAddress" placeholder="Street, City, Country"></div>
    <div class="full"><label>Profile Photo (optional)</label><input id="cvPhoto" type="file" accept="image/*"></div>
-   <div class="full"><label>About Me / Professional Profile</label><textarea id="cvProfile" placeholder="Write a short professional introduction...">Motivated and responsible professional with a positive attitude and a strong willingness to learn. Able to communicate effectively, work independently or as part of a team, and manage tasks with care and attention to detail. Eager to contribute skills, take on new challenges, and support the goals of the organization.</textarea><small class="muted">This is a ready-made profile. You can edit it or replace it with your own introduction.</small></div><div class="full"><label>References (optional)</label><textarea id="cvReferences" placeholder="Reference name, designation, company, phone or email"></textarea></div><div class="full"><label>Languages (optional)</label><input id="cvLanguages" placeholder="e.g. English, Urdu, Pashto"></div>
+   <div class="full"><label>About Me / Professional Profile</label><textarea id="cvProfile" placeholder="Write a short professional introduction...">Motivated and responsible professional with a positive attitude and a strong willingness to learn. Able to communicate effectively, work independently or as part of a team, and manage tasks with care and attention to detail. Eager to contribute skills, take on new challenges, and support the goals of the organization.</textarea><small class="muted">This is a ready-made profile. You can edit it or replace it with your own introduction.</small></div><div class="full"><label>References (optional)</label><textarea id="cvReferences" placeholder="Reference name, designation, company, phone or email"></textarea></div>
+   <div><label>Languages (optional)</label><input id="cvLanguages" placeholder="e.g. English, Urdu, Pashto"></div>
+   <div><label>Date of Birth (optional)</label><input id="cvDateOfBirth" type="date"></div>
+   <div><label>Nationality (optional)</label><input id="cvNationality" placeholder="e.g. Pakistani"></div>
+   <div class="full"><label>Hobbies & Interests (optional)</label><input id="cvHobbies" placeholder="e.g. Reading, Cricket, Travelling, Volunteering"></div>
+   <div class="full"><label>Certifications & Courses (optional)</label><textarea id="cvCertifications" placeholder="Course / certificate name, institute, year"></textarea></div>
+   <div class="full"><label>Achievements (optional)</label><textarea id="cvAchievements" placeholder="Awards, recognitions, notable achievements"></textarea></div>
   </div>
  </div>
  <div class="panel"><h3>Education</h3>
@@ -1620,7 +1626,7 @@ window.chooseCVTemplate=function(name){
  picker.value=name;syncCVTemplateCards();previewCV();
 };
 function normalizeCVPhone(value){const raw=String(value||"").trim();if(!raw||raw==="+92")return "";const compact=raw.replace(/[\s()-]/g,"");if(compact.startsWith("+92"))return "+92 "+compact.slice(3);if(compact.startsWith("0092"))return "+92 "+compact.slice(4);if(compact.startsWith("0"))return "+92 "+compact.slice(1);return "+92 "+compact.replace(/^\+/,"");}
-function getCV(){return {name:$("cvName").value.trim().toUpperCase(),phone:normalizeCVPhone($("cvPhone").value),email:$("cvEmail").value,job:$("cvJob").value,website:$("cvWebsite").value,address:$("cvAddress").value,profile:$("cvProfile").value,references:$("cvReferences").value,languages:$("cvLanguages").value,photo:cvPhotoData,education:[...education],work:[...work],skills:[...skills],template:$("cvTemplate").value};}
+function getCV(){return {name:$("cvName").value.trim().toUpperCase(),phone:normalizeCVPhone($("cvPhone").value),email:$("cvEmail").value,job:$("cvJob").value,website:$("cvWebsite").value,address:$("cvAddress").value,profile:$("cvProfile").value,references:$("cvReferences").value,languages:$("cvLanguages").value,dateOfBirth:$("cvDateOfBirth")?.value||"",nationality:$("cvNationality")?.value||"",hobbies:$("cvHobbies")?.value||"",certifications:$("cvCertifications")?.value||"",achievements:$("cvAchievements")?.value||"",photo:cvPhotoData,education:[...education],work:[...work],skills:[...skills],template:$("cvTemplate").value};}
 window.previewCV=function(){
  if(!$("cvName"))return;
  const d=getCV();
@@ -2195,6 +2201,22 @@ async function initializeAdminAccess(){
   setAdminVisibility(false);
  }
 }
+
+// Add optional CV sections to every selected template without changing its original design.
+window.__nexaBasePreviewCV=window.previewCV;
+window.previewCV=function(){
+ if(typeof window.__nexaBasePreviewCV==="function")window.__nexaBasePreviewCV();
+ const host=document.getElementById("cvPreview");
+ const d=typeof getCV==="function"?getCV():{};
+ const sheet=host&&host.querySelector(".a4-sheet");
+ if(!sheet)return;
+ const safe=escapeHTML;
+ const section=(title,value)=>value?'<section style="margin:16px 20px 0;padding-top:10px;border-top:1px solid #dce3eb;color:#25364a;text-align:left"><h3 style="font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#1769a5;margin:0 0 6px">'+title+'</h3><div style="font-size:10px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere">'+safe(value)+'</div></section>':'';
+ const personal=[d.dateOfBirth?'Date of Birth: '+d.dateOfBirth:'',d.nationality?'Nationality: '+d.nationality:''].filter(Boolean).join(' · ');
+ const extras=section("Hobbies & Interests",d.hobbies)+section("Certifications & Courses",d.certifications)+section("Achievements",d.achievements)+section("Personal Details",personal);
+ if(extras){const box=document.createElement("div");box.innerHTML=extras;sheet.appendChild(box);if(typeof fitCVPreview==="function")fitCVPreview();}
+};
+
 updateAmount();
 initializeAdminAccess();
 (async function setCustomerLandingPage(){
@@ -2766,6 +2788,10 @@ window.previewAdminCV=function(id){
  section("Professional Profile",'<div class="admin-cv-profile">'+safe(d.profile||"No professional profile supplied.")+'</div>')+
  section("Work Experience",workHTML)+section("Education",eduHTML)+section("Skills",'<div class="admin-cv-skills">'+(skillsHTML||'<span>Not provided</span>')+'</div>')+
  section("Languages",'<div class="admin-cv-profile">'+safe(d.languages||"Not provided")+'</div>')+
+ section("Hobbies & Interests",'<div class="admin-cv-profile">'+safe(d.hobbies||"Not provided")+'</div>')+
+ section("Certifications & Courses",'<div class="admin-cv-profile">'+safe(d.certifications||"Not provided")+'</div>')+
+ section("Achievements",'<div class="admin-cv-profile">'+safe(d.achievements||"Not provided")+'</div>')+
+ section("Personal Details",'<div class="admin-cv-profile">'+(d.dateOfBirth?'<b>Date of Birth:</b> '+safe(d.dateOfBirth)+' &nbsp; ':'')+(d.nationality?'<b>Nationality:</b> '+safe(d.nationality):'')+'</div>')+
  section("References",'<div class="admin-cv-profile">'+safe(d.references||"Available on request")+'</div>');
  let modal=document.getElementById("nexaAdminCvModal");
  if(!modal){modal=document.createElement("div");modal.id="nexaAdminCvModal";modal.innerHTML='<div id="nexaAdminCvDialog"><div id="nexaAdminCvToolbar"><strong>FULL-PAGE CV PREVIEW · '+safe(order.order_code||"NEXA ORDER")+'</strong><div><button type="button" onclick="window.print()">Print</button> <button type="button" onclick="document.getElementById(\'nexaAdminCvModal\').classList.remove(\'open\')">Close ✕</button></div></div><div id="nexaAdminCvPaper"></div></div>';document.body.appendChild(modal);}
@@ -2775,5 +2801,8 @@ window.previewAdminCV=function(id){
 document.addEventListener("keydown",e=>{if(e.key==="Escape")document.getElementById("nexaAdminCvModal")?.classList.remove("open");});
 </script>
 
+<style id="nexa-cv-extra-fields-style">
+@media print{#nexaAdminCvModal{position:static!important;display:block!important;background:#fff!important;padding:0!important}#nexaAdminCvToolbar{display:none!important}#nexaAdminCvPaper{box-shadow:none!important;width:100%!important}}
+</style>
 </body>
 </html>
