@@ -1210,6 +1210,13 @@ body{color:#f7faff!important}
 }
 </style>
 
+
+<style id="nexa-hide-account-nav-fix">
+/* Account is kept as an internal sign-in page; remove only its bottom-nav item. */
+.bottom-nav{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.bottom-nav.admin-visible{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+</style>
+
 </head>
 <body>
 
@@ -1331,7 +1338,6 @@ body{color:#f7faff!important}
   <button class="bottom-nav-item active" data-page="home" onclick="showPage('home')"><span class="nav-icon">⌂</span><span>Home</span></button>
   <button class="bottom-nav-item" data-page="studio" onclick="showPage('studio')"><span class="nav-icon">✦</span><span>CV Builder</span></button>
   <button class="bottom-nav-item" data-page="payment" onclick="showPage('payment')"><span class="nav-icon">▣</span><span>Orders</span></button>
-  <button class="bottom-nav-item" data-page="account" onclick="showPage('account')"><span class="nav-icon">♙</span><span>Account</span></button>
   <button id="adminNavButton" class="bottom-nav-item" data-page="admin" onclick="showPage('admin')" hidden><span class="nav-icon">♙</span><span>Admin</span></button>
 </nav>
 
