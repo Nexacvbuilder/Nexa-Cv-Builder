@@ -1267,17 +1267,6 @@ body{color:#f7faff!important}
 
 
 
-<style id="nexa-cv-preview-watermark-readability">
-/* Keep the pending watermark visible but prevent it from obscuring CV details. */
-#cvPreview:after{
-  color:rgba(12,35,75,.035)!important;
-  font-size:clamp(9px,1.2vw,12px)!important;
-  letter-spacing:.5px!important;
-  line-height:7!important;
-  text-shadow:none!important;
-  font-weight:700!important;
-}
-</style>
 </head>
 <body>
 
@@ -1693,12 +1682,12 @@ function cvForm(){
  <h2>Professional CV Builder</h2>
  <p class="muted">Select your preferred CV design from the visual previews below.</p>
  <div class="panel"><h3>Choose Your CV Design</h3><p class="muted">Each template is displayed as a visual preview. Select a design by clicking its card.</p>
-  <select id="cvTemplate" onchange="syncCVTemplateCards();previewCV()" style="display:none"><option value="Blue Sidebar">Blue Sidebar — Modern</option><option value="Navy Geometric">Navy Geometric — Classic</option><option value="Navy Pink">Navy & Pink — Professional</option><option value="Charcoal Gold">Charcoal & Gold — Executive</option></select>
+  <select id="cvTemplate" onchange="syncCVTemplateCards();previewCV()" style="display:none"><option value="Blue Sidebar">Blue Sidebar — Modern</option><option value="Navy Geometric">Navy Geometric — Classic</option><option value="Navy Pink">Navy & Pink — Professional</option><option value="Charcoal Gold" selected>Charcoal & Gold — Executive</option></select>
   <div class="cv-template-gallery">
-   <button type="button" class="cv-template-card selected" data-template="Blue Sidebar" onclick="chooseCVTemplate('Blue Sidebar')"><div class="thumb"><div class="thumb-side"><div style="width:42px;height:42px;border-radius:50%;background:#dce8fa;margin:4px auto 15px"></div><div class="mini-title"></div><div class="thumb-line"></div><div class="thumb-line short"></div><div class="mini-title"></div><div class="thumb-line"></div><div class="thumb-line mid"></div></div><div class="thumb-main"><h4>YOUR NAME</h4><div class="thumb-line mid"></div><div class="mini-title" style="color:#2057a0"></div><div class="thumb-line"></div><div class="thumb-line mid"></div><div class="mini-title" style="color:#2057a0"></div><div class="thumb-line"></div><div class="thumb-line short"></div></div></div><div class="template-name">Blue Sidebar</div><div class="template-style">Modern · Clean</div><div class="choose-mark">✓ Selected</div></button>
+   <button type="button" class="cv-template-card" data-template="Blue Sidebar" onclick="chooseCVTemplate('Blue Sidebar')"><div class="thumb"><div class="thumb-side"><div style="width:42px;height:42px;border-radius:50%;background:#dce8fa;margin:4px auto 15px"></div><div class="mini-title"></div><div class="thumb-line"></div><div class="thumb-line short"></div><div class="mini-title"></div><div class="thumb-line"></div><div class="thumb-line mid"></div></div><div class="thumb-main"><h4>YOUR NAME</h4><div class="thumb-line mid"></div><div class="mini-title" style="color:#2057a0"></div><div class="thumb-line"></div><div class="thumb-line mid"></div><div class="mini-title" style="color:#2057a0"></div><div class="thumb-line"></div><div class="thumb-line short"></div></div></div><div class="template-name">Blue Sidebar</div><div class="template-style">Modern · Clean</div><div class="choose-mark">✓ Selected</div></button>
    <button type="button" class="cv-template-card" data-template="Navy Geometric" onclick="chooseCVTemplate('Navy Geometric')"><div class="thumb geometric"><div class="thumb-side"><div style="width:38px;height:38px;border-radius:3px;background:#dce8fa;margin:4px auto 15px"></div><div class="mini-title"></div><div class="thumb-line"></div><div class="thumb-line short"></div><div class="mini-title"></div><div class="thumb-line"></div></div><div class="thumb-main"><h4>YOUR NAME</h4><div class="thumb-line mid"></div><div class="mini-title" style="color:#17234c"></div><div class="thumb-line"></div><div class="thumb-line"></div><div class="mini-title" style="color:#17234c"></div><div class="thumb-line mid"></div></div></div><div class="template-name">Navy Geometric</div><div class="template-style">Classic · Structured</div><div class="choose-mark">Tap to select</div></button>
    <button type="button" class="cv-template-card" data-template="Navy Pink" onclick="chooseCVTemplate('Navy Pink')"><div class="thumb pink"><div class="thumb-side"><div style="width:38px;height:38px;border-radius:50%;background:#dce8fa;margin:4px auto 15px"></div><div class="mini-title"></div><div class="thumb-line"></div><div class="thumb-line short"></div><div class="mini-title"></div><div class="thumb-line"></div></div><div class="thumb-main"><div class="mini-head"></div><h4>YOUR NAME</h4><div class="thumb-line mid"></div><div class="mini-title" style="color:#17213d"></div><div class="thumb-line"></div><div class="thumb-line mid"></div><div class="mini-title" style="color:#17213d"></div><div class="thumb-line"></div></div></div><div class="template-name">Navy & Pink</div><div class="template-style">Professional · Bold</div><div class="choose-mark">Tap to select</div></button>
-   <button type="button" class="cv-template-card" data-template="Charcoal Gold" onclick="chooseCVTemplate('Charcoal Gold')"><div class="thumb gold"><div class="thumb-side"><div style="width:38px;height:38px;border-radius:3px;background:#f0b400;margin:4px auto 15px"></div><div class="mini-title" style="color:#f0b400"></div><div class="thumb-line"></div><div class="thumb-line short"></div><div class="mini-title" style="color:#f0b400"></div><div class="thumb-line"></div></div><div class="thumb-main"><div class="mini-head"></div><h4>YOUR NAME</h4><div class="thumb-line mid"></div><div class="mini-title" style="color:#b78b27"></div><div class="thumb-line"></div><div class="thumb-line mid"></div><div class="mini-title" style="color:#b78b27"></div><div class="thumb-line"></div></div></div><div class="template-name">Charcoal & Gold</div><div class="template-style">Executive · Premium</div><div class="choose-mark">Tap to select</div></button>
+   <button type="button" class="cv-template-card selected" data-template="Charcoal Gold" onclick="chooseCVTemplate('Charcoal Gold')"><div class="thumb gold"><div class="thumb-side"><div style="width:38px;height:38px;border-radius:3px;background:#f0b400;margin:4px auto 15px"></div><div class="mini-title" style="color:#f0b400"></div><div class="thumb-line"></div><div class="thumb-line short"></div><div class="mini-title" style="color:#f0b400"></div><div class="thumb-line"></div></div><div class="thumb-main"><div class="mini-head"></div><h4>YOUR NAME</h4><div class="thumb-line mid"></div><div class="mini-title" style="color:#b78b27"></div><div class="thumb-line"></div><div class="thumb-line mid"></div><div class="mini-title" style="color:#b78b27"></div><div class="thumb-line"></div></div></div><div class="template-name">Charcoal & Gold</div><div class="template-style">Executive · Premium</div><div class="choose-mark">Tap to select</div></button>
   </div><p class="muted">Click a design card to update the CV preview below.</p></div>
  <div class="panel"><h3>Personal Information</h3>
   <div class="form-grid">
@@ -2140,15 +2129,6 @@ window.printQuick=function(id,titleId){const el=$(id);if(!el)return;const title=
 .other-service-list button:focus-visible{outline:3px solid #4b91e8;outline-offset:2px}
 @media(min-width:760px){.studio-main-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.studio-other-card{grid-column:auto}}
 
-<style id="nexa-cv-preview-main-text-contrast">
-/* Keep CV main-column text readable on its light paper background.
-   The sidebar is deliberately excluded so its white text remains unchanged. */
-#cvPreview .a4-sheet > div > main,
-#cvPreview .a4-sheet > div > main *{
-  color:#17213d!important;
-  -webkit-text-fill-color:#17213d!important;
-}
-</style>
 </style>
 </head><body><h1>${escapeHTML(title)}</h1>${escapeHTML(value)}
 <style id="nexa-education-pricing">
