@@ -2139,6 +2139,16 @@ window.printQuick=function(id,titleId){const el=$(id);if(!el)return;const title=
 .other-service-list button{width:100%;min-height:42px;padding:10px 12px;border:1px solid rgba(30,90,150,.22);border-radius:10px;background:#f2f6fc;color:#17365d;text-align:left;font:inherit;font-size:13px;font-weight:650;cursor:pointer}
 .other-service-list button:focus-visible{outline:3px solid #4b91e8;outline-offset:2px}
 @media(min-width:760px){.studio-main-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.studio-other-card{grid-column:auto}}
+
+<style id="nexa-cv-preview-main-text-contrast">
+/* Keep CV main-column text readable on its light paper background.
+   The sidebar is deliberately excluded so its white text remains unchanged. */
+#cvPreview .a4-sheet > div > main,
+#cvPreview .a4-sheet > div > main *{
+  color:#17213d!important;
+  -webkit-text-fill-color:#17213d!important;
+}
+</style>
 </style>
 </head><body><h1>${escapeHTML(title)}</h1>${escapeHTML(value)}
 <style id="nexa-education-pricing">
