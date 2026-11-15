@@ -2130,6 +2130,17 @@ window.printQuick=function(id,titleId){const el=$(id);if(!el)return;const title=
 @media(min-width:760px){.studio-main-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.studio-other-card{grid-column:auto}}
 
 </style>
+<style id="nexa-cv-name-visibility-fix">
+/* The dark dashboard theme sets all page headings to white.
+   Restore the CV's own dark name color on its white paper. */
+.page #cvPreview .a4-sheet h1{
+  color:#242424!important;
+  -webkit-text-fill-color:#242424!important;
+  opacity:1!important;
+  visibility:visible!important;
+}
+</style>
+
 </head><body><h1>${escapeHTML(title)}</h1>${escapeHTML(value)}
 <style id="nexa-education-pricing">
 /* Education card prices and introductory discount */
